@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package>
+  <metadata>
+    <id>Zero.DataAccess</id>
+    <version>1.0.0.16</version>
+    <title>Zero.DataAccess</title>
+    <authors>Zero</authors>
+    <owners>Zero</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>数据库操作类库</description>
+    <releaseNotes></releaseNotes>
+    <copyright>Copyright 2014</copyright>
+    <language>zh-CN</language>
+    <tags></tags>
+    <dependencies DependencyBehavior="Highest">
+      <group>
+        <dependency id="Zero.Core"/>
+      </group>
+    </dependencies>
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="System.Configuration" />
+    </frameworkAssemblies>
+  </metadata>
+  <files>
+    <file src="bin\Release\Zero.DataAccess.dll" target="lib\Zero.DataAccess.dll" />
+    <file src="bin\Release\Zero.DataAccess.pdb" target="lib\Zero.DataAccess.pdb" />
+    <file src="bin\Release\Zero.DataAccess.xml" target="lib\Zero.DataAccess.xml" />
+    <file src="bin\Release\db.config" target="Content\db.config" />
+  </files>
+</package>

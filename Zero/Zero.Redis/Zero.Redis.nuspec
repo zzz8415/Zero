@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package>
+  <metadata>
+    <id>Zero.Redis</id>
+    <version>1.0.0.21</version>
+    <title>Zero.Redis</title>
+    <authors>Zero</authors>
+    <owners>Zero</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Redis操作类库</description>
+    <releaseNotes></releaseNotes>
+    <copyright>Copyright 2014</copyright>
+    <language>zh-CN</language>
+    <tags></tags>
+    <dependencies DependencyBehavior="Highest">
+      <group>
+        <dependency id="StackExchange.Redis" />
+        <dependency id="Zero.Core" />
+      </group>
+    </dependencies>
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="System.Configuration" />
+    </frameworkAssemblies>
+  </metadata>
+  <files>
+    <file src="bin\Release\Zero.Redis.dll" target="lib\Zero.Redis.dll" />
+    <file src="bin\Release\Zero.Redis.pdb" target="lib\Zero.Redis.pdb" />
+    <file src="bin\Release\Zero.Redis.xml" target="lib\Zero.Redis.xml" />
+  </files>
+</package>

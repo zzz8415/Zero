@@ -1,0 +1,45 @@
+﻿<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Zero.Core</id>
+    <version>1.0.0.57</version>
+    <title>Zero.Core</title>
+    <authors>Zero</authors>
+    <owners>Zero</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>核心类库</description>
+    <releaseNotes></releaseNotes>
+    <copyright>Copyright 2014</copyright>
+    <language>zh-CN</language>
+    <tags></tags>
+    <dependencies DependencyBehavior="Highest">
+      <group>
+        <dependency id="NLog"/>
+        <dependency id="Newtonsoft.Json"/>
+        <dependency id="ICSharpCode.SharpZipLib.dll"/>
+        <dependency id="protobuf-net"/>
+      </group>
+    </dependencies>
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="Microsoft.VisualBasic" />
+      <frameworkAssembly assemblyName="System.Configuration" />
+      <frameworkAssembly assemblyName="System.Drawing" />
+      <frameworkAssembly assemblyName="System.Runtime.Serialization" />
+      <frameworkAssembly assemblyName="System.Runtime.Serialization.Formatters.Soap" />
+      <frameworkAssembly assemblyName="System.ServiceModel" />
+    </frameworkAssemblies>
+    <!--<references>
+      <group>
+        <reference file="NLog.config" />
+      </group>
+    </references>-->
+  </metadata>
+  <files>
+    <file src="bin\Release\Zero.Core.dll" target="lib\Zero.Core.dll" />
+    <file src="bin\Release\Zero.Core.pdb" target="lib\Zero.Core.pdb" />
+    <file src="bin\Release\Zero.Core.xml" target="lib\Zero.Core.xml" />
+    <file src="bin\Release\NLog.config" target="Content\NLog.config" />
+    <file src="bin\Release\Custom.config" target="Content\Custom.config" />
+  </files>
+</package>
+
