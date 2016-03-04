@@ -12,7 +12,7 @@
     <copyright>Copyright 2014</copyright>
     <language>zh-CN</language>
     <tags></tags>
-    <dependencies DependencyBehavior="Highest">
+    <dependencies>
       <group>
         <dependency id="Zero.Core"/>
       </group>
