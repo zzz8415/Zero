@@ -76,6 +76,9 @@ namespace Zero.Core.Wcf
                     case "wsDualHttpBinding":
                         bind = new WSDualHttpBinding();
                         break;
+                    case "webHttpBinding":
+                        bind = new WebHttpBinding();
+                        break;
                 }
                 if (bind != null) bindingConfig.ApplyConfiguration(bind);
                 return bind;

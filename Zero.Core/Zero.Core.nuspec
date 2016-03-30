@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Zero.Core</id>
-    <version>1.0.0.57</version>
+    <version>1.0.0.58</version>
     <title>Zero.Core</title>
     <authors>Zero</authors>
     <owners>Zero</owners>
@@ -27,6 +27,7 @@
       <frameworkAssembly assemblyName="System.Runtime.Serialization" />
       <frameworkAssembly assemblyName="System.Runtime.Serialization.Formatters.Soap" />
       <frameworkAssembly assemblyName="System.ServiceModel" />
+      <frameworkAssembly assemblyName="System.ServiceModel.Web" />
     </frameworkAssemblies>
     <!--<references>
       <group>
