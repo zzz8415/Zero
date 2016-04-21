@@ -160,6 +160,7 @@
     <Compile Include="RedisClientTests.cs" />
     <Compile Include="SerializeHelperTest.cs" />
     <Compile Include="UnitTest1.cs" />
+    <Compile Include="Web\CacheHelperTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">

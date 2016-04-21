@@ -219,7 +219,7 @@ namespace Zero.Core.Web
         public static void Set<T>(string key, T value, CacheTimeOption CacheTimeOption, CacheExpirationOption CacheExpirationOption,
             CacheDependency dependencies, CacheItemPriority cacheItemPriority, CacheItemRemovedCallback callback)
         {
-            if (!value.Equals(default(T)) && CacheTimeOption != CacheTimeOption.None)
+            if (value != null && !value.Equals(default(T)) && CacheTimeOption != CacheTimeOption.None)
             {
                 DateTime absoluteExpiration = GetAbsoluteExpirationTime(CacheTimeOption, CacheExpirationOption);
                 TimeSpan slidingExpiration = GetSlidingExpirationTime(CacheTimeOption, CacheExpirationOption);
@@ -384,10 +384,6 @@ namespace Zero.Core.Web
         public static T Get<T>(string key, CacheTimeOption cacheTime, RefreshCacheDataHandler<T> callback, 
             CacheItemRemovedCallback removedCallback) where T : class
         {
-            // 不缓存时，直接返回
-            if (cacheTime == CacheTimeOption.None)
-                return callback();
-
             if (Contains(key))
             {
                 return Get<T>(key);
@@ -407,10 +403,6 @@ namespace Zero.Core.Web
         /// <returns></returns>
         public static T Get<T>(string key, CacheTimeOption cacheTime, RefreshCacheDataHandler<T> callback)
         {
-            // 不缓存时，直接返回
-            if (cacheTime == CacheTimeOption.None)
-                return callback();
-
             if (Contains(key))
             {
                 return Get<T>(key);
@@ -432,11 +424,6 @@ namespace Zero.Core.Web
         public static T Get<T>(string key, string recordCountKey, ref int recordCount, CacheTimeOption cacheTime, 
             RefreshCacheDataWithRefParamHandler<T> callback) where T : class
         {
-            // 不缓存时，直接返回
-            if (cacheTime == CacheTimeOption.None)
-                return callback(ref recordCount);
-
-            
             if (Contains(recordCountKey))
             {
                 recordCount = Get<int>(recordCountKey);
@@ -466,11 +453,6 @@ namespace Zero.Core.Web
         public static T Get<T>(string key, string recordCountKey, string recordCountKey2, ref int recordCount, ref int recordCount2, CacheTimeOption cacheTime,
             RefreshCacheDataWithRefParamHandler2<T> callback) where T : class
         {
-            // 不缓存时，直接返回
-            if (cacheTime == CacheTimeOption.None)
-                return callback(ref recordCount, ref recordCount2);
-
-
             if (Contains(recordCountKey))
             {
                 recordCount = Get<int>(recordCountKey);
@@ -503,10 +485,6 @@ namespace Zero.Core.Web
         public static T Get<T>(string key, string recordCountKey, out int recordCount, CacheTimeOption cacheTime, 
             RefreshCacheDataWithOutParamHandler<T> callback) where T : class
         {
-            // 不缓存时，直接返回
-            if (cacheTime == CacheTimeOption.None)
-                return callback(out recordCount);
-
             recordCount = 0;
             if (Contains(recordCountKey))
             {
@@ -531,10 +509,6 @@ namespace Zero.Core.Web
         /// <returns></returns>
         public static T GetWithLock<T>(string key, CacheTimeOption cacheTime, RefreshCacheDataHandler<T> callback) where T : class
         {
-            // 不缓存时，直接返回
-            if (cacheTime == CacheTimeOption.None)
-                return callback();
-            
             if (Contains(key))
             {
                 return Get<T>(key);
@@ -566,10 +540,6 @@ namespace Zero.Core.Web
         public static T GetWithLock<T>(string key, string recordCountKey, ref int recordCount, CacheTimeOption cacheTime, 
             RefreshCacheDataWithRefParamHandler<T> callback) where T : class
         {
-            // 不缓存时，直接返回
-            if (cacheTime == CacheTimeOption.None)
-                return callback(ref recordCount);
-
             if (Contains(recordCountKey))
             {
                 recordCount = Get<int>(recordCountKey);
@@ -610,10 +580,6 @@ namespace Zero.Core.Web
         public static T GetWithLock<T>(string key, string recordCountKey, out int recordCount, CacheTimeOption cacheTime, 
             RefreshCacheDataWithOutParamHandler<T> callback) where T : class
         {
-            // 不缓存时，直接返回
-            if (cacheTime == CacheTimeOption.None)
-                return callback(out recordCount);
-
             recordCount = 0;
             if (Contains(recordCountKey))
             {
