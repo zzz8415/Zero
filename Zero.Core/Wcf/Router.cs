@@ -87,7 +87,7 @@ namespace Zero.Core.Wcf
         /// <returns></returns>
         public T CreateChannel(string host)
         {
-            var server = servers.Values.FirstOrDefault(x => x.Endpoint.Address.Uri.Host.Equals(host, StringComparison.Ordinal));
+            var server = servers.Values.FirstOrDefault(x => x.Endpoint.Address.Uri.Authority.IndexOf(host, StringComparison.Ordinal) >= 0);
             return server.ChannelFactory.CreateChannel();
         }
     }
