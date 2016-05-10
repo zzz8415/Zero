@@ -2,10 +2,11 @@
 <package >
   <metadata>
     <id>Zero.Core</id>
-    <version>1.0.0.61</version>
+    <version>1.0.0.62</version>
     <title>Zero.Core</title>
     <authors>Zero</authors>
     <owners>Zero</owners>
+    <projectUrl>https://github.com/zzz8415/Zero</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>核心类库</description>
     <releaseNotes></releaseNotes>

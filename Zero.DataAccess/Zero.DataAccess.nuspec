@@ -2,10 +2,11 @@
 <package>
   <metadata>
     <id>Zero.DataAccess</id>
-    <version>1.0.0.16</version>
+    <version>1.0.0.17</version>
     <title>Zero.DataAccess</title>
     <authors>Zero</authors>
     <owners>Zero</owners>
+    <projectUrl>https://github.com/zzz8415/Zero</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>数据库操作类库</description>
     <releaseNotes></releaseNotes>

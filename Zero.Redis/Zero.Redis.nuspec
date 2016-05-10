@@ -2,10 +2,11 @@
 <package>
   <metadata>
     <id>Zero.Redis</id>
-    <version>1.0.0.22</version>
+    <version>1.0.0.23</version>
     <title>Zero.Redis</title>
     <authors>Zero</authors>
     <owners>Zero</owners>
+    <projectUrl>https://github.com/zzz8415/Zero</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Redis操作类库</description>
     <releaseNotes></releaseNotes>
