@@ -161,6 +161,7 @@
     <Compile Include="SerializeHelperTest.cs" />
     <Compile Include="UnitTest1.cs" />
     <Compile Include="Web\CacheHelperTests.cs" />
+    <Compile Include="Web\TokenHelperTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">

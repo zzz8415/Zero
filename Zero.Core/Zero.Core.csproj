@@ -105,6 +105,7 @@
     <Compile Include="Web\CacheHelper.cs" />
     <Compile Include="Web\FTPHelper.cs" />
     <Compile Include="Web\HttpHelper.cs" />
+    <Compile Include="Web\TokenHelper.cs" />
     <Compile Include="Web\WebClient.cs" />
     <Compile Include="Web\WebHelper.cs" />
   </ItemGroup>
