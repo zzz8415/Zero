@@ -16,7 +16,7 @@ namespace Zero.Core.Web.Tests
 
             public string IP { get; set; }
 
-            public string Ticks { get; set; }
+            public long Ticks { get; set; }
 
         }
         [TestMethod()]
@@ -25,7 +25,7 @@ namespace Zero.Core.Web.Tests
             var test = new Test {
                 ID = "123",
                 IP = "2343",
-                Ticks = "333"
+                Ticks = 3333333333333333333
             };
 
             var token = TokenHelper.Serialize(test);
