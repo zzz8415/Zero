@@ -24,7 +24,7 @@ namespace Zero.Core.Result
         /// <summary>
         /// 附加消息
         /// </summary>
-        public string Append { get; set; }
+        public string ErrorDesc { get; set; }
 
         /// <summary>
         /// 是否异常
