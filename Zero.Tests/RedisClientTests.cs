@@ -18,18 +18,22 @@ namespace Zero.Redis.Tests
                 string key = "Test"; // TODO: 初始化为适当的值
                 string value = "Value"; // TODO: 初始化为适当的值
 
-                
+
 
                 //RedisClient.Instance.Using(x =>
                 //    {
                 //        x.Set(key, value);
                 //        v = x.Get(key);
                 //    });
-                //var client = new RedisClient();
-                //client.Using(x =>
-                //{
-                //    v = x.StringGet(key);
-                //});
+                var client = new RedisClient();
+                client.Using(x =>
+                {
+                    x.HashSet("Zero", key, value);
+                    x.HashGet("Zero", key);
+                    x.HashGetAll("Zero");
+                    
+                    v = x.StringGet(key);
+                });
             }
             catch (Exception)
             {

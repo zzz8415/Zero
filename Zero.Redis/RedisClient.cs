@@ -107,7 +107,7 @@ namespace Zero.Redis
         /// <typeparam name="T"></typeparam>
         /// <param name="key"></param>
         /// <returns></returns>
-        public T GetProtobug<T>(string key) where T : class
+        public T GetProtobuf<T>(string key) where T : class
         {
             var value = this.client.StringGet(key);
             return value.IsNullOrEmpty ? default(T) : ProtoBufExtensions.DeserializeProtoBuf<T>(value);
