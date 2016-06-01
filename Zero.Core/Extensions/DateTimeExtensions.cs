@@ -66,9 +66,9 @@ namespace Zero.Core.Extensions
         /// </summary>
         /// <param name="timeStamp"></param>
         /// <returns></returns>
-        public static DateTime FromUnixTime(this long timeStamp)
+        public static DateTime ToUnixDateTime(this long timeStamp)
         {
-            return new DateTime(1970, 1, 1).AddSeconds(timeStamp);
+            return TimeZone.CurrentTimeZone.ToLocalTime(new DateTime(1970, 1, 1)).AddSeconds(timeStamp);
         }
 
         /// <summary>
@@ -76,9 +76,9 @@ namespace Zero.Core.Extensions
         /// </summary>
         /// <param name="dateTime"></param>
         /// <returns></returns>
-        public static long FromDateTime(DateTime dateTime)
+        public static long ToUnixTimeStamp(this DateTime dateTime)
         {
-            return (long)dateTime.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+            return (long)dateTime.Subtract(TimeZone.CurrentTimeZone.ToLocalTime(new DateTime(1970, 1, 1))).TotalSeconds;
         }
     }
 }

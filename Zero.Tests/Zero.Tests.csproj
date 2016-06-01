@@ -151,6 +151,7 @@
   <ItemGroup>
     <Compile Include="CryptoHelperTest.cs" />
     <Compile Include="DBConfigHelperTest.cs" />
+    <Compile Include="Extensions\DateTimeExtensionsTests.cs" />
     <Compile Include="JsonExtensionsTest.cs" />
     <Compile Include="LogHelperTest.cs" />
     <Compile Include="ObjectExtensionsTest.cs" />
