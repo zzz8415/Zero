@@ -60,5 +60,25 @@ namespace Zero.Core.Extensions
             }
             return source.Value.ToStandardString();
         }
+
+        /// <summary>
+        /// 将unix timestamp时间戳(秒) 转换为.NET的DateTime  
+        /// </summary>
+        /// <param name="timeStamp"></param>
+        /// <returns></returns>
+        public static DateTime FromUnixTime(this long timeStamp)
+        {
+            return new DateTime(1970, 1, 1).AddSeconds(timeStamp);
+        }
+
+        /// <summary>
+        /// 将.NET的DateTime转换为unix timestamp时间戳(秒)
+        /// </summary>
+        /// <param name="dateTime"></param>
+        /// <returns></returns>
+        public static long FromDateTime(DateTime dateTime)
+        {
+            return (long)dateTime.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+        }
     }
 }
