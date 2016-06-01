@@ -87,7 +87,6 @@
     <Compile Include="Util\ConfigHelper.cs" />
     <Compile Include="Util\CryptoHelper.cs" />
     <Compile Include="Util\CustomHelper.cs" />
-    <Compile Include="Util\DateTimeHelper.cs" />
     <Compile Include="Util\EnumHelper.cs" />
     <Compile Include="Util\KeyValueHelper.cs" />
     <Compile Include="Util\LogHelper.cs" />
