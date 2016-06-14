@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Web;
 using Zero.Core.Extensions;
+using Zero.Core.Util;
 
 namespace Zero.Core.Web
 {
@@ -76,15 +77,17 @@ namespace Zero.Core.Web
             {
                 if (ip.IsNullOrEmpty())
                 {
-                    ip = Request.UserHostAddress;
                     try
                     {
+                        ip = Request.UserHostAddress;
                         if (!ip.IsNullOrEmpty() && ip.StartsWith("10.", StringComparison.Ordinal))
                         {
                             ip = Request.ServerVariables["HTTP_X_REAL_IP"].Split(',')[0].Trim();
                         }
                     }
-                    catch { }
+                    catch(Exception ex) {
+                        LogHelper.WriteException(ex);
+                    }
                 }
                 return ip;
             }
