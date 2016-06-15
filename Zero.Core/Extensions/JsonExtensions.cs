@@ -13,8 +13,12 @@ namespace Zero.Core.Extensions
         /// <param name="obj"></param>
         /// <param name="settings"></param>
         /// <returns></returns>
-        public static string ToJson(this object obj, JsonSerializerSettings settings = null)
+        public static string ToJson<T>(this T obj, JsonSerializerSettings settings = null)
         {
+            if (obj.Equals(default(T)))
+            {
+                return null;
+            }
             settings = settings ?? new JsonSerializerSettings
             {
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore,//忽略循环引用 即不序列化循环引用
@@ -31,6 +35,10 @@ namespace Zero.Core.Extensions
         /// <returns></returns>
         public static T DeserializeJson<T>(this string json, JsonSerializerSettings settings = null) where T : class
         {
+            if (json.IsNullOrEmpty())
+            {
+                return default(T);
+            }
             settings = settings ?? new JsonSerializerSettings
             {
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore,//忽略循环引用 即不序列化循环引用
