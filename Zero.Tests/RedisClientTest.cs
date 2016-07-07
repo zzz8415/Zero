@@ -75,10 +75,12 @@ namespace Zero.Tests
             {
                 string key = "Test"; // TODO: 初始化为适当的值
                 string value = "Value"; // TODO: 初始化为适当的值
-                var client = new RedisClient();
+                using (var client = new RedisClient())
+                {
 
-                d = client.Set(key, value);
-                v = client.Get(key);
+                    d = client.Set(key, value);
+                    v = client.Get(key);
+                }
 
             }
             catch (Exception ex)

@@ -13,25 +13,20 @@ namespace Zero.Redis
     /// </summary>
     public class RedisManager
     {
-        /// <summary>
-        /// redis配置文件信息
-        /// </summary>
-        private static RedisSection redisConfigInfo = new RedisSection();
-
-        private static ConnectionMultiplexer connection = null;
+        private static ConfigurationOptions options = null;
 
         /// <summary>
-        /// 配置
+        /// redis配置
         /// </summary>
-        protected static ConnectionMultiplexer Connection
+        protected static ConfigurationOptions Options
         {
             get
             {
-                if (connection == null)
+                if (options == null)
                 {
                     var section = ConfigurationManager.GetSection("Redis") as RedisSection;
 
-                    var config = new ConfigurationOptions
+                    options = new ConfigurationOptions
                     {
                         Password = section.Password,
                         KeepAlive = section.KeepAlive,
@@ -43,19 +38,20 @@ namespace Zero.Redis
                     for (var i = 0; i < section.RedisHosts.Count; i++)
                     {
                         var host = section.RedisHosts[i];
-                        config.EndPoints.Add(host.Host, host.Port);
+                        options.EndPoints.Add(host.Host, host.Port);
                     }
-                    connection = ConnectionMultiplexer.Connect(config);
                 }
-                return connection;
+                return options;
             }
         }
+
         /// <summary>
-        /// 实例化一个Redis数据库
+        /// 创建Redis连接
         /// </summary>
-        public static IDatabase GetClient()
+        /// <returns></returns>
+        public static ConnectionMultiplexer GetConnect()
         {
-            return Connection.GetDatabase();
+            return ConnectionMultiplexer.Connect(Options);
         }
 
     }
