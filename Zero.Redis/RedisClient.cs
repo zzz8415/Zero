@@ -14,15 +14,29 @@ namespace Zero.Redis
     {
         private IDatabase client = null;
 
-        private ConnectionMultiplexer connect = null;
+        /// <summary>
+        /// Redis客户端
+        /// </summary>
+        protected IDatabase Client {
+            get
+            {
+                if (client == null)
+                {
+                    client = channel.GetDatabase();
+                }
+                return client;
+            }
+        }
+    
+
+        private ConnectionMultiplexer channel = null;
 
         /// <summary>
         /// 实例化Redis链接
         /// </summary>
         public RedisClient()
         {
-            this.connect = RedisManager.GetConnect();
-            this.client = connect.GetDatabase();
+            this.channel = RedisManager.GetConnect();
         }
 
         /// <summary>
@@ -33,7 +47,7 @@ namespace Zero.Redis
         /// <param name="value"></param>
         public bool Set<T>(string key, T value)
         {
-            return this.client.StringSet(key, value.ToJson());
+            return this.Client.StringSet(key, value.ToJson());
         }
 
         /// <summary>
@@ -44,7 +58,7 @@ namespace Zero.Redis
         /// <param name="value"></param>
         public bool SetProtobuf<T>(string key, T value)
         {
-            return this.client.StringSet(key, value.ToProtoBuf());
+            return this.Client.StringSet(key, value.ToProtoBuf());
         }
 
         /// <summary>
@@ -54,7 +68,7 @@ namespace Zero.Redis
         /// <param name="value"></param>
         public bool Set(string key, string value)
         {
-            return this.client.StringSet(key, value);
+            return this.Client.StringSet(key, value);
         }
 
         /// <summary>
@@ -66,7 +80,7 @@ namespace Zero.Redis
         /// <param name="expiresIn"></param>
         public bool Set<T>(string key, T value, TimeSpan expiresIn)
         {
-            return this.client.StringSet(key, value.ToJson(), expiresIn);
+            return this.Client.StringSet(key, value.ToJson(), expiresIn);
         }
 
         /// <summary>
@@ -78,7 +92,7 @@ namespace Zero.Redis
         /// <param name="expiresIn"></param>
         public bool SetProtobuf<T>(string key, T value, TimeSpan expiresIn)
         {
-            return this.client.StringSet(key, value.ToProtoBuf(), expiresIn);
+            return this.Client.StringSet(key, value.ToProtoBuf(), expiresIn);
         }
 
         /// <summary>
@@ -89,7 +103,7 @@ namespace Zero.Redis
         /// <param name="expiresIn"></param>
         public bool Set(string key, string value, TimeSpan expiresIn)
         {
-            return this.client.StringSet(key, value, expiresIn);
+            return this.Client.StringSet(key, value, expiresIn);
         }
 
         /// <summary>
@@ -100,7 +114,7 @@ namespace Zero.Redis
         /// <returns></returns>
         public T Get<T>(string key) where T : class
         {
-            var value = this.client.StringGet(key);
+            var value = this.Client.StringGet(key);
             return value.IsNullOrEmpty ? default(T) : JsonExtensions.DeserializeJson<T>(value);
         }
 
@@ -112,7 +126,7 @@ namespace Zero.Redis
         /// <returns></returns>
         public T GetProtobuf<T>(string key) where T : class
         {
-            var value = this.client.StringGet(key);
+            var value = this.Client.StringGet(key);
             return value.IsNullOrEmpty ? default(T) : ProtoBufExtensions.DeserializeProtoBuf<T>(value);
         }
 
@@ -123,7 +137,7 @@ namespace Zero.Redis
         /// <returns></returns>
         public string Get(string key)
         {
-            return this.client.StringGet(key);
+            return this.Client.StringGet(key);
         }
 
         /// <summary>
@@ -139,7 +153,7 @@ namespace Zero.Redis
             {
                 redisKeys[i] = keys[i];
             }
-            var values = this.client.StringGet(redisKeys);
+            var values = this.Client.StringGet(redisKeys);
             var dic = new Dictionary<string, T>();
             for (var i = 0; i < values.Length; i++)
             {
@@ -162,7 +176,7 @@ namespace Zero.Redis
             {
                 redisKeys[i] = keys[i];
             }
-            var values = this.client.StringGet(redisKeys);
+            var values = this.Client.StringGet(redisKeys);
             var dic = new Dictionary<string, T>();
             for (var i = 0; i < values.Length; i++)
             {
@@ -184,7 +198,7 @@ namespace Zero.Redis
             {
                 redisKeys[i] = keys[i];
             }
-            var values = this.client.StringGet(redisKeys);
+            var values = this.Client.StringGet(redisKeys);
             var dic = new Dictionary<string, string>();
             for (var i = 0; i < values.Length; i++)
             {
@@ -204,7 +218,7 @@ namespace Zero.Redis
             {
                 dic[i.Key] = i.Value;
             }
-            return this.client.StringSet(dic.ToArray());
+            return this.Client.StringSet(dic.ToArray());
         }
 
         /// <summary>
@@ -219,7 +233,7 @@ namespace Zero.Redis
             {
                 dic[i.Key] = i.Value.ToJson();
             }
-            return this.client.StringSet(dic.ToArray());
+            return this.Client.StringSet(dic.ToArray());
         }
 
         /// <summary>
@@ -234,7 +248,7 @@ namespace Zero.Redis
             {
                 dic[i.Key] = i.Value.ToProtoBuf();
             }
-            return this.client.StringSet(dic.ToArray());
+            return this.Client.StringSet(dic.ToArray());
         }
 
         /// <summary>
@@ -243,18 +257,38 @@ namespace Zero.Redis
         /// <param name="action"></param>
         public void Using(Action<IDatabase> action)
         {
-            action(this.client);
+            action(this.Client);
         }
 
         /// <summary>
         /// 调用客户端
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="action"></param>
+        /// <param name="func"></param>
         /// <returns></returns>
-        public T Using<T>(Func<IDatabase, T> action)
+        public T Using<T>(Func<IDatabase, T> func)
         {
-            return action(this.client);
+            return func(this.Client);
+        }
+
+        /// <summary>
+        /// 调用连接渠道
+        /// </summary>
+        /// <param name="action"></param>
+        public void UsingChannel(Action<ConnectionMultiplexer> action)
+        {
+            action(this.channel);
+        }
+
+        /// <summary>
+        /// 调用连接渠道
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="func"></param>
+        /// <returns></returns>
+        public T UsingChannel<T>(Func<ConnectionMultiplexer, T> func)
+        {
+            return func(this.channel);
         }
 
         ///// <summary>
@@ -314,7 +348,7 @@ namespace Zero.Redis
                 redisKeys[i] = keys[i];
             }
 
-            this.client.KeyDelete(redisKeys);
+            this.Client.KeyDelete(redisKeys);
         }
 
         /// <summary>
@@ -453,9 +487,9 @@ namespace Zero.Redis
                 if (disposing)
                 {
                     // TODO: 释放托管状态(托管对象)。
-                    if (this.connect != null)
+                    if (this.channel != null)
                     {
-                        this.connect.Close();
+                        this.channel.Close();
                     }
                 }
 
