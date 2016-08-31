@@ -33,7 +33,8 @@ namespace Zero.Redis
                         ConnectRetry = section.ConnectRetry,
                         AbortOnConnectFail = false,
                         ConnectTimeout = section.ConnectTimeout,
-                        DefaultDatabase = section.DBRegion
+                        DefaultDatabase = section.DBRegion,
+                        ResponseTimeout = section.ResponseTimeout
                     };
                     for (var i = 0; i < section.RedisHosts.Count; i++)
                     {

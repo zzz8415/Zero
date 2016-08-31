@@ -25,15 +25,15 @@ namespace Zero.Redis.Tests
                 //        x.Set(key, value);
                 //        v = x.Get(key);
                 //    });
-                var client = new RedisClient();
-                client.Using(x =>
-                {
-                    x.HashSet("Zero", key, value);
-                    x.HashGet("Zero", key);
-                    x.HashGetAll("Zero");
+                //var client = new RedisClient();
+                //client.Using(x =>
+                //{
+                //    x.HashSet("Zero", key, value);
+                //    x.HashGet("Zero", key);
+                //    x.HashGetAll("Zero");
                     
-                    v = x.StringGet(key);
-                });
+                //    v = x.StringGet(key);
+                //});
             }
             catch (Exception)
             {

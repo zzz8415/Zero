@@ -12,29 +12,42 @@ namespace Zero.Redis
     /// </summary>
     public class RedisClient : IDisposable
     {
-        private IDatabase client = null;
+        private static RedisClient instance = null;
+
+        /// <summary>
+        /// 获取实例
+        /// </summary>
+        public static RedisClient Intance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new RedisClient();
+                }
+                return instance;
+            }
+        }
+
 
         /// <summary>
         /// Redis客户端
         /// </summary>
-        protected IDatabase Client {
+        protected IDatabase Client
+        {
             get
             {
-                if (client == null)
-                {
-                    client = channel.GetDatabase();
-                }
-                return client;
+                return channel.GetDatabase();
             }
         }
-    
+
 
         private ConnectionMultiplexer channel = null;
 
         /// <summary>
         /// 实例化Redis链接
         /// </summary>
-        public RedisClient()
+        private RedisClient()
         {
             this.channel = RedisManager.GetConnect();
         }

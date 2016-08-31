@@ -70,6 +70,15 @@ namespace Zero.Redis
             get { return this["dbRegion"].ToInt32(0); }
             set { this["dbRegion"] = value; }
         }
+
+        /// <summary>
+        /// 响应超时毫秒数
+        /// </summary>
+        [ConfigurationProperty("responseTimeout", DefaultValue = 3000)]
+        public int ResponseTimeout {
+            get { return this["responseTimeout"].ToInt32(3000); }
+            set { this["responseTimeout"] = value; }
+        }
     }
 
 }
