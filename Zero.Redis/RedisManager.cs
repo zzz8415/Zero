@@ -15,6 +15,8 @@ namespace Zero.Redis
     {
         private static ConfigurationOptions options = null;
 
+        private static object _locker = new object();
+
         /// <summary>
         /// redis配置
         /// </summary>
@@ -24,23 +26,30 @@ namespace Zero.Redis
             {
                 if (options == null)
                 {
-                    var section = ConfigurationManager.GetSection("Redis") as RedisSection;
+                    lock (_locker)
+                    {
+                        if (options == null)
+                        {
+                            var section = ConfigurationManager.GetSection("Redis") as RedisSection;
 
-                    options = new ConfigurationOptions
-                    {
-                        Password = section.Password,
-                        KeepAlive = section.KeepAlive,
-                        ConnectRetry = section.ConnectRetry,
-                        AbortOnConnectFail = false,
-                        ConnectTimeout = section.ConnectTimeout,
-                        DefaultDatabase = section.DBRegion,
-                        ResponseTimeout = section.ResponseTimeout
-                    };
-                    for (var i = 0; i < section.RedisHosts.Count; i++)
-                    {
-                        var host = section.RedisHosts[i];
-                        options.EndPoints.Add(host.Host, host.Port);
+                            options = new ConfigurationOptions
+                            {
+                                Password = section.Password,
+                                KeepAlive = section.KeepAlive,
+                                ConnectRetry = section.ConnectRetry,
+                                AbortOnConnectFail = false,
+                                ConnectTimeout = section.ConnectTimeout,
+                                DefaultDatabase = section.DBRegion,
+                                ResponseTimeout = section.ResponseTimeout
+                            };
+                            for (var i = 0; i < section.RedisHosts.Count; i++)
+                            {
+                                var host = section.RedisHosts[i];
+                                options.EndPoints.Add(host.Host, host.Port);
+                            }
+                        }
                     }
+                   
                 }
                 return options;
             }

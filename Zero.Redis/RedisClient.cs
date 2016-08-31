@@ -14,6 +14,8 @@ namespace Zero.Redis
     {
         private static RedisClient instance = null;
 
+        private static object _locker = new object();
+
         /// <summary>
         /// 获取实例
         /// </summary>
@@ -23,7 +25,13 @@ namespace Zero.Redis
             {
                 if (instance == null)
                 {
-                    instance = new RedisClient();
+                    lock (_locker)
+                    {
+                        if (instance == null)
+                        {
+                            instance = new RedisClient();
+                        }
+                    }
                 }
                 return instance;
             }
