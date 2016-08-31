@@ -370,7 +370,7 @@ namespace Zero.Redis
         /// <param name="prefixKey"></param>
         /// <param name="arg0"></param>
         /// <returns></returns>
-        public string RenderRedisKey(string prefixKey, string arg0)
+        public static string RenderRedisKey(string prefixKey, string arg0)
         {
             return string.Format("{0}.{1}", prefixKey, arg0);
         }
@@ -382,7 +382,7 @@ namespace Zero.Redis
         /// <param name="arg0"></param>
         /// <param name="arg1"></param>
         /// <returns></returns>
-        public string RenderRedisKey(string prefixKey, string arg0, string arg1)
+        public static string RenderRedisKey(string prefixKey, string arg0, string arg1)
         {
             return string.Format("{0}.{1}.{2}", prefixKey, arg0, arg1);
         }
@@ -395,7 +395,7 @@ namespace Zero.Redis
         /// <param name="arg1"></param>
         /// <param name="arg2"></param>
         /// <returns></returns>
-        public string RenderRedisKey(string prefixKey, string arg0, string arg1, string arg2)
+        public static string RenderRedisKey(string prefixKey, string arg0, string arg1, string arg2)
         {
             return string.Format("{0}.{1}.{2}.{3}", prefixKey, arg0, arg1, arg2);
         }
@@ -406,7 +406,7 @@ namespace Zero.Redis
         /// <param name="prefixKey"></param>
         /// <param name="args"></param>
         /// <returns></returns>
-        public string RenderRedisKey(string prefixKey, params string[] args)
+        public static string RenderRedisKey(string prefixKey, params string[] args)
         {
             var sb = new StringBuilder(prefixKey);
             for (var i = 0; i < args.Length; i++)
@@ -416,75 +416,75 @@ namespace Zero.Redis
             return sb.ToString();
         }
 
-        /// <summary>
-        /// 还原Key中包含的参数
-        /// </summary>
-        /// <param name="key"></param>
-        /// <param name="prefixKey"></param>
-        /// <returns></returns>
-        public string RestoreParams(string key, string prefixKey)
-        {
-            if (key.Length <= prefixKey.Length)
-            {
-                return string.Empty;
-            }
-            return key.Substring(prefixKey.Length + 1);
-        }
+        ///// <summary>
+        ///// 还原Key中包含的参数
+        ///// </summary>
+        ///// <param name="key"></param>
+        ///// <param name="prefixKey"></param>
+        ///// <returns></returns>
+        //public static string RestoreParams(string key, string prefixKey)
+        //{
+        //    if (key.Length <= prefixKey.Length)
+        //    {
+        //        return string.Empty;
+        //    }
+        //    return key.Substring(prefixKey.Length + 1);
+        //}
 
-        /// <summary>
-        /// 还原Key中包含的参数
-        /// </summary>
-        /// <param name="key"></param>
-        /// <param name="prefixKey"></param>
-        /// <param name="arg0"></param>
-        /// <returns></returns>
-        public string RestoreParams(string key, string prefixKey, string arg0)
-        {
-            var pKey = RenderRedisKey(prefixKey, arg0);
-            return RestoreParams(key, pKey);
-        }
+        ///// <summary>
+        ///// 还原Key中包含的参数
+        ///// </summary>
+        ///// <param name="key"></param>
+        ///// <param name="prefixKey"></param>
+        ///// <param name="arg0"></param>
+        ///// <returns></returns>
+        //public static string RestoreParams(string key, string prefixKey, string arg0)
+        //{
+        //    var pKey = RenderRedisKey(prefixKey, arg0);
+        //    return RestoreParams(key, pKey);
+        //}
 
-        /// <summary>
-        /// 还原Key中包含的参数
-        /// </summary>
-        /// <param name="key"></param>
-        /// <param name="prefixKey"></param>
-        /// <param name="arg0"></param>
-        /// <param name="arg1"></param>
-        /// <returns></returns>
-        public string RestoreParams(string key, string prefixKey, string arg0, string arg1)
-        {
-            var pKey = RenderRedisKey(prefixKey, arg0, arg1);
-            return RestoreParams(key, pKey);
-        }
+        ///// <summary>
+        ///// 还原Key中包含的参数
+        ///// </summary>
+        ///// <param name="key"></param>
+        ///// <param name="prefixKey"></param>
+        ///// <param name="arg0"></param>
+        ///// <param name="arg1"></param>
+        ///// <returns></returns>
+        //public static string RestoreParams(string key, string prefixKey, string arg0, string arg1)
+        //{
+        //    var pKey = RenderRedisKey(prefixKey, arg0, arg1);
+        //    return RestoreParams(key, pKey);
+        //}
 
-        /// <summary>
-        /// 还原Key中包含的参数
-        /// </summary>
-        /// <param name="key"></param>
-        /// <param name="prefixKey"></param>
-        /// <param name="arg0"></param>
-        /// <param name="arg1"></param>
-        /// <param name="arg2"></param>
-        /// <returns></returns>
-        public string RestoreParams(string key, string prefixKey, string arg0, string arg1, string arg2)
-        {
-            var pKey = RenderRedisKey(prefixKey, arg0, arg1, arg2);
-            return RestoreParams(key, pKey);
-        }
+        ///// <summary>
+        ///// 还原Key中包含的参数
+        ///// </summary>
+        ///// <param name="key"></param>
+        ///// <param name="prefixKey"></param>
+        ///// <param name="arg0"></param>
+        ///// <param name="arg1"></param>
+        ///// <param name="arg2"></param>
+        ///// <returns></returns>
+        //public static string RestoreParams(string key, string prefixKey, string arg0, string arg1, string arg2)
+        //{
+        //    var pKey = RenderRedisKey(prefixKey, arg0, arg1, arg2);
+        //    return RestoreParams(key, pKey);
+        //}
 
-        /// <summary>
-        /// 还原Key中包含的参数
-        /// </summary>
-        /// <param name="key"></param>
-        /// <param name="prefixKey"></param>
-        /// <param name="args"></param>
-        /// <returns></returns>
-        public string RestoreParams(string key, string prefixKey, params string[] args)
-        {
-            var pKey = RenderRedisKey(prefixKey, args);
-            return RestoreParams(key, pKey);
-        }
+        ///// <summary>
+        ///// 还原Key中包含的参数
+        ///// </summary>
+        ///// <param name="key"></param>
+        ///// <param name="prefixKey"></param>
+        ///// <param name="args"></param>
+        ///// <returns></returns>
+        //public static string RestoreParams(string key, string prefixKey, params string[] args)
+        //{
+        //    var pKey = RenderRedisKey(prefixKey, args);
+        //    return RestoreParams(key, pKey);
+        //}
 
         #region IDisposable Support
         private bool disposedValue = false; // 要检测冗余调用
