@@ -55,7 +55,7 @@ namespace Zero.Core.Wcf
                     {
                         if (instance == null)
                         {
-                            instance = new DuplexRouter<T>(typeof(T).Name.TrimStart('I'));
+                            instance = new DuplexRouter<T>(typeof(T).Name.Substring(1));
                         }
                     }
                 }

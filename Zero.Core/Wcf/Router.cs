@@ -63,7 +63,7 @@ namespace Zero.Core.Wcf
                     {
                         if (instance == null)
                         {
-                            instance = new Router<T>(typeof(T).Name.TrimStart('I'));
+                            instance = new Router<T>(typeof(T).Name.Substring(1));
                         }
                     }
                 }
