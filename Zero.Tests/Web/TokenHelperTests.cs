@@ -18,14 +18,17 @@ namespace Zero.Core.Web.Tests
 
             public long Ticks { get; set; }
 
+            public string A { get; set; }
+
         }
         [TestMethod()]
         public void SerializeTest()
         {
             var test = new Test {
-                ID = "123",
+                ID = "",
                 IP = "2343",
-                Ticks = 3333333333333333333
+                Ticks = 3333333333333333333,
+                A = ""
             };
 
             var token = TokenHelper.Serialize(test);

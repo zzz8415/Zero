@@ -25,17 +25,24 @@ namespace Zero.Core.Web
 
             StringBuilder sb = new StringBuilder();
 
-            foreach (var p in type.GetProperties())
+            var properties = type.GetProperties();
+
+            for (var i = 0; i < properties.Length;)
             {
-                sb.Append(model.GetType().GetProperty(p.Name).GetValue(model, null).ToString() + "&");
+                var p = properties[i];
+                sb.Append(model.GetType().GetProperty(p.Name).GetValue(model, null).ToString());
+                if (++i < properties.Length)
+                {
+                    sb.Append("&");
+                }
             }
             if (encryKey.IsNullOrEmpty())
             {
-                return CryptoHelper.DES_Encrypt(sb.ToString().TrimEnd('&'));
+                return CryptoHelper.DES_Encrypt(sb.ToString());
             }
             else
             {
-                return CryptoHelper.DES_Encrypt(sb.ToString().TrimEnd('&'), encryKey);
+                return CryptoHelper.DES_Encrypt(sb.ToString(), encryKey);
             }
         }
 
@@ -50,9 +57,9 @@ namespace Zero.Core.Web
         {
             if (token.IsNullOrEmpty())
                 return default(T);
-            
-            var sessionText = encryKey.IsNullOrEmpty() ? 
-                CryptoHelper.DES_Decrypt(token) : 
+
+            var sessionText = encryKey.IsNullOrEmpty() ?
+                CryptoHelper.DES_Decrypt(token) :
                 CryptoHelper.DES_Decrypt(token, encryKey);
 
             var tokens = sessionText.Split('&');
@@ -66,7 +73,7 @@ namespace Zero.Core.Web
 
             var model = new T();
 
-            for(var i = 0; i < ps.Length; i++)
+            for (var i = 0; i < ps.Length; i++)
             {
                 var t = ps[i].PropertyType;
                 var value = tokens[i];
