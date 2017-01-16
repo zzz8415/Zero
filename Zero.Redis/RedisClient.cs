@@ -359,6 +359,15 @@ namespace Zero.Redis
         /// <summary>
         /// 移除Redis key
         /// </summary>
+        /// <param name="key"></param>
+        public void Remove(string key)
+        {
+            this.Client.KeyDelete(key);
+        }
+
+        /// <summary>
+        /// 移除Redis key
+        /// </summary>
         /// <param name="keys"></param>
         /// <returns></returns>
         public void Remove(List<string> keys)
