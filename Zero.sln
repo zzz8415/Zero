@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.6
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zero.Tests", "Zero.Tests\Zero.Tests.csproj", "{EFE18681-82C8-4C37-9866-7D50AFA77C74}"
 EndProject
@@ -91,12 +91,12 @@ Global
 		{48DD48C9-A246-4D34-8429-C4423B294F63}.Release|x64.Build.0 = Release|Any CPU
 		{48DD48C9-A246-4D34-8429-C4423B294F63}.Release|x86.ActiveCfg = Release|Any CPU
 		{48DD48C9-A246-4D34-8429-C4423B294F63}.Release|x86.Build.0 = Release|Any CPU
-		{FF853748-2DE4-4F0B-87C2-5C5EBD3C8D33}.Debug|Any CPU.ActiveCfg = Release|x86
-		{FF853748-2DE4-4F0B-87C2-5C5EBD3C8D33}.Debug|x64.ActiveCfg = Release|x86
-		{FF853748-2DE4-4F0B-87C2-5C5EBD3C8D33}.Debug|x86.ActiveCfg = Release|x86
-		{FF853748-2DE4-4F0B-87C2-5C5EBD3C8D33}.Release|Any CPU.ActiveCfg = Release|x86
-		{FF853748-2DE4-4F0B-87C2-5C5EBD3C8D33}.Release|x64.ActiveCfg = Release|x86
-		{FF853748-2DE4-4F0B-87C2-5C5EBD3C8D33}.Release|x86.ActiveCfg = Release|x86
+		{FF853748-2DE4-4F0B-87C2-5C5EBD3C8D33}.Debug|Any CPU.ActiveCfg = Release
+		{FF853748-2DE4-4F0B-87C2-5C5EBD3C8D33}.Debug|x64.ActiveCfg = Release
+		{FF853748-2DE4-4F0B-87C2-5C5EBD3C8D33}.Debug|x86.ActiveCfg = Release
+		{FF853748-2DE4-4F0B-87C2-5C5EBD3C8D33}.Release|Any CPU.ActiveCfg = Release
+		{FF853748-2DE4-4F0B-87C2-5C5EBD3C8D33}.Release|x64.ActiveCfg = Release
+		{FF853748-2DE4-4F0B-87C2-5C5EBD3C8D33}.Release|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
