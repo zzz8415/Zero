@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.ServiceModel;
-using System.Text;
 
 namespace Zero.Core.Wcf
 {
@@ -20,7 +19,7 @@ namespace Zero.Core.Wcf
         private void SetServers(HostSection section)
         {
             servers = new Dictionary<int, NodeClient<T>>();
-            for (var i = 0; i < section.Hosts.Count; i++)
+            for (int i = 0; i < section.Hosts.Count; i++)
             {
                 if (section.Binding != null)
                 {
@@ -33,7 +32,7 @@ namespace Zero.Core.Wcf
             }
         }
 
-        private string serviceName = string.Empty;
+        private readonly string serviceName = string.Empty;
 
         /// <summary>
         /// Wcf路由器
@@ -42,11 +41,11 @@ namespace Zero.Core.Wcf
         private Router(string serviceName)
         {
             this.serviceName = serviceName;
-            var section = ConfigurationManager.GetSection(serviceName) as HostSection;
+            HostSection section = ConfigurationManager.GetSection(serviceName) as HostSection;
             SetServers(section);
         }
 
-        private static object _locker = new object();
+        private static readonly object _locker = new object();
 
         private static Router<T> instance = null;
 
@@ -77,7 +76,7 @@ namespace Zero.Core.Wcf
         /// <returns></returns>
         public T CreateChannel()
         {
-            var server = servers[random.Next(servers.Count)];
+            NodeClient<T> server = servers[random.Next(servers.Count)];
             return server.ChannelFactory.CreateChannel();
         }
 
@@ -87,7 +86,18 @@ namespace Zero.Core.Wcf
         /// <returns></returns>
         public T CreateChannel(string host)
         {
-            var server = servers.Values.FirstOrDefault(x => x.Endpoint.Address.Uri.Authority.IndexOf(host, StringComparison.Ordinal) >= 0);
+            NodeClient<T> server = servers.Values.FirstOrDefault(x => x.Endpoint.Address.Uri.Authority.IndexOf(host, StringComparison.Ordinal) >= 0);
+            return server.ChannelFactory.CreateChannel();
+        }
+
+        /// <summary>
+        /// 根据传入的索引创建渠道
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        public T CreateChannel(int index)
+        {
+            NodeClient<T> server = servers[index];
             return server.ChannelFactory.CreateChannel();
         }
     }
