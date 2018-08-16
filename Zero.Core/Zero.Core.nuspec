@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Zero.Core</id>
-    <version>1.0.0.71</version>
+    <version>1.0.0.76</version>
     <title>Zero.Core</title>
     <authors>Zero</authors>
     <owners>Zero</owners>
@@ -15,10 +15,10 @@
     <tags></tags>
     <dependencies>
       <group>
-        <dependency id="NLog"/>
-        <dependency id="Newtonsoft.Json"/>
-        <dependency id="ICSharpCode.SharpZipLib.dll"/>
-        <dependency id="protobuf-net"/>
+        <dependency id="NLog" version="0.85.4.369"/>
+        <dependency id="Newtonsoft.Json" version="11.0.2" />
+        <dependency id="ICSharpCode.SharpZipLib.dll" version="4.5.8"/>
+        <dependency id="protobuf-net" version="2.3.17"/>
       </group>
     </dependencies>
     <frameworkAssemblies>
