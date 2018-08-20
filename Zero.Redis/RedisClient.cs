@@ -19,7 +19,7 @@ namespace Zero.Redis
         /// <summary>
         /// 获取实例
         /// </summary>
-        public static RedisClient Intance
+        public static RedisClient Instance
         {
             get
             {
