@@ -17,10 +17,10 @@ namespace Zero.Core.Wcf
         /// <summary>
         /// Host集合
         /// </summary>
-        [ConfigurationProperty("host")]
+        [ConfigurationProperty("hosts")]
         public HostCollection Hosts
         {
-            get { return (HostCollection)this["host"]; }
+            get { return (HostCollection)this["hosts"]; }
         }
 
         /// <summary>

@@ -56,7 +56,7 @@ namespace Zero.Core.Wcf
         /// <returns></returns>
         protected override object GetElementKey(ConfigurationElement element)
         {
-            return (element as RouteHost).Address;
+            return (element as RouteHost).Index;
         }
 
     }

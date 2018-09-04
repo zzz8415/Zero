@@ -19,15 +19,15 @@ namespace Zero.Core.Wcf
         private void SetServers(HostSection section)
         {
             servers = new Dictionary<int, NodeClient<T>>();
-            for (int i = 0; i < section.Hosts.Count; i++)
+            foreach (RouteHost host in section.Hosts)
             {
                 if (section.Binding != null)
                 {
-                    servers[i] = new NodeClient<T>(section.Binding, new EndpointAddress(section.Hosts[i].Address));
+                    servers[host.Index] = new NodeClient<T>(section.Binding, new EndpointAddress(host.Address));
                 }
                 else
                 {
-                    servers[i] = new NodeClient<T>(serviceName, new EndpointAddress(section.Hosts[i].Address));
+                    servers[host.Index] = new NodeClient<T>(serviceName, new EndpointAddress(host.Address));
                 }
             }
         }
@@ -76,7 +76,8 @@ namespace Zero.Core.Wcf
         /// <returns></returns>
         public T CreateChannel()
         {
-            NodeClient<T> server = servers[random.Next(servers.Count)];
+            var key = servers.Keys.ToList()[random.Next(servers.Count)];
+            NodeClient<T> server = servers[key];
             return server.ChannelFactory.CreateChannel();
         }
 
