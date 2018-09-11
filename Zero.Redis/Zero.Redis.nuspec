@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>Zero.Redis</id>
-    <version>1.0.0.32</version>
+    <version>1.0.0.34</version>
     <title>Zero.Redis</title>
     <authors>Zero</authors>
     <owners>Zero</owners>
@@ -15,8 +15,8 @@
     <tags></tags>
     <dependencies>
       <group>
-        <dependency id="StackExchange.Redis" version="1.2.6"/>
-        <dependency id="Zero.Core" version="1.0.0.77"/>
+        <dependency id="StackExchange.Redis" version="2.0.495"/>
+        <dependency id="Zero.Core" version="1.0.0.78"/>
       </group>
     </dependencies>
     <frameworkAssemblies>

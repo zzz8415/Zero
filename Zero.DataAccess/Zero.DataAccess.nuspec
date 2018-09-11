@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>Zero.DataAccess</id>
-    <version>1.0.0.17</version>
+    <version>1.0.0.18</version>
     <title>Zero.DataAccess</title>
     <authors>Zero</authors>
     <owners>Zero</owners>
@@ -15,7 +15,7 @@
     <tags></tags>
     <dependencies>
       <group>
-        <dependency id="Zero.Core"/>
+        <dependency id="Zero.Core" version="1.0.0.78"/>
       </group>
     </dependencies>
     <frameworkAssemblies>
