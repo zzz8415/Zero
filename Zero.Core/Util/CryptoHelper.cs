@@ -82,9 +82,9 @@ namespace Zero.Core.Util
         /// <param name="source">待加密字符串</param>
         /// <param name="encoding">编码方式</param>
         /// <returns></returns>
-        public static string MD5_Encrypt(string source, string encoding)
+        public static string MD5_Encrypt(string source, Encoding encoding)
         {
-            return MD5_Encrypt(source, string.Empty, Encoding.GetEncoding(encoding));
+            return MD5_Encrypt(source, string.Empty, encoding);
         }
         /// <summary>
         /// 标准MD5加密
