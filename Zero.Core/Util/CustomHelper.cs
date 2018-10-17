@@ -75,7 +75,7 @@ namespace Zero.Core.Util
         /// <returns></returns>
         public static string GetValue(string key, string defaultValue)
         {
-            return Collection == null ? defaultValue : Collection[key].Value ?? defaultValue;
+            return Collection == null ? defaultValue : Collection[key]?.Value ?? defaultValue;
         }
 
         /// <summary>

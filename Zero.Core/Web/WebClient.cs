@@ -61,7 +61,7 @@ namespace Zero.Core.Web
                 {
                     var bytes = new byte[Request.InputStream.Length];
                     Request.InputStream.Read(bytes, 0, bytes.Length);
-                    _postData = Encoding.Default.GetString(bytes);
+                    _postData = Encoding.UTF8.GetString(bytes);
                 }
                 return _postData;
             }
