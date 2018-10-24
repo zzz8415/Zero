@@ -2,6 +2,18 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <NeutralLanguage>zh</NeutralLanguage>
+    <AssemblyVersion>1.0.0.11</AssemblyVersion>
+    <FileVersion>1.0.0.11</FileVersion>
+    <Version>1.0.0.11</Version>
+    <Authors>Zero</Authors>
+    <Description>.NET Core核心类库</Description>
+    <PackageReleaseNotes>.NET Core核心类库</PackageReleaseNotes>
+    <Copyright>Copyright 2018</Copyright>
+    <PackageProjectUrl>https://github.com/zzz8415/Zero</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/zzz8415/Zero</RepositoryUrl>
+    <RepositoryType>GitHub</RepositoryType>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -30,7 +42,7 @@
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="IF NOT &quot;$(ConfigurationName)&quot;==&quot;Release&quot; EXIT /B 0 &#xD;&#xA;IF NOT EXIST $(SolutionDir)ReleasePackages MD $(SolutionDir)ReleasePackages&#xD;&#xA;$(SolutionDir)Libs\NuGet.exe Pack $(ProjectDir)$(ProjectName).nuspec -o $(SolutionDir)ReleasePackages\" />
+    <Exec Command="IF NOT &quot;$(ConfigurationName)&quot;==&quot;Release&quot; EXIT /B 0 &#xD;&#xA;IF NOT EXIST $(SolutionDir)ReleasePackages MD $(SolutionDir)ReleasePackages&#xD;&#xA;$(SolutionDir)Libs\NuGet.exe Pack $(ProjectDir)$(ProjectName).nuspec -OutputDirectory $(SolutionDir)ReleasePackages\" />
   </Target>
 
 </Project>

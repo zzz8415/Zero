@@ -127,7 +127,7 @@
   <PropertyGroup>
     <PostBuildEvent>IF NOT "$(ConfigurationName)"=="Release" EXIT /B 0 
 IF NOT EXIST $(SolutionDir)ReleasePackages MD $(SolutionDir)ReleasePackages
-$(SolutionDir)Libs\NuGet.exe Pack $(ProjectDir)$(ProjectName).nuspec -o $(SolutionDir)ReleasePackages\</PostBuildEvent>
+$(SolutionDir)Libs\NuGet.exe Pack $(ProjectDir)$(ProjectName).nuspec -OutputDirectory $(SolutionDir)ReleasePackages\</PostBuildEvent>
   </PropertyGroup>
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

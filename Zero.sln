@@ -14,7 +14,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{5151C292-D421-4C77-A438-1E6AE9BF3B0F}"
 	ProjectSection(SolutionItems) = preProject
 		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\NuGet.exe = .nuget\NuGet.exe
+		F:\nuget.exe = F:\nuget.exe
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
@@ -35,7 +35,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libs", "Libs", "{3498D094-0
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zero.Sample", "Zero.Sample\Zero.Sample.csproj", "{C06FF022-EA6A-4933-86D5-81DBDF0CAD04}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zero.NETCore", "Zero.NETCore\Zero.NETCore.csproj", "{DE559D20-C468-4760-85E5-1AC8E6EEDCF0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Zero.NETCore", "Zero.NETCore\Zero.NETCore.csproj", "{DE559D20-C468-4760-85E5-1AC8E6EEDCF0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

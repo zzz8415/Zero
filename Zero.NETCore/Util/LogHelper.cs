@@ -28,6 +28,10 @@ namespace Zero.NETCore.Util
             }
         }
 
+        /// <summary>
+        /// 设置请求参数
+        /// </summary>
+        /// <param name="request"></param>
         public static void SetRequest(HttpRequest request) {
             _request = request;
         }
@@ -51,7 +55,6 @@ namespace Zero.NETCore.Util
             LogExceptionEnable = logger.IsErrorEnabled;
             LogComplementEnable = logger.IsTraceEnabled;
             LogDubugEnable = logger.IsDebugEnabled;
-
         }
         /// <summary>
         /// 写入普通日志消息

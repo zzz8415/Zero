@@ -18,16 +18,6 @@ namespace Zero.NETCore.Web
         public HttpRequest Request { get; set; }
 
         /// <summary>
-        /// 缓存
-        /// </summary>
-        public IMemoryCache MemoryCache { get; set; }
-
-        /// <summary>
-        /// 配置文件
-        /// </summary>
-        public IConfiguration Configuration { get; set; }
-
-        /// <summary>
         /// 初始化
         /// </summary>
         /// <param name="request"></param>
@@ -70,87 +60,6 @@ namespace Zero.NETCore.Web
                 return _postData;
             }
         }
-        #endregion
-
-        #region 缓存相关
-        /// <summary>
-        /// 生成Key
-        /// </summary>
-        /// <param name="prefixKey"></param>
-        /// <param name="args"></param>
-        /// <returns></returns>
-        public string RenderCacheKey(string prefixKey, params string[] args)
-        {
-            return $"{prefixKey}.{string.Join(".", args)}";
-        }
-
-        /// <summary>
-        /// 获取缓存
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="key"></param>
-        /// <returns></returns>
-        public T GetCache<T>(string key)
-        {
-            return MemoryCache.Get<T>(key);
-        }
-
-        /// <summary>
-        /// 设置缓存,默认15分钟
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="key"></param>
-        /// <param name="cache"></param>
-        public void SetCache<T>(string key, T cache, int minutes = 15)
-        {
-            MemoryCacheEntryOptions cacheEntryOptions = new MemoryCacheEntryOptions()
-            // Keep in cache for this time, reset time if accessed.
-            .SetSlidingExpiration(TimeSpan.FromMinutes(minutes));
-
-            MemoryCache.Set(key, cache, cacheEntryOptions);
-        }
-
-        /// <summary>
-        /// 获取缓存,如果不存在则创建新缓存
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="key"></param>
-        /// <param name="func"></param>
-        /// <param name="minutes"></param>
-        /// <returns></returns>
-        public T GetCache<T>(string key, Func<T> func, int minutes = 15)
-        {
-            return MemoryCache.GetOrCreate<T>(key, entry =>
-            {
-                entry.SlidingExpiration = TimeSpan.FromMinutes(minutes);
-                return func();
-            });
-        }
-        #endregion
-
-        #region 配置相关
-        /// <summary>
-        /// 获取配置
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="key"></param>
-        /// <param name="defaultValue"></param>
-        /// <returns></returns>
-        public T GetConfig<T>(string key, T defaultValue = default(T))
-        {
-            return Configuration.GetValue<T>(key, defaultValue);
-        }
-
-        /// <summary>
-        /// 设置配置
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="key"></param>
-        /// <param name="value"></param>
-        public void SetConfig<T>(string key, T value)
-        {
-            Configuration.Bind(key, value);
-        } 
         #endregion
 
     }
