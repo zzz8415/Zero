@@ -3,24 +3,24 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Zero.NETCore.Util
+namespace Zero.NETCore.Web
 {
     /// <summary>
     /// 缓存帮助类
     /// </summary>
-    public class CacheHelper
+    public class WebCache
     {
 
         /// <summary>
         /// 缓存
         /// </summary>
-        public static IMemoryCache MemoryCache { get; set; }
+        public IMemoryCache MemoryCache { get; set; }
 
         /// <summary>
-        /// 缓存
+        /// 缓存初始化
         /// </summary>
         /// <param name="memoryCache"></param>
-        public static void Init(IMemoryCache memoryCache)
+        public WebCache(IMemoryCache memoryCache)
         {
             MemoryCache = memoryCache;
         }
@@ -32,7 +32,7 @@ namespace Zero.NETCore.Util
         /// <param name="prefixKey"></param>
         /// <param name="args"></param>
         /// <returns></returns>
-        public static string RenderCacheKey(string prefixKey, params string[] args)
+        public string RenderCacheKey(string prefixKey, params string[] args)
         {
             return $"{prefixKey}.{string.Join(".", args)}";
         }

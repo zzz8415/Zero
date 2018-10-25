@@ -1,21 +1,25 @@
 ﻿using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Zero.NETCore.Util
+namespace Zero.NETCore.Web
 {
     /// <summary>
     /// 配置帮助类
     /// </summary>
-    public class ConfigHelper
+    public class WebConfig
     {
-
         /// <summary>
         /// 配置文件
         /// </summary>
         public IConfiguration Configuration { get; set; }
 
+        /// <summary>
+        /// 配置初始化
+        /// </summary>
+        /// <param name="configuration"></param>
+        public WebConfig(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
 
         #region 配置相关
         /// <summary>

@@ -1,8 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Primitives;
-using System;
 using System.Text;
 
 namespace Zero.NETCore.Web
@@ -15,15 +12,20 @@ namespace Zero.NETCore.Web
         /// <summary>
         /// http请求信息
         /// </summary>
-        public HttpRequest Request { get; set; }
+        public HttpRequest Request => HttpContextAccessor.HttpContext.Request;
+
+        /// <summary>
+        /// http上下文
+        /// </summary>
+        public IHttpContextAccessor HttpContextAccessor { get; set; }
 
         /// <summary>
         /// 初始化
         /// </summary>
         /// <param name="request"></param>
-        public WebClient(HttpRequest request)
+        public WebClient(IHttpContextAccessor httpContextAccessor)
         {
-            Request = request;
+            HttpContextAccessor = httpContextAccessor;
         }
 
         #region 请求相关
@@ -34,7 +36,7 @@ namespace Zero.NETCore.Web
         /// <returns></returns>
         public string GetParam(string paramName)
         {
-            if (Request.Query.TryGetValue(paramName, out StringValues value) || 
+            if (Request.Query.TryGetValue(paramName, out StringValues value) ||
                 (Request.HasFormContentType && Request.Form.TryGetValue(paramName, out value)))
             {
                 return value;
