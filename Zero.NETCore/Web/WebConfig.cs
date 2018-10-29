@@ -29,7 +29,7 @@ namespace Zero.NETCore.Web
         /// <param name="key"></param>
         /// <param name="defaultValue"></param>
         /// <returns></returns>
-        public T GetConfig<T>(string key, T defaultValue = default(T))
+        public T Get<T>(string key, T defaultValue = default(T))
         {
             return Configuration.GetValue<T>(key, defaultValue);
         }
@@ -40,7 +40,7 @@ namespace Zero.NETCore.Web
         /// <typeparam name="T"></typeparam>
         /// <param name="key"></param>
         /// <param name="value"></param>
-        public void SetConfig<T>(string key, T value)
+        public void Set<T>(string key, T value)
         {
             Configuration.Bind(key, value);
         }

@@ -32,7 +32,7 @@ namespace Zero.NETCore.Web
         /// <param name="prefixKey"></param>
         /// <param name="args"></param>
         /// <returns></returns>
-        public string RenderCacheKey(string prefixKey, params string[] args)
+        public string RenderKey(string prefixKey, params string[] args)
         {
             return $"{prefixKey}.{string.Join(".", args)}";
         }
@@ -43,7 +43,7 @@ namespace Zero.NETCore.Web
         /// <typeparam name="T"></typeparam>
         /// <param name="key"></param>
         /// <returns></returns>
-        public T GetCache<T>(string key)
+        public T Get<T>(string key)
         {
             return MemoryCache.Get<T>(key);
         }
@@ -54,7 +54,7 @@ namespace Zero.NETCore.Web
         /// <typeparam name="T"></typeparam>
         /// <param name="key"></param>
         /// <param name="cache"></param>
-        public void SetCache<T>(string key, T cache, int minutes = 15)
+        public void Set<T>(string key, T cache, int minutes = 15)
         {
             MemoryCacheEntryOptions cacheEntryOptions = new MemoryCacheEntryOptions()
             // Keep in cache for this time, reset time if accessed.
@@ -71,13 +71,21 @@ namespace Zero.NETCore.Web
         /// <param name="func"></param>
         /// <param name="minutes"></param>
         /// <returns></returns>
-        public T GetCache<T>(string key, Func<T> func, int minutes = 15)
+        public T Get<T>(string key, Func<T> func, int minutes = 15)
         {
             return MemoryCache.GetOrCreate<T>(key, entry =>
             {
                 entry.SlidingExpiration = TimeSpan.FromMinutes(minutes);
                 return func();
             });
+        }
+
+        /// <summary>
+        /// 移除缓存
+        /// </summary>
+        /// <param name="key"></param>
+        public void Remove(string key) {
+            MemoryCache.Remove(key);
         }
         #endregion
     }
