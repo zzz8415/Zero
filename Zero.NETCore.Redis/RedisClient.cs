@@ -30,21 +30,20 @@ namespace Zero.NETCore.Redis
         /// <summary>
         /// 实例化Redis链接
         /// </summary>
-        private RedisClient(WebConfig webConfig)
+        public RedisClient(WebConfig webConfig)
         {
-            var config = webConfig.Get<RedisConfig>("RedisConfig");
             var options = new ConfigurationOptions
             {
-                Password = config.Password,
-                KeepAlive = config.KeepAlive,
-                ConnectRetry = config.ConnectRetry,
+                Password = webConfig.Get<string>("RedisConfig:Password"),
+                KeepAlive = webConfig.Get<int>("RedisConfig:KeepAlive"),
+                ConnectRetry = webConfig.Get<int>("RedisConfig:ConnectRetry"),
                 AbortOnConnectFail = false,
-                ConnectTimeout = config.ConnectTimeout,
-                DefaultDatabase = config.DBRegion,
-                ResponseTimeout = config.ResponseTimeout,
+                ConnectTimeout = webConfig.Get<int>("RedisConfig:ConnectTimeout"),
+                DefaultDatabase = webConfig.Get<int>("RedisConfig:DBRegion"),
+                ResponseTimeout = webConfig.Get<int>("RedisConfig:ResponseTimeout"),
             };
 
-            options.EndPoints.Add(config.Host, config.Port);
+            options.EndPoints.Add(webConfig.Get<string>("RedisConfig:Host"), webConfig.Get<int>("RedisConfig:Port"));
 
             this.channel = ConnectionMultiplexer.Connect(options);
         }
