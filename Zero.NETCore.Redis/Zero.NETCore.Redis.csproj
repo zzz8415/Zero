@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    <PackageReference Include="StackExchange.Redis" Version="2.0.513" />
+    <PackageReference Include="Zero.NETCore" Version="1.0.0.21" />
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="IF NOT &quot;$(ConfigurationName)&quot;==&quot;Release&quot; EXIT /B 0 &#xD;&#xA;IF NOT EXIST $(SolutionDir)ReleasePackages MD $(SolutionDir)ReleasePackages&#xD;&#xA;$(SolutionDir)Libs\NuGet.exe Pack $(ProjectDir)$(ProjectName).nuspec -OutputDirectory $(SolutionDir)ReleasePackages\" />
+  </Target>
+
+</Project>
