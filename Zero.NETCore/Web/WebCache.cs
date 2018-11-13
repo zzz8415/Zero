@@ -1,7 +1,5 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Zero.NETCore.Web
 {
@@ -73,26 +71,38 @@ namespace Zero.NETCore.Web
         /// <returns></returns>
         public T Get<T>(string key, Func<T> func, int minutes = 15)
         {
-            return MemoryCache.GetOrCreate<T>(key, entry =>
+            T value = MemoryCache.Get<T>(key);
+            if (!IsDefaultValue(value))
             {
-                var r = func();
-                if (r.Equals(default(T)))
-                {
-                    entry.SlidingExpiration = TimeSpan.MinValue;
-                }
-                else
-                {
-                    entry.SlidingExpiration = TimeSpan.FromMinutes(minutes);
-                }
-                return func();
-            });
+                return value;
+            }
+
+            value = func();
+            if (!IsDefaultValue(value))
+            {
+                MemoryCache.Set(key, value);
+            }
+            
+            return value;
+        }
+
+        /// <summary>
+        /// 是否默认值
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        private bool IsDefaultValue<T>(T value)
+        {
+            return value == null || value.Equals(default(T));
         }
 
         /// <summary>
         /// 移除缓存
         /// </summary>
         /// <param name="key"></param>
-        public void Remove(string key) {
+        public void Remove(string key)
+        {
             MemoryCache.Remove(key);
         }
         #endregion
