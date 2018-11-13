@@ -75,7 +75,15 @@ namespace Zero.NETCore.Web
         {
             return MemoryCache.GetOrCreate<T>(key, entry =>
             {
-                entry.SlidingExpiration = TimeSpan.FromMinutes(minutes);
+                var r = func();
+                if (r.Equals(default(T)))
+                {
+                    entry.SlidingExpiration = TimeSpan.MinValue;
+                }
+                else
+                {
+                    entry.SlidingExpiration = TimeSpan.FromMinutes(minutes);
+                }
                 return func();
             });
         }

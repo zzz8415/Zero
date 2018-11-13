@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>Zero.NETCore</id>
-    <version>1.0.0.21</version>
+    <version>1.0.0.22</version>
     <title>Zero.NETCore</title>
     <authors>Zero</authors>
     <owners>Zero</owners>
@@ -18,7 +18,7 @@
         <dependency id="Microsoft.AspNetCore" version="2.1.4" />
         <dependency id="Microsoft.Extensions.Caching.Memory" version="2.1.2" />
         <dependency id="Newtonsoft.Json" version="11.0.2" />
-        <dependency id="NLog" version="4.5.10" />
+        <dependency id="NLog" version="4.5.11" />
       </group>
     </dependencies>
   </metadata>
