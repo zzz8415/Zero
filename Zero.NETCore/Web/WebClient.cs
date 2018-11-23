@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
+using System.IO;
 using System.Text;
 
 namespace Zero.NETCore.Web
@@ -53,11 +54,12 @@ namespace Zero.NETCore.Web
         {
             get
             {
-                if (_postData == null)
+                if (_postData == null && Request.Body != null && Request.Body.Length > 0)
                 {
-                    byte[] bytes = new byte[Request.Body.Length];
-                    Request.Body.Read(bytes, 0, bytes.Length);
-                    _postData = Encoding.UTF8.GetString(bytes);
+                    using(var reader = new StreamReader(Request.Body))
+                    {
+                        _postData = reader.ReadToEnd();
+                    }
                 }
                 return _postData;
             }
