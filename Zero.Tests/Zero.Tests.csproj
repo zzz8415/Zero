@@ -200,6 +200,7 @@
     <Compile Include="RedisClientTests.cs" />
     <Compile Include="SerializeHelperTest.cs" />
     <Compile Include="UnitTest1.cs" />
+    <Compile Include="Util\CryptoHelperTest.cs" />
     <Compile Include="Web\CacheHelperTests.cs" />
     <Compile Include="Web\TokenHelperTests.cs" />
   </ItemGroup>

@@ -79,13 +79,21 @@ namespace Zero.Tests
         [TestMethod()]
         public void DES_EncryptTest1()
         {
-            string source = string.Empty; // TODO: 初始化为适当的值
-            string key = string.Empty; // TODO: 初始化为适当的值
-            string expected = string.Empty; // TODO: 初始化为适当的值
-            string actual;
-            actual = CryptoHelper.DES_Encrypt(source, key);
-            Assert.AreEqual(expected, actual);
-            Assert.Inconclusive("验证此测试方法的正确性。");
+            try
+            {
+                string source = "a123456"; // TODO: 初始化为适当的值
+                string key = "!&*(HDBHEK#^!(!0"; // TODO: 初始化为适当的值
+                string expected = string.Empty; // TODO: 初始化为适当的值
+                string actual;
+                actual = CryptoHelper.DES_Encrypt(source, key);
+                Assert.AreEqual(expected, actual);
+                Assert.Inconclusive("验证此测试方法的正确性。");
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
         }
 
         /// <summary>
