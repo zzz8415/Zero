@@ -68,7 +68,8 @@ namespace Zero.NETCore.Extensions
         /// <returns></returns>
         public static DateTime ToUnixDateTime(this long timeStamp)
         {
-            return TimeZoneInfo.ConvertTime(new DateTime(1970, 1, 1), TimeZoneInfo.Local).AddSeconds(timeStamp);
+            var now = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddSeconds(timeStamp);
+            return TimeZoneInfo.ConvertTime(now, TimeZoneInfo.Local);
         }
 
         /// <summary>
@@ -78,7 +79,7 @@ namespace Zero.NETCore.Extensions
         /// <returns></returns>
         public static long ToUnixTimeStamp(this DateTime dateTime)
         {
-            return (long)dateTime.Subtract(TimeZoneInfo.ConvertTime(new DateTime(1970, 1, 1), TimeZoneInfo.Local)).TotalSeconds;
+            return (long)TimeZoneInfo.ConvertTime(dateTime, TimeZoneInfo.Utc).Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
         }
     }
 }

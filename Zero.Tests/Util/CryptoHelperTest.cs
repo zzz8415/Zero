@@ -15,7 +15,7 @@ namespace Zero.Core.Util.Tests
             try
             {
                 string source = "a123456"; // TODO: 初始化为适当的值
-                string key = "!!*(HDBHEK#^!(!0"; // TODO: 初始化为适当的值
+                string key = "!&*(HDBHEK#^!(!0"; // TODO: 初始化为适当的值
                 string expected = string.Empty; // TODO: 初始化为适当的值
                 string actual;
                 //actual = AES_Encrypt(source, key);
@@ -24,7 +24,7 @@ namespace Zero.Core.Util.Tests
 
                 actual = DES_Encrypt(source, key);
 
-                string s = DES_Decrypt(actual, key);
+                string s = DES_Decrypt(actual.ToLower(), key);
 
                 //Assert.AreEqual(expected, actual);
                 Assert.Inconclusive("验证此测试方法的正确性。");
