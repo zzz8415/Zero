@@ -54,7 +54,7 @@ namespace Zero.NETCore.Web
         {
             get
             {
-                if (_postData == null && Request.Body != null && Request.Body.Length > 0)
+                if (_postData == null && Request.Body != null)
                 {
                     using(var reader = new StreamReader(Request.Body))
                     {
