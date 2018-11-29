@@ -13,14 +13,14 @@ namespace Zero.NETCore
         private long _workID = 0;
         private readonly long _maxWorkID = 1L << 6;
 
-        public Snowflake(long workID = 0)
+        public Snowflake(long workID)
         {
              _workID = workID >= _maxFlowID ? 0 : workID;
         }
 
         public Snowflake(IConfiguration configuration)
         {
-            var workID = configuration.GetValue("Snowflake.WorkID", 0);
+            var workID = configuration.GetValue("Snowflake:WorkID", 0);
             _workID = workID >= _maxFlowID ? 0 : workID;
         }
 
@@ -28,20 +28,7 @@ namespace Zero.NETCore
         /// 生成新的ID
         /// </summary>
         /// <returns></returns>
-        public long NewID(long workID = long.MinValue)
-        {
-            if(workID != long.MinValue || workID >= _maxFlowID)
-            {
-                _workID = workID;
-            }
-       
-            lock (_lock)
-            {
-                return GetTicks() | GetWorkID() | GetFlowID();
-            }
-        }
-
-        public long NextID()
+        public long NewID()
         {
             lock (_lock)
             {
