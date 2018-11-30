@@ -8,10 +8,11 @@ namespace Zero.NETCore
     public class Snowflake
     {
         private long _lastFlowID = 0L;
-        private readonly long _maxFlowID = 1L << 5;
+        private readonly long _maxFlowID = 1L << 4;
         private readonly static object _lock = new object();
         private long _workID = 0;
         private readonly long _maxWorkID = 1L << 6;
+        private long _offsetTicks = 0;
 
         public Snowflake(long workID)
         {
@@ -22,6 +23,8 @@ namespace Zero.NETCore
         {
             var workID = configuration.GetValue("Snowflake:WorkID", 0);
             _workID = workID >= _maxFlowID ? 0 : workID;
+            var offsetDate = configuration.GetValue("Snowflake:OffsetDate", DateTime.MinValue);
+            _offsetTicks = offsetDate.Ticks;
         }
 
         /// <summary>
@@ -37,12 +40,13 @@ namespace Zero.NETCore
         }
 
         /// <summary>
-        /// 获取时间戳(53位)
+        /// 获取时间戳(55位)
         /// </summary>
         /// <returns></returns>
         private long GetTicks()
         {
-            return (DateTime.UtcNow.Ticks << 8) & long.MaxValue;
+         
+            return ((DateTime.UtcNow.Ticks - _offsetTicks) << 8) & long.MaxValue;
         }
 
         /// <summary>
