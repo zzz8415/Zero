@@ -1,29 +1,40 @@
 ﻿using Microsoft.Extensions.Configuration;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Zero.NETCore
 {
+    /// <summary>
+    /// 雪花算法
+    /// </summary>
     public class Snowflake
     {
+        private long _lastTicks = 0L;
         private long _lastFlowID = 0L;
+        private static readonly object _lock = new object();
+        private readonly long _workID = 0;
         private readonly long _maxFlowID = 1L << 4;
-        private readonly static object _lock = new object();
-        private long _workID = 0;
         private readonly long _maxWorkID = 1L << 6;
-        private long _offsetTicks = 0;
+        private readonly long _offsetTicks = 0;
 
+
+        /// <summary>
+        /// 初始化机器码,范围0-31,如果超过范围,则WorkID等于0
+        /// </summary>
+        /// <param name="workID"></param>
         public Snowflake(long workID)
         {
-             _workID = workID >= _maxFlowID ? 0 : workID;
+            _workID = workID >= _maxWorkID ? 0 : workID;
         }
 
+        /// <summary>
+        /// DI容器注册
+        /// </summary>
+        /// <param name="configuration"></param>
         public Snowflake(IConfiguration configuration)
         {
-            var workID = configuration.GetValue("Snowflake:WorkID", 0);
-            _workID = workID >= _maxFlowID ? 0 : workID;
-            var offsetDate = configuration.GetValue("Snowflake:OffsetDate", DateTime.MinValue);
+            int workID = configuration.GetValue("Snowflake:WorkID", 0);
+            _workID = workID >= _maxWorkID ? 0 : workID;
+            DateTime offsetDate = configuration.GetValue("Snowflake:OffsetDate", DateTime.MinValue);
             _offsetTicks = offsetDate.Ticks;
         }
 
@@ -35,7 +46,30 @@ namespace Zero.NETCore
         {
             lock (_lock)
             {
-                return GetTicks() | GetWorkID() | GetFlowID();
+                long ticks = GetTicks();
+                ResetFlowID(ticks);
+                long flowID = GetFlowID();
+                // 如果流水号溢出,重新获取时间戳
+                if (flowID >= _maxFlowID)
+                {
+                    ticks = GetNextTicks();
+                    ResetFlowID(ticks);
+                    flowID = GetFlowID();
+                }
+                return ticks | GetWorkID() | flowID;
+            }
+        }
+
+        /// <summary>
+        /// 重置流水号
+        /// </summary>
+        /// <param name="ticks"></param>
+        private void ResetFlowID(long ticks)
+        {
+            if (ticks > _lastTicks)
+            {
+                _lastTicks = ticks;
+                _lastFlowID = 0;
             }
         }
 
@@ -45,8 +79,22 @@ namespace Zero.NETCore
         /// <returns></returns>
         private long GetTicks()
         {
-         
             return ((DateTime.UtcNow.Ticks - _offsetTicks) << 8) & long.MaxValue;
+        }
+
+        /// <summary>
+        /// 流水号溢出获取下一个时间戳
+        /// </summary>
+        /// <returns></returns>
+        private long GetNextTicks()
+        {
+            long ticks = 0L;
+            do
+            {
+                ticks = GetTicks();
+            }
+            while (ticks == _lastTicks);
+            return ticks;
         }
 
         /// <summary>
@@ -64,12 +112,7 @@ namespace Zero.NETCore
         /// <returns></returns>
         private long GetFlowID()
         {
-            _lastFlowID++;
-            if (_lastFlowID >= _maxFlowID)
-            {
-                _lastFlowID = 0;
-            }
-            return _lastFlowID;
+            return _lastFlowID++;
         }
     }
 }
