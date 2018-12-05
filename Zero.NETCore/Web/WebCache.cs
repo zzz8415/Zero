@@ -52,7 +52,7 @@ namespace Zero.NETCore.Web
         /// <typeparam name="T"></typeparam>
         /// <param name="key"></param>
         /// <param name="cache"></param>
-        public void Set<T>(string key, T value, int minutes = 15, bool isPenetrate = true)
+        public T Set<T>(string key, T value, int minutes = 15, bool isPenetrate = true)
         {
             MemoryCacheEntryOptions cacheEntryOptions = new MemoryCacheEntryOptions()
             // Keep in cache for this time, reset time if accessed.
@@ -60,8 +60,9 @@ namespace Zero.NETCore.Web
 
             if (!isPenetrate || !IsDefaultValue(value))
             {
-                MemoryCache.Set(key, minutes, cacheEntryOptions);
+                return MemoryCache.Set(key, value, cacheEntryOptions);
             }
+            return value;
         }
 
         /// <summary>
@@ -81,12 +82,7 @@ namespace Zero.NETCore.Web
             }
 
             value = func();
-            if (!isPenetrate || !IsDefaultValue(value))
-            {
-                MemoryCache.Set(key, value);
-            }
-            
-            return value;
+            return Set(key, value, minutes, isPenetrate);
         }
 
         /// <summary>
