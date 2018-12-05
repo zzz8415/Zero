@@ -58,6 +58,7 @@ namespace Zero.NETCore.Web
             // Keep in cache for this time, reset time if accessed.
             .SetSlidingExpiration(TimeSpan.FromMinutes(minutes));
 
+            // 如果非穿透 或者 值不为空 ,则保存到缓存
             if (!isPenetrate || !IsDefaultValue(value))
             {
                 return MemoryCache.Set(key, value, cacheEntryOptions);
@@ -75,13 +76,28 @@ namespace Zero.NETCore.Web
         /// <returns></returns>
         public T Get<T>(string key, Func<T> func, int minutes = 15, bool isPenetrate = true)
         {
+            // 如果不穿透,使用默认方法
+            if (!isPenetrate) {
+                MemoryCacheEntryOptions cacheEntryOptions = new MemoryCacheEntryOptions()
+               // Keep in cache for this time, reset time if accessed.
+               .SetSlidingExpiration(TimeSpan.FromMinutes(minutes));
+                return MemoryCache.GetOrCreate(key, x =>
+                {
+                    return func();
+                });
+            }
+
+            // 如果要穿透,先获取值
             T value = MemoryCache.Get<T>(key);
-            if (isPenetrate && IsDefaultValue(value))
+            // 如果非空值,返回数据
+            if (!IsDefaultValue(value))
             {
                 return value;
             }
 
+            // 调用回调方法
             value = func();
+            
             return Set(key, value, minutes, isPenetrate);
         }
 
