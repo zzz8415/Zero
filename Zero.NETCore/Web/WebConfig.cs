@@ -23,15 +23,27 @@ namespace Zero.NETCore.Web
 
         #region 配置相关
         /// <summary>
-        /// 获取配置
+        /// 获取单个配置
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="key"></param>
         /// <param name="defaultValue"></param>
         /// <returns></returns>
-        public T Get<T>(string key, T defaultValue = default(T))
+        public T GetValue<T>(string key, T defaultValue = default(T))
         {
-            return Configuration.GetValue<T>(key, defaultValue);
+            return Configuration.GetValue(key, defaultValue);
+        }
+
+        /// <summary>
+        /// 获取配置对象
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="key"></param>
+        /// <param name="defaultValue"></param>
+        /// <returns></returns>
+        public T Get<T>(string key) where T : new()
+        {
+            return Configuration.GetSection(key).Get<T>();
         }
 
         /// <summary>

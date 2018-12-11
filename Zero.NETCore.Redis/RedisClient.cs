@@ -5,6 +5,7 @@ using System.Linq;
 using StackExchange.Redis;
 using Zero.NETCore.Extensions;
 using Zero.NETCore.Web;
+using Microsoft.Extensions.Configuration;
 
 namespace Zero.NETCore.Redis
 {
@@ -30,20 +31,22 @@ namespace Zero.NETCore.Redis
         /// <summary>
         /// 实例化Redis链接
         /// </summary>
-        public RedisClient(WebConfig webConfig)
+        /// <param name="configuration"></param>
+        public RedisClient(IConfiguration configuration)
         {
+            var config = configuration.GetSection("RedisConfig").Get<RedisConfig>();
             var options = new ConfigurationOptions
             {
-                Password = webConfig.Get<string>("RedisConfig:Password"),
-                KeepAlive = webConfig.Get<int>("RedisConfig:KeepAlive"),
-                ConnectRetry = webConfig.Get<int>("RedisConfig:ConnectRetry"),
+                Password = config.Password,
+                KeepAlive = config.KeepAlive,
+                ConnectRetry = config.ConnectRetry,
                 AbortOnConnectFail = false,
-                ConnectTimeout = webConfig.Get<int>("RedisConfig:ConnectTimeout"),
-                DefaultDatabase = webConfig.Get<int>("RedisConfig:DBRegion"),
-                ResponseTimeout = webConfig.Get<int>("RedisConfig:ResponseTimeout"),
+                ConnectTimeout = config.ConnectTimeout,
+                DefaultDatabase = config.DBRegion,
+                ResponseTimeout = config.ResponseTimeout,
             };
 
-            options.EndPoints.Add(webConfig.Get<string>("RedisConfig:Host"), webConfig.Get<int>("RedisConfig:Port"));
+            options.EndPoints.Add(config.Host, config.Port);
 
             this.channel = ConnectionMultiplexer.Connect(options);
         }
