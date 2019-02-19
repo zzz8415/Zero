@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>Zero.NETCore</id>
-    <version>1.0.0.34</version>
+    <version>1.0.0.35</version>
     <title>Zero.NETCore</title>
     <authors>Zero</authors>
     <owners>Zero</owners>

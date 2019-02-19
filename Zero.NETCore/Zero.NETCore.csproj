@@ -22,6 +22,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Util\LogHelper.cs" />
     <Compile Remove="Web\HttpHelper.cs" />
   </ItemGroup>
 
