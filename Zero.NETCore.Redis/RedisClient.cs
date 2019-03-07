@@ -4,7 +4,6 @@ using System.Text;
 using System.Linq;
 using StackExchange.Redis;
 using Zero.NETCore.Extensions;
-using Zero.NETCore.Web;
 using Microsoft.Extensions.Configuration;
 
 namespace Zero.NETCore.Redis
