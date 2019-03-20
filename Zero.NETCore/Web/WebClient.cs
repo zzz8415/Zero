@@ -45,6 +45,15 @@ namespace Zero.NETCore.Web
             return null;
         }
 
+
+        public string IP
+        {
+            get
+            {
+                return this.Request.HttpContext.Connection.RemoteIpAddress.ToString();
+            }
+        }
+
         private string _postData = null;
 
         /// <summary>

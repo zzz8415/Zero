@@ -1,5 +1,8 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Reflection;
 
 namespace Zero.NETCore.Web
 {
@@ -77,7 +80,8 @@ namespace Zero.NETCore.Web
         public T Get<T>(string key, Func<T> func, int minutes = 15, bool isPenetrate = true)
         {
             // 如果不穿透,使用默认方法
-            if (!isPenetrate) {
+            if (!isPenetrate)
+            {
                 MemoryCacheEntryOptions cacheEntryOptions = new MemoryCacheEntryOptions()
                // Keep in cache for this time, reset time if accessed.
                .SetSlidingExpiration(TimeSpan.FromMinutes(minutes));
@@ -97,8 +101,25 @@ namespace Zero.NETCore.Web
 
             // 调用回调方法
             value = func();
-            
+
             return Set(key, value, minutes, isPenetrate);
+        }
+
+        /// <summary>
+        /// 清除所有缓存
+        /// </summary>
+        public void Clear()
+        {
+            const BindingFlags flags = BindingFlags.Instance | BindingFlags.NonPublic;
+            object entries = MemoryCache.GetType().GetField("_entries", flags).GetValue(MemoryCache);
+            if (!(entries is IDictionary cacheItems))
+            {
+                return;
+            }
+            foreach (DictionaryEntry cacheItem in cacheItems)
+            {
+                Remove(cacheItem.Key.ToString());
+            }
         }
 
         /// <summary>
