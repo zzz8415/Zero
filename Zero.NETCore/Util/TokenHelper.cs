@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Zero.NETCore.Util;
 using Zero.NETCore.Extensions;
 
-namespace Zero.NETCore.Helper
+namespace Zero.NETCore.Util
 {
     /// <summary>
     /// 网络授权帮助类(只支持所有属性为字符串类型的类)

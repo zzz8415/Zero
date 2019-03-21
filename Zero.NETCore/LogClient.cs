@@ -3,6 +3,7 @@ using Microsoft.Extensions.Primitives;
 using NLog;
 using System;
 using System.Text;
+using Zero.NETCore.Web;
 
 namespace Zero.NETCore
 {
@@ -11,11 +12,13 @@ namespace Zero.NETCore
     /// </summary>
     public class LogClient
     {
-        private HttpRequest _request = null;
+        private HttpRequest _request => _webClient.Request;
 
-        public LogClient(IHttpContextAccessor httpContextAccessor = null)
+        private WebClient _webClient = null;
+
+        public LogClient(WebClient webClient = null)
         {
-            _request = httpContextAccessor?.HttpContext.Request;
+            _webClient = webClient;
         }
 
         private Logger logger = LogManager.GetCurrentClassLogger();
@@ -137,6 +140,7 @@ namespace Zero.NETCore
                 }
                 sb.AppendFormat("UserHostAddress:{0}:{1}\r\n", _request.HttpContext.Connection.RemoteIpAddress, _request.HttpContext.Connection.RemotePort);
                 sb.AppendFormat("WebServer:{0}:{1}\r\n", _request.HttpContext.Connection.LocalIpAddress, _request.HttpContext.Connection.LocalPort);
+                sb.AppendFormat("PostData:{0}\r\n", _webClient.PostData);
             }
 
             if (ex != null)
