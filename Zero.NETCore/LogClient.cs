@@ -12,7 +12,7 @@ namespace Zero.NETCore
     /// </summary>
     public class LogClient
     {
-        private HttpRequest _request => _webClient.Request;
+        private HttpRequest _request => _webClient?.Request;
 
         private WebClient _webClient = null;
 
@@ -140,7 +140,10 @@ namespace Zero.NETCore
                 }
                 sb.AppendFormat("UserHostAddress:{0}:{1}\r\n", _request.HttpContext.Connection.RemoteIpAddress, _request.HttpContext.Connection.RemotePort);
                 sb.AppendFormat("WebServer:{0}:{1}\r\n", _request.HttpContext.Connection.LocalIpAddress, _request.HttpContext.Connection.LocalPort);
-                sb.AppendFormat("PostData:{0}\r\n", _webClient.PostData);
+                if (_webClient.PostData != null)
+                {
+                    sb.AppendFormat("PostData:{0}\r\n", _webClient.PostData);
+                }
             }
 
             if (ex != null)
