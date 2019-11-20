@@ -42,7 +42,7 @@ namespace Zero.NETCore.Redis
                 AbortOnConnectFail = false,
                 ConnectTimeout = config.ConnectTimeout,
                 DefaultDatabase = config.DBRegion,
-                ResponseTimeout = config.ResponseTimeout,
+                SyncTimeout = config.SyncTimeout
             };
 
             options.EndPoints.Add(config.Host, config.Port);

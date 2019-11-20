@@ -40,9 +40,9 @@ namespace Zero.NETCore.Redis
         public int ConnectTimeout { get; set; } = 3000;
 
         /// <summary>
-        /// 响应超时毫秒数
+        /// 异步响应超时毫秒数
         /// </summary>
-        public int ResponseTimeout { get; set; } = 3000;
+        public int SyncTimeout { get; set; } = 3000;
 
         /// <summary>
         /// 数据分片

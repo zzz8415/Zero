@@ -60,7 +60,7 @@ namespace Zero.Core.Util
         {
             if (addKey.Length > 0)
             {
-                source = source + addKey;
+                source += addKey;
             }
             return MD5_Encrypt(encoding.GetBytes(source));
         }
@@ -73,8 +73,11 @@ namespace Zero.Core.Util
         /// <returns></returns>
         public static string MD5_Encrypt(byte[] source)
         {
-            MD5 MD5 = new MD5CryptoServiceProvider();
-            byte[] newSource = MD5.ComputeHash(source);
+            byte[] newSource = null;
+            using (MD5 MD5 = new MD5CryptoServiceProvider())
+            {
+                newSource = MD5.ComputeHash(source);
+            }
             string byte2String = null;
             for (int i = 0; i < newSource.Length; i++)
             {
@@ -123,9 +126,8 @@ namespace Zero.Core.Util
             #region
 
             string appkey = KEY_Complement; //，。加一特殊的字符后再加密，这样更安全些
-            //strpwd += appkey;
+                                            //strpwd += appkey;
 
-            MD5 MD5 = new MD5CryptoServiceProvider();
             byte[] a = Encoding.Default.GetBytes(appkey);
             byte[] datSource = Encoding.Default.GetBytes(strpwd);
             byte[] b = new byte[a.Length + 4 + datSource.Length];
@@ -146,8 +148,11 @@ namespace Zero.Core.Util
                 b[i] = t;
                 i++;
             }
-
-            byte[] newSource = MD5.ComputeHash(b);
+            byte[] newSource = null;
+            using (MD5 MD5 = new MD5CryptoServiceProvider())
+            {
+                newSource = MD5.ComputeHash(b);
+            }
             string byte2String = null;
             for (i = 0; i < newSource.Length; i++)
             {
@@ -179,7 +184,8 @@ namespace Zero.Core.Util
                 return null;
             }
 
-            DESCryptoServiceProvider des = new DESCryptoServiceProvider();
+
+
 
             //把字符串放到byte数组中  
             byte[] inputByteArray = Encoding.Default.GetBytes(source);
@@ -192,23 +198,25 @@ namespace Zero.Core.Util
             //使得输入密码必须输入英文文本  
             //            des.Key = UTF8Encoding.UTF8.GetBytes(key);
             //            des.IV  = UTF8Encoding.UTF8.GetBytes(key);
-            des.Key = Encoding.Default.GetBytes(key);
-            des.IV = Encoding.Default.GetBytes(key);
-
-            MemoryStream ms = new MemoryStream();
-            CryptoStream cs = new CryptoStream(ms, des.CreateEncryptor(), CryptoStreamMode.Write);
-
-            cs.Write(inputByteArray, 0, inputByteArray.Length);
-            cs.FlushFinalBlock();
-
             StringBuilder ret = new StringBuilder();
-            foreach (byte b in ms.ToArray())
+            using (DESCryptoServiceProvider des = new DESCryptoServiceProvider())
             {
-                ret.AppendFormat("{0:X2}", b);
-            }
+                des.Key = Encoding.Default.GetBytes(key);
+                des.IV = Encoding.Default.GetBytes(key);
 
-            ret.ToString();
-            return ret.ToString();
+                using (MemoryStream ms = new MemoryStream())
+                using (CryptoStream cs = new CryptoStream(ms, des.CreateEncryptor(), CryptoStreamMode.Write))
+                {
+                    cs.Write(inputByteArray, 0, inputByteArray.Length);
+                    cs.FlushFinalBlock();
+
+                    foreach (byte b in ms.ToArray())
+                    {
+                        ret.AppendFormat("{0:X2}", b);
+                    }
+                    return ret.ToString();
+                }
+            }
         }
 
         /// <summary>
@@ -244,8 +252,6 @@ namespace Zero.Core.Util
                 return null;
             }
 
-            DESCryptoServiceProvider des = new DESCryptoServiceProvider();
-
             //将字符串转为字节数组  
             byte[] inputByteArray = new byte[source.Length / 2];
             for (int x = 0; x < source.Length / 2; x++)
@@ -257,19 +263,20 @@ namespace Zero.Core.Util
             // 密钥必须是8位，否则会报错 System.ArgumentException: 指定键的大小对于此算法无效。
             key = BuildKey(key, 8);
 
-            //建立加密对象的密钥和偏移量，此值重要，不能修改  
-            des.Key = Encoding.UTF8.GetBytes(key);
-            des.IV = Encoding.UTF8.GetBytes(key);
+            using (DESCryptoServiceProvider des = new DESCryptoServiceProvider())
+            {
+                //建立加密对象的密钥和偏移量，此值重要，不能修改  
+                des.Key = Encoding.UTF8.GetBytes(key);
+                des.IV = Encoding.UTF8.GetBytes(key);
 
-            MemoryStream ms = new MemoryStream();
-            CryptoStream cs = new CryptoStream(ms, des.CreateDecryptor(), CryptoStreamMode.Write);
-            cs.Write(inputByteArray, 0, inputByteArray.Length);
-            cs.FlushFinalBlock();
-
-            //建立StringBuild对象，CreateDecrypt使用的是流对象，必须把解密后的文本变成流对象  
-            //StringBuilder ret = new StringBuilder();
-
-            return Encoding.Default.GetString(ms.ToArray());
+                using (MemoryStream ms = new MemoryStream())
+                using (CryptoStream cs = new CryptoStream(ms, des.CreateDecryptor(), CryptoStreamMode.Write))
+                {
+                    cs.Write(inputByteArray, 0, inputByteArray.Length);
+                    cs.FlushFinalBlock();
+                    return Encoding.Default.GetString(ms.ToArray());
+                }
+            }
         }
 
         #region 配合JS用的C#版DES加解密方法及相关函数
@@ -287,7 +294,7 @@ namespace Zero.Core.Util
                 return string.Empty;
             }
 
-            return stringToHex(Des(key, source, true, false, string.Empty));
+            return StringToHex(Des(key, source, true, false, string.Empty));
         }
 
         /// <summary>
@@ -313,7 +320,7 @@ namespace Zero.Core.Util
         /// </summary>
         /// <param name="s"></param>
         /// <returns></returns>
-        private static string stringToHex(string s)
+        private static string StringToHex(string s)
         {
             string r = "";
             string[] hexes = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f" };
@@ -353,7 +360,7 @@ namespace Zero.Core.Util
             unchecked
             {
                 uint b = (uint)a;
-                b = b >> bit;
+                b >>= bit;
                 return (int)b;
             }
         }
@@ -381,7 +388,7 @@ namespace Zero.Core.Util
 
 
             //create the 16 or 48 subkeys we will need
-            int[] keys = des_createKeys(beinetkey);
+            int[] keys = Des_CreateKeys(beinetkey);
             int m = 0;
             int i, j;
             int temp, right1, right2, left, right;
@@ -584,7 +591,7 @@ namespace Zero.Core.Util
         /// </summary>
         /// <param name="beinetkey"></param>
         /// <returns></returns>
-        private static int[] des_createKeys(string beinetkey)
+        private static int[] Des_CreateKeys(string beinetkey)
         {
             //declaring this locally speeds things up a bit
             int[] pc2bytes0 = { 0, 0x4, 0x20000000, 0x20000004, 0x10000, 0x10004, 0x20010000, 0x20010004, 0x200, 0x204, 0x20000200, 0x20000204, 0x10200, 0x10204, 0x20010200, 0x20010204 };
@@ -759,21 +766,20 @@ namespace Zero.Core.Util
         /// <returns>加密后的字节数组</returns>
         private static byte[] TripleDesEncrypt(byte[] key, byte[] iv, byte[] source)
         {
-            TripleDESCryptoServiceProvider dsp = new TripleDESCryptoServiceProvider
+            using (TripleDESCryptoServiceProvider dsp = new TripleDESCryptoServiceProvider()
             {
                 Mode = CipherMode.CBC, // 默认值
                 Padding = PaddingMode.PKCS7 // 默认值
-            };
-            using (MemoryStream mStream = new MemoryStream())
-            using (CryptoStream cStream = new CryptoStream(mStream, dsp.CreateEncryptor(key, iv), CryptoStreamMode.Write))
+            })
             {
-                cStream.Write(source, 0, source.Length);
-                cStream.FlushFinalBlock();
-                byte[] result = mStream.ToArray();
-                cStream.Close();
-                mStream.Close();
-                return result;
-            }
+                using (MemoryStream mStream = new MemoryStream())
+                using (CryptoStream cStream = new CryptoStream(mStream, dsp.CreateEncryptor(key, iv), CryptoStreamMode.Write))
+                {
+                    cStream.Write(source, 0, source.Length);
+                    cStream.FlushFinalBlock();
+                    return mStream.ToArray();
+                }
+            };
         }
         #endregion
 
@@ -788,19 +794,19 @@ namespace Zero.Core.Util
         /// <returns>解密后的字节数组</returns>
         private static byte[] TripleDesDecrypt(byte[] key, byte[] iv, byte[] source, out int dataLen)
         {
-            TripleDESCryptoServiceProvider dsp = new TripleDESCryptoServiceProvider
+            using (TripleDESCryptoServiceProvider dsp = new TripleDESCryptoServiceProvider
             {
                 Mode = CipherMode.CBC, // 默认值
                 Padding = PaddingMode.PKCS7 // 默认值
-            };
-            using (MemoryStream mStream = new MemoryStream(source))
-            using (CryptoStream cStream = new CryptoStream(mStream, dsp.CreateDecryptor(key, iv), CryptoStreamMode.Read))
+            })
             {
-                byte[] result = new byte[source.Length];
-                dataLen = cStream.Read(result, 0, result.Length);
-                cStream.Close();
-                mStream.Close();
-                return result;
+                using (MemoryStream mStream = new MemoryStream(source))
+                using (CryptoStream cStream = new CryptoStream(mStream, dsp.CreateDecryptor(key, iv), CryptoStreamMode.Read))
+                {
+                    byte[] result = new byte[source.Length];
+                    dataLen = cStream.Read(result, 0, result.Length);
+                    return result;
+                }
             }
         }
 
@@ -843,10 +849,11 @@ namespace Zero.Core.Util
         public static string SHA1_Encrypt(string source)
         {
             byte[] temp1 = Encoding.UTF8.GetBytes(source);
-
-            SHA1CryptoServiceProvider sha = new SHA1CryptoServiceProvider();
-            byte[] temp2 = sha.ComputeHash(temp1);
-            sha.Clear();
+            byte[] temp2 = null;
+            using (SHA1CryptoServiceProvider sha = new SHA1CryptoServiceProvider())
+            {
+                temp2 = sha.ComputeHash(temp1);
+            }
 
             //注意，不能用这个
             //string output = Convert.ToBase64String(temp2); 
@@ -921,19 +928,17 @@ namespace Zero.Core.Util
         public static string GetMD5HashFromFile(string fileName)
         {
             using (FileStream file = new FileStream(fileName, FileMode.Open))
+            using (MD5 md5 = new MD5CryptoServiceProvider())
             {
-                MD5 md5 = new MD5CryptoServiceProvider();
                 byte[] retVal = md5.ComputeHash(file);
-                file.Close();
                 return BitConverter.ToString(retVal).Replace("-", "");
             }
         }
 
         /// <summary>  
         ///AES加密（加密步骤）  
-        ///1，加密字符串得到2进制数组；  
-        ///2，将2禁止数组转为16进制；  
-        ///3，进行base64编码  
+        ///1，加密字符串得到2进制数组；    
+        ///2，进行base64编码  
         /// </summary>  
         /// <param name="toEncrypt">要加密的字符串</param>  
         /// <param name="key">密钥</param>  
@@ -941,43 +946,47 @@ namespace Zero.Core.Util
         {
             byte[] _Key = Encoding.ASCII.GetBytes(BuildKey(key, 32));
             byte[] _Source = Encoding.UTF8.GetBytes(toEncrypt);
-
-            Aes aes = Aes.Create("AES");
-            aes.Mode = CipherMode.ECB;
-            aes.Padding = PaddingMode.PKCS7;
-            aes.Key = _Key;
-            ICryptoTransform cTransform = aes.CreateEncryptor();
+            ICryptoTransform cTransform = null;
+            using (Aes aes = Aes.Create("AES"))
+            {
+                aes.Mode = CipherMode.ECB;
+                aes.Padding = PaddingMode.PKCS7;
+                aes.Key = _Key;
+                cTransform = aes.CreateEncryptor();
+            }
             byte[] cryptData = cTransform.TransformFinalBlock(_Source, 0, _Source.Length);
-            string HexCryptString = Hex_2To16(cryptData);
-            byte[] HexCryptData = Encoding.UTF8.GetBytes(HexCryptString);
-            string CryptString = Convert.ToBase64String(HexCryptData);
-            return CryptString;
+            //string HexCryptString = Hex_2To16(cryptData);
+            //byte[] HexCryptData = Encoding.UTF8.GetBytes(HexCryptString);
+            //return Hex_2To16(cryptData);
+            //var x = cryptData;
+            //var y = Convert.ToBase64String(x);
+            return Convert.ToBase64String(cryptData);
         }
 
         /// <summary>  
         /// AES解密（解密步骤）  
-        /// 1，将BASE64字符串转为16进制数组  
-        /// 2，将16进制数组转为字符串  
-        /// 3，将字符串转为2进制数据  
-        /// 4，用AES解密数据  
+        /// 1，将BASE64字符串转为数组  
+        /// 2，用AES解密数据  
         /// </summary>  
         /// <param name="encryptedSource">已加密的内容</param>  
         /// <param name="key">密钥</param>  
         public static string AES_Decrypt(string encryptedSource, string key)
         {
             byte[] _Key = Encoding.ASCII.GetBytes(BuildKey(key, 32));
-            Aes aes = Aes.Create("AES");
-            aes.Mode = CipherMode.ECB;
-            aes.Padding = PaddingMode.PKCS7;
-            aes.Key = _Key;
-            ICryptoTransform cTransform = aes.CreateDecryptor();
+            ICryptoTransform cTransform = null;
+            using (Aes aes = Aes.Create("AES"))
+            {
+                aes.Mode = CipherMode.ECB;
+                aes.Padding = PaddingMode.PKCS7;
+                aes.Key = _Key;
+                cTransform = aes.CreateDecryptor();
+            }
 
             byte[] encryptedData = Convert.FromBase64String(encryptedSource);
-            string encryptedString = Encoding.UTF8.GetString(encryptedData);
-            byte[] _Source = Hex_16To2(encryptedString);
-            byte[] originalSrouceData = cTransform.TransformFinalBlock(_Source, 0, _Source.Length);
-            string originalString = Encoding.UTF8.GetString(originalSrouceData);
-            return originalString;
+            //string encryptedString = Encoding.UTF8.GetString(encryptedData);
+            //byte[] _Source = Hex_16To2(encryptedString);
+            byte[] originalSrouceData = cTransform.TransformFinalBlock(encryptedData, 0, encryptedData.Length);
+            return Encoding.UTF8.GetString(originalSrouceData);
         }
 
         private static string BuildKey(string key, int length = 8)
@@ -985,40 +994,40 @@ namespace Zero.Core.Util
             return ((key ?? string.Empty) + KEY_Complement).Substring(0, length);
         }
 
-        private static string Hex_2To16(byte[] bytes)
-        {
-            string hexString = string.Empty;
-            int iLength = 65535;
-            if (bytes != null)
-            {
-                StringBuilder strB = new StringBuilder();
+        //private static string Hex_2To16(byte[] bytes)
+        //{
+        //    string hexString = string.Empty;
+        //    int iLength = 65535;
+        //    if (bytes != null)
+        //    {
+        //        StringBuilder strB = new StringBuilder();
 
-                if (bytes.Length < iLength)
-                {
-                    iLength = bytes.Length;
-                }
+        //        if (bytes.Length < iLength)
+        //        {
+        //            iLength = bytes.Length;
+        //        }
 
-                for (int i = 0; i < iLength; i++)
-                {
-                    strB.Append(bytes[i].ToString("X2"));
-                }
-                hexString = strB.ToString();
-            }
-            return hexString;
-        }
+        //        for (int i = 0; i < iLength; i++)
+        //        {
+        //            strB.Append(bytes[i].ToString("X2"));
+        //        }
+        //        hexString = strB.ToString();
+        //    }
+        //    return hexString;
+        //}
 
-        private static byte[] Hex_16To2(string hexString)
-        {
-            if ((hexString.Length % 2) != 0)
-            {
-                hexString += " ";
-            }
-            byte[] returnBytes = new byte[hexString.Length / 2];
-            for (int i = 0; i < returnBytes.Length; i++)
-            {
-                returnBytes[i] = Convert.ToByte(hexString.Substring(i * 2, 2), 16);
-            }
-            return returnBytes;
-        }
+        //private static byte[] Hex_16To2(string hexString)
+        //{
+        //    if ((hexString.Length % 2) != 0)
+        //    {
+        //        hexString += " ";
+        //    }
+        //    byte[] returnBytes = new byte[hexString.Length / 2];
+        //    for (int i = 0; i < returnBytes.Length; i++)
+        //    {
+        //        returnBytes[i] = Convert.ToByte(hexString.Substring(i * 2, 2), 16);
+        //    }
+        //    return returnBytes;
+        //}
     }
 }

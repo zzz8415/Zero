@@ -74,10 +74,11 @@ namespace Zero.Redis
         /// <summary>
         /// 响应超时毫秒数
         /// </summary>
-        [ConfigurationProperty("responseTimeout", DefaultValue = 3000)]
-        public int ResponseTimeout {
-            get { return this["responseTimeout"].ToInt32(3000); }
-            set { this["responseTimeout"] = value; }
+        [ConfigurationProperty("syncTimeout", DefaultValue = 3000)]
+        public int SyncTimeout
+        {
+            get { return this["syncTimeout"].ToInt32(3000); }
+            set { this["syncTimeout"] = value; }
         }
     }
 

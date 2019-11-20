@@ -237,15 +237,15 @@ namespace Zero.NETCore
                 message = BuildMessage(message);
             }
 
-            Logger logger1 = LogManager.GetLogger("LogCustom");
-            LogEventInfo logEvent = new LogEventInfo(LogLevel.Warn, logger1.Name, message);
+            Logger logger = LogManager.GetLogger("LogCustom");
+            LogEventInfo logEvent = new LogEventInfo(LogLevel.Warn, logger.Name, message);
             logEvent.Properties["DirOrPrefix"] = dirOrPrefix;
             if (suffix != null)
             {
                 logEvent.Properties["Suffix"] = suffix;
             }
 
-            logger1.Log(logEvent);
+            logger.Log(logEvent);
         }
     }
 

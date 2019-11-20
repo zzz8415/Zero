@@ -65,10 +65,8 @@ namespace Zero.NETCore.Web
             {
                 if (_postData == null && Request.Body != null)
                 {
-                    using(var reader = new StreamReader(Request.Body))
-                    {
-                        _postData = reader.ReadToEnd();
-                    }
+                    using var reader = new StreamReader(Request.Body);
+                    _postData = reader.ReadToEndAsync().Result;
                 }
                 return _postData;
             }

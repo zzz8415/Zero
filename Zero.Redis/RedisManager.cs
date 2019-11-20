@@ -40,7 +40,7 @@ namespace Zero.Redis
                                 AbortOnConnectFail = false,
                                 ConnectTimeout = section.ConnectTimeout,
                                 DefaultDatabase = section.DBRegion,
-                                ResponseTimeout = section.ResponseTimeout
+                                SyncTimeout = section.SyncTimeout
                             };
                             for (var i = 0; i < section.RedisHosts.Count; i++)
                             {
