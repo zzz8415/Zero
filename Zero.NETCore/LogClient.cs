@@ -12,9 +12,9 @@ namespace Zero.NETCore
     /// </summary>
     public class LogClient
     {
-        private HttpRequest _request => _webClient?.Request;
+        private HttpRequest Request => _webClient?.Request;
 
-        private WebClient _webClient = null;
+        private readonly WebClient _webClient = null;
 
         public LogClient(WebClient webClient = null)
         {
@@ -131,15 +131,15 @@ namespace Zero.NETCore
 
             sb.AppendFormat("Time:{0}-{1}\r\n", DateTime.Now, info);
 
-            if (_request != null)
+            if (Request != null)
             {
-                sb.AppendFormat("Url:{0}://{1}{2}{3}\r\n", _request.Scheme, _request.Host, _request.Path, _request.QueryString);
-                if (_request.Headers.TryGetValue("referrer", out StringValues values))
+                sb.AppendFormat("Url:{0}://{1}{2}{3}\r\n", Request.Scheme, Request.Host, Request.Path, Request.QueryString);
+                if (Request.Headers.TryGetValue("referrer", out StringValues values))
                 {
                     sb.AppendFormat("UrlReferrer:{0}\r\n", values);
                 }
-                sb.AppendFormat("UserHostAddress:{0}:{1}\r\n", _request.HttpContext.Connection.RemoteIpAddress, _request.HttpContext.Connection.RemotePort);
-                sb.AppendFormat("WebServer:{0}:{1}\r\n", _request.HttpContext.Connection.LocalIpAddress, _request.HttpContext.Connection.LocalPort);
+                sb.AppendFormat("UserHostAddress:{0}:{1}\r\n", Request.HttpContext.Connection.RemoteIpAddress, Request.HttpContext.Connection.RemotePort);
+                sb.AppendFormat("WebServer:{0}:{1}\r\n", Request.HttpContext.Connection.LocalIpAddress, Request.HttpContext.Connection.LocalPort);
                 if (_webClient.PostData != null)
                 {
                     sb.AppendFormat("PostData:{0}\r\n", _webClient.PostData);

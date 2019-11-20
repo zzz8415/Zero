@@ -1,7 +1,16 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>1.0.1</Version>
+    <Authors>Zero</Authors>
+    <Description>.NET Core Redis核心类库</Description>
+    <Copyright>Copyright 2018</Copyright>
+    <PackageProjectUrl>https://github.com/zzz8415/Zero</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/zzz8415/Zero</RepositoryUrl>
+    <RepositoryType>GitHub</RepositoryType>
+    <AssemblyVersion>1.0.1.0</AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -9,9 +18,5 @@
     <PackageReference Include="StackExchange.Redis" Version="2.0.601" />
     <PackageReference Include="Zero.NETCore" Version="1.0.0.38" />
   </ItemGroup>
-
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="IF NOT &quot;$(ConfigurationName)&quot;==&quot;Release&quot; EXIT /B 0 &#xD;&#xA;IF NOT EXIST $(SolutionDir)ReleasePackages MD $(SolutionDir)ReleasePackages&#xD;&#xA;$(SolutionDir)Libs\NuGet.exe Pack $(ProjectDir)$(ProjectName).nuspec -OutputDirectory $(SolutionDir)ReleasePackages\" />
-  </Target>
 
 </Project>

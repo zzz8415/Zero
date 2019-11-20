@@ -2,11 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <NeutralLanguage>zh</NeutralLanguage>
-    <AssemblyVersion>1.0.0.11</AssemblyVersion>
-    <FileVersion>1.0.0.11</FileVersion>
-    <Version>1.0.0.11</Version>
+    <AssemblyVersion>1.0.1.0</AssemblyVersion>
+    <FileVersion>1.0.1.0</FileVersion>
+    <Version>1.0.1</Version>
     <Authors>Zero</Authors>
     <Description>.NET Core核心类库</Description>
     <PackageReleaseNotes>.NET Core核心类库</PackageReleaseNotes>
@@ -37,13 +37,6 @@
     <None Update="NLog.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Zero.NETCore.nuspec">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
-
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="IF NOT &quot;$(ConfigurationName)&quot;==&quot;Release&quot; EXIT /B 0 &#xD;&#xA;IF NOT EXIST $(SolutionDir)ReleasePackages MD $(SolutionDir)ReleasePackages&#xD;&#xA;$(SolutionDir)Libs\NuGet.exe Pack $(ProjectDir)$(ProjectName).nuspec -OutputDirectory $(SolutionDir)ReleasePackages\" />
-  </Target>
 
 </Project>
