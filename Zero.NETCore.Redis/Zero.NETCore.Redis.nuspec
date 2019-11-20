@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>Zero.NETCore.Redis</id>
-    <version>1.0.0.5</version>
+    <version>1.0.0.6</version>
     <title>Zero.NETCore.Redis</title>
     <authors>Zero</authors>
     <owners>Zero</owners>
