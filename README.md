@@ -11,3 +11,4 @@ Zero.Redis Nuget: https://www.nuget.org/packages/Zero.Redis/
 
 Zero.DataAccess Nuget: https://www.nuget.org/packages/Zero.DataAccess/  
 
+From January 1, 2020, Zero.Core library, Zero.DataAccess library and Zero.Redis library will no longer be maintained.
