@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Primitives;
 using NLog;
 using System;
 using System.Text;
+using Zero.NETCore.Attribute;
 using Zero.NETCore.Web;
 
 namespace Zero.NETCore
@@ -10,6 +12,7 @@ namespace Zero.NETCore
     /// <summary>
     /// 日志记录类
     /// </summary>
+    [Inject(OptionsLifetime = ServiceLifetime.Scoped)]
     public class LogClient
     {
         private HttpRequest Request => _webClient?.Request;

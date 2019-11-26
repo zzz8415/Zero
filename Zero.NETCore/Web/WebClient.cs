@@ -1,13 +1,16 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Primitives;
 using System.IO;
 using System.Text;
+using Zero.NETCore.Attribute;
 
 namespace Zero.NETCore.Web
 {
     /// <summary>
     /// Web客户端信息
     /// </summary>
+    [Inject(OptionsLifetime = ServiceLifetime.Scoped)]
     public class WebClient
     {
         /// <summary>

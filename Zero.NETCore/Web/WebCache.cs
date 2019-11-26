@@ -1,14 +1,17 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
+using Zero.NETCore.Attribute;
 
 namespace Zero.NETCore.Web
 {
     /// <summary>
     /// 缓存帮助类
     /// </summary>
+    [Inject(OptionsLifetime = ServiceLifetime.Singleton)]
     public class WebCache
     {
 

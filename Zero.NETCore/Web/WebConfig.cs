@@ -1,10 +1,13 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Zero.NETCore.Attribute;
 
 namespace Zero.NETCore.Web
 {
     /// <summary>
     /// 配置帮助类
     /// </summary>
+    [Inject(OptionsLifetime = ServiceLifetime.Singleton)]
     public class WebConfig
     {
         /// <summary>

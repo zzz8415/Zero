@@ -1,11 +1,14 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using System;
+using Zero.NETCore.Attribute;
 
 namespace Zero.NETCore
 {
     /// <summary>
     /// 雪花算法
     /// </summary>
+    [Inject(OptionsLifetime = ServiceLifetime.Singleton)]
     public class Snowflake
     {
         private long _lastTicks = 0L;

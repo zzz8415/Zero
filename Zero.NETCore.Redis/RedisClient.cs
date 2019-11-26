@@ -5,12 +5,15 @@ using System.Linq;
 using StackExchange.Redis;
 using Zero.NETCore.Extensions;
 using Microsoft.Extensions.Configuration;
+using Zero.NETCore.Attribute;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Zero.NETCore.Redis
 {
     /// <summary>
     /// Redis客户端,提供Get,Set及Remove方法
     /// </summary>
+    [Inject(OptionsLifetime = ServiceLifetime.Singleton)]
     public class RedisClient : IDisposable
     {
         /// <summary>
