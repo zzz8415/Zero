@@ -19,16 +19,9 @@ namespace Zero.NETCore.Redis
         /// <summary>
         /// Redis客户端
         /// </summary>
-        protected IDatabase Client
-        {
-            get
-            {
-                return channel.GetDatabase();
-            }
-        }
+        protected IDatabase Client => _channel.GetDatabase();
 
-
-        private ConnectionMultiplexer channel = null;
+        private readonly ConnectionMultiplexer _channel = null;
 
         /// <summary>
         /// 实例化Redis链接
@@ -50,7 +43,7 @@ namespace Zero.NETCore.Redis
 
             options.EndPoints.Add(config.Host, config.Port);
 
-            this.channel = ConnectionMultiplexer.Connect(options);
+            this._channel = ConnectionMultiplexer.Connect(options);
         }
 
         /// <summary>
@@ -129,7 +122,7 @@ namespace Zero.NETCore.Redis
         public T Get<T>(string key) where T : class
         {
             var value = this.Client.StringGet(key);
-            return value.IsNullOrEmpty ? default(T) : JsonExtensions.DeserializeJson<T>(value);
+            return value.IsNullOrEmpty ? default : JsonExtensions.DeserializeJson<T>(value);
         }
 
         /// <summary>
@@ -172,7 +165,7 @@ namespace Zero.NETCore.Redis
             for (var i = 0; i < values.Length; i++)
             {
                 var value = values[i];
-                dic[redisKeys[i]] = value.IsNullOrEmpty ? default(T) : JsonExtensions.DeserializeJson<T>(values[i]);
+                dic[redisKeys[i]] = value.IsNullOrEmpty ? default : JsonExtensions.DeserializeJson<T>(values[i]);
             }
             return dic;
         }
@@ -291,7 +284,7 @@ namespace Zero.NETCore.Redis
         /// <param name="action"></param>
         public void UsingChannel(Action<ConnectionMultiplexer> action)
         {
-            action(this.channel);
+            action(this._channel);
         }
 
         /// <summary>
@@ -302,7 +295,7 @@ namespace Zero.NETCore.Redis
         /// <returns></returns>
         public T UsingChannel<T>(Func<ConnectionMultiplexer, T> func)
         {
-            return func(this.channel);
+            return func(this._channel);
         }
 
         ///// <summary>
@@ -510,9 +503,9 @@ namespace Zero.NETCore.Redis
                 if (disposing)
                 {
                     // TODO: 释放托管状态(托管对象)。
-                    if (this.channel != null)
+                    if (this._channel != null)
                     {
-                        this.channel.Close();
+                        this._channel.Close();
                     }
                 }
 

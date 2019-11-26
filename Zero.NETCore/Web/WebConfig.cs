@@ -32,7 +32,7 @@ namespace Zero.NETCore.Web
         /// <param name="key"></param>
         /// <param name="defaultValue"></param>
         /// <returns></returns>
-        public T GetValue<T>(string key, T defaultValue = default(T))
+        public T GetValue<T>(string key, T defaultValue = default)
         {
             return Configuration.GetValue(key, defaultValue);
         }

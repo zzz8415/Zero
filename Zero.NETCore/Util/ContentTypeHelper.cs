@@ -6,7 +6,7 @@ namespace Zero.NETCore.Util
 {
     public class ContentTypeHelper
     {
-        private static IDictionary<string, string> _mappings = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase) {
+        private static readonly IDictionary<string, string> _mappings = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase) {
              {".323", "text/h323"},
              {".3g2", "video/3gpp2"},
              {".3gp", "video/3gpp"},

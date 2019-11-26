@@ -20,7 +20,7 @@ namespace Zero.NETCore.Extensions
             {
                 return null;
             }
-            settings = settings ?? new JsonSerializerSettings
+            settings ??= new JsonSerializerSettings
             {
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore,//忽略循环引用 即不序列化循环引用
             };
@@ -38,9 +38,9 @@ namespace Zero.NETCore.Extensions
         {
             if (json.IsNullOrEmpty())
             {
-                return default(T);
+                return default;
             }
-            settings = settings ?? new JsonSerializerSettings
+            settings ??= new JsonSerializerSettings
             {
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore,//忽略循环引用 即不序列化循环引用
             };

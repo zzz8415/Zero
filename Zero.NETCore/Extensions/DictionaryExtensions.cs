@@ -8,7 +8,7 @@ namespace Zero.NETCore.Extensions
     {
         public static TValue GetValue<Tkey, TValue>(this Dictionary<Tkey, TValue> source, Tkey key)
         {
-            TValue model = default(TValue);
+            TValue model = default;
             if (source != null && key != null)
             {
                 source.TryGetValue(key, out model);

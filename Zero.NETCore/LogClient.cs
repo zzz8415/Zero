@@ -24,7 +24,7 @@ namespace Zero.NETCore
             _webClient = webClient;
         }
 
-        private Logger logger = LogManager.GetCurrentClassLogger();
+        private readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
         /// 写入普通日志消息

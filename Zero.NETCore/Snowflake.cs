@@ -91,7 +91,7 @@ namespace Zero.NETCore
         /// <returns></returns>
         private long GetNextTicks()
         {
-            long ticks = 0L;
+            long ticks;
             do
             {
                 ticks = GetTicks();
