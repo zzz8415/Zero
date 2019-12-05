@@ -9,8 +9,16 @@ using Zero.NETCore.Attribute;
 
 namespace Zero.NETCore.Extensions
 {
+    /// <summary>
+    /// 服务提供扩展方法
+    /// </summary>
     public static class ServiceProviderServiceExtensions
     {
+        /// <summary>
+        /// 注入程序集
+        /// </summary>
+        /// <param name="service"></param>
+        /// <param name="assemblyName">要注入程序集的名称</param>
         public static void AddAssembly(this IServiceCollection service, string assemblyName)
         {
             try
@@ -49,6 +57,24 @@ namespace Zero.NETCore.Extensions
             {
                 new LogClient().WriteException(ex);
             }
+        }
+
+        /// <summary>
+        /// 注入Zero.NETCore程序集
+        /// </summary>
+        /// <param name="service"></param>
+        public static void AddZeroNetCoreAssembly(this IServiceCollection service)
+        {
+            service.AddAssembly("Zero.NETCore");
+        }
+
+        /// <summary>
+        /// 注入Zero.NETCore.Redis程序集,注入之前请确认是否nuget上安装了Zero.NETCore.Redis包
+        /// </summary>
+        /// <param name="service"></param>
+        public static void AddZeroNETCoreRediosAssmbly(this IServiceCollection service)
+        {
+            service.AddAssembly("Zero.NETCore.Redis");
         }
     }
 }

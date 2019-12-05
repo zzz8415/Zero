@@ -4,9 +4,9 @@
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <NeutralLanguage>zh</NeutralLanguage>
-    <AssemblyVersion>1.0.4.0</AssemblyVersion>
-    <FileVersion>1.0.4.0</FileVersion>
-    <Version>1.0.4</Version>
+    <AssemblyVersion>1.0.5.0</AssemblyVersion>
+    <FileVersion>1.0.5.0</FileVersion>
+    <Version>1.0.5</Version>
     <Authors>Zero</Authors>
     <Description>.NET Core核心类库</Description>
     <PackageReleaseNotes>.NET Core核心类库</PackageReleaseNotes>
@@ -17,7 +17,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile></DocumentationFile>
+    <DocumentationFile>E:\GitHub\Zero\Zero.NETCore\Zero.NETCore.xml</DocumentationFile>
     <OutputPath></OutputPath>
   </PropertyGroup>
 
@@ -28,7 +28,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />
-    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="3.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="3.1.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="NLog" Version="4.6.8" />
   </ItemGroup>
