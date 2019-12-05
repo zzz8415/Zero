@@ -37,18 +37,41 @@
             <param name="source"></param>
             <returns></returns>
         </member>
-        <member name="M:Zero.NETCore.Extensions.DateTimeExtensions.ToUnixDateTime(System.Int64)">
+        <member name="M:Zero.NETCore.Extensions.DateTimeExtensions.ToUnixDateTimeFromSeconds(System.Int64)">
             <summary>
             将unix timestamp时间戳(秒) 转换为.NET的DateTime  
             </summary>
-            <param name="timeStamp"></param>
+            <param name="seconds"></param>
             <returns></returns>
         </member>
-        <member name="M:Zero.NETCore.Extensions.DateTimeExtensions.ToUnixTimeStamp(System.DateTime)">
+        <member name="M:Zero.NETCore.Extensions.DateTimeExtensions.ToUnixDateTimeFromMilliSeconds(System.Int64)">
+            <summary>
+            将unix timestamp时间戳(毫秒) 转换为.NET的DateTime  
+            </summary>
+            <param name="milliseconds"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Zero.NETCore.Extensions.DateTimeExtensions.ToUnixTimeSeconds(System.DateTime)">
             <summary>
             将.NET的DateTime转换为unix timestamp时间戳(秒)
             </summary>
             <param name="dateTime"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Zero.NETCore.Extensions.DateTimeExtensions.ToUnixTimeMilliseconds(System.DateTime)">
+            <summary>
+            将.NET的DateTime转换为unix timestamp时间戳(毫秒)
+            </summary>
+            <param name="dateTime"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Zero.NETCore.Extensions.DateTimeExtensions.ToTimeString(System.Int32)">
+            <summary>
+            将秒转换成时间字符串
+            如果小时>0则显示 HH时mm分ss秒
+            否则显示 mm分ss秒
+            </summary>
+            <param name="seconds"></param>
             <returns></returns>
         </member>
         <member name="T:Zero.NETCore.Extensions.EnumExtensions">
@@ -709,6 +732,12 @@
             日志记录类
             </summary>
         </member>
+        <member name="M:Zero.NETCore.LogClient.#ctor(Zero.NETCore.Web.WebClient)">
+            <summary>
+            构造类(可注入)
+            </summary>
+            <param name="webClient"></param>
+        </member>
         <member name="M:Zero.NETCore.LogClient.WriteInfo(System.String)">
             <summary>
             写入普通日志消息
@@ -999,6 +1028,25 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="T:Zero.NETCore.Util.ContentTypeHelper">
+            <summary>
+            ContentType
+            </summary>
+        </member>
+        <member name="M:Zero.NETCore.Util.ContentTypeHelper.GetMimeTypeByFileName(System.String)">
+            <summary>
+            根据文件名获取MimeType
+            </summary>
+            <param name="fileName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Zero.NETCore.Util.ContentTypeHelper.GetMimeTypeByExtName(System.String)">
+            <summary>
+            根据文件后缀名获取MimeType
+            </summary>
+            <param name="extName"></param>
+            <returns></returns>
+        </member>
         <member name="T:Zero.NETCore.Util.CryptoHelper">
             <summary>
             加密帮助类 
@@ -1254,12 +1302,10 @@
             <param name="enumType">Type,该参数的格式为typeof(需要读的枚举类型)</param>
             <returns>键值对</returns>
         </member>
-        <member name="M:Zero.NETCore.Util.FileHelper.GetExtName(System.String)">
+        <member name="T:Zero.NETCore.Util.FileHelper">
             <summary>
-            验证文件名是否是图片
+            文件帮助类
             </summary>
-            <param name="fileName"></param>
-            <returns></returns>
         </member>
         <member name="M:Zero.NETCore.Util.FileHelper.IsImage(System.String)">
             <summary>

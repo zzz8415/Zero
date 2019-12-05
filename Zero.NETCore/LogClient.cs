@@ -19,6 +19,10 @@ namespace Zero.NETCore
 
         private readonly WebClient _webClient = null;
 
+        /// <summary>
+        /// 构造类(可注入)
+        /// </summary>
+        /// <param name="webClient"></param>
         public LogClient(WebClient webClient = null)
         {
             _webClient = webClient;

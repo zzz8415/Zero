@@ -193,17 +193,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Zero.Core\Zero.Core.csproj">
-      <Project>{8f3fbefb-1794-496d-b378-0671b71e3d13}</Project>
-      <Name>Zero.Core</Name>
+    <ProjectReference Include="..\Zero.NETCore.Redis\Zero.NETCore.Redis.csproj">
+      <Project>{0c4c9dec-8485-47c1-be19-3c2781b8df86}</Project>
+      <Name>Zero.NETCore.Redis</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Zero.DataAccess\Zero.DataAccess.csproj">
-      <Project>{96231ADE-E90B-49D5-B7BA-B30D02CB8647}</Project>
-      <Name>Zero.DataAccess</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Zero.Redis\Zero.Redis.csproj">
-      <Project>{48dd48c9-a246-4d34-8429-c4423b294f63}</Project>
-      <Name>Zero.Redis</Name>
+    <ProjectReference Include="..\Zero.NETCore\Zero.NETCore.csproj">
+      <Project>{de559d20-c468-4760-85e5-1ac8e6eedcf0}</Project>
+      <Name>Zero.NETCore</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

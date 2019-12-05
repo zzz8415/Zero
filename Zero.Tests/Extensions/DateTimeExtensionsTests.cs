@@ -1,5 +1,4 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Zero.Core.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,11 +42,13 @@ namespace Zero.Core.Extensions.Tests
         [TestMethod()]
         public void FromDateTimeTest()
         {
-            var ticks = 1464335280L;
-            var time = ticks.ToUnixDateTime();
-            var t = time.ToUnixTimeStamp();
+            var ses = 9999999;
+            var s = ses.ToTimeString();
+            //var ticks = 1464335280L;
+            //var time = ticks.ToUnixDateTime();
+            //var t = time.ToUnixTimeStamp();
 
-            var x = t;
+            //var x = t;
             Assert.Fail();
         }
     }

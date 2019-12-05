@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26430.6
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29519.181
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zero.Tests", "Zero.Tests\Zero.Tests.csproj", "{EFE18681-82C8-4C37-9866-7D50AFA77C74}"
 EndProject
@@ -37,7 +37,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zero.Sample", "Zero.Sample\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Zero.NETCore", "Zero.NETCore\Zero.NETCore.csproj", "{DE559D20-C468-4760-85E5-1AC8E6EEDCF0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zero.NETCore.Redis", "Zero.NETCore.Redis\Zero.NETCore.Redis.csproj", "{0C4C9DEC-8485-47C1-BE19-3C2781B8DF86}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Zero.NETCore.Redis", "Zero.NETCore.Redis\Zero.NETCore.Redis.csproj", "{0C4C9DEC-8485-47C1-BE19-3C2781B8DF86}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zero.NETCoreTests", "Zero.NETCoreTests\Zero.NETCoreTests.csproj", "{12C7393B-74A1-49A9-8841-DF31E38A41A0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -139,6 +141,18 @@ Global
 		{0C4C9DEC-8485-47C1-BE19-3C2781B8DF86}.Release|x64.Build.0 = Release|Any CPU
 		{0C4C9DEC-8485-47C1-BE19-3C2781B8DF86}.Release|x86.ActiveCfg = Release|Any CPU
 		{0C4C9DEC-8485-47C1-BE19-3C2781B8DF86}.Release|x86.Build.0 = Release|Any CPU
+		{12C7393B-74A1-49A9-8841-DF31E38A41A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12C7393B-74A1-49A9-8841-DF31E38A41A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12C7393B-74A1-49A9-8841-DF31E38A41A0}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{12C7393B-74A1-49A9-8841-DF31E38A41A0}.Debug|x64.Build.0 = Debug|Any CPU
+		{12C7393B-74A1-49A9-8841-DF31E38A41A0}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{12C7393B-74A1-49A9-8841-DF31E38A41A0}.Debug|x86.Build.0 = Debug|Any CPU
+		{12C7393B-74A1-49A9-8841-DF31E38A41A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12C7393B-74A1-49A9-8841-DF31E38A41A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{12C7393B-74A1-49A9-8841-DF31E38A41A0}.Release|x64.ActiveCfg = Release|Any CPU
+		{12C7393B-74A1-49A9-8841-DF31E38A41A0}.Release|x64.Build.0 = Release|Any CPU
+		{12C7393B-74A1-49A9-8841-DF31E38A41A0}.Release|x86.ActiveCfg = Release|Any CPU
+		{12C7393B-74A1-49A9-8841-DF31E38A41A0}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
