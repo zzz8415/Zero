@@ -10,7 +10,7 @@ namespace Zero.NETCore.Result
     /// <summary>
     /// 返回结果集
     /// </summary>
-    public abstract class SysResult
+    public class SysResult
     {
         /// <summary>
         /// 错误码
@@ -40,12 +40,6 @@ namespace Zero.NETCore.Result
             get { return Code == ErrorCode.sys_success; }
         }
 
-        /// <summary>
-        /// 获取数据
-        /// </summary>
-        /// <returns></returns>
-        public abstract object GetData();
-
     }
 
 
@@ -65,7 +59,7 @@ namespace Zero.NETCore.Result
         /// 获取数据
         /// </summary>
         /// <returns></returns>
-        public override object GetData()
+        public object GetResult()
         {
             return this.Result;
         }

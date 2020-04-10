@@ -952,12 +952,6 @@
             是否成功
             </summary>
         </member>
-        <member name="M:Zero.NETCore.Result.SysResult.GetData">
-            <summary>
-            获取数据
-            </summary>
-            <returns></returns>
-        </member>
         <member name="T:Zero.NETCore.Result.SysResult`1">
             <summary>
             返回结果集
@@ -969,7 +963,7 @@
             返回结果
             </summary>
         </member>
-        <member name="M:Zero.NETCore.Result.SysResult`1.GetData">
+        <member name="M:Zero.NETCore.Result.SysResult`1.GetResult">
             <summary>
             获取数据
             </summary>
