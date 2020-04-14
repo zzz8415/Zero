@@ -57,7 +57,10 @@ namespace Zero.NETCore.Web
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="key"></param>
-        /// <param name="cache"></param>
+        /// <param name="value"></param>
+        /// <param name="minutes"></param>
+        /// <param name="isPenetrate"></param>
+        /// <returns></returns>
         public T Set<T>(string key, T value, int minutes = 15, bool isPenetrate = true)
         {
             MemoryCacheEntryOptions cacheEntryOptions = new MemoryCacheEntryOptions()
@@ -79,6 +82,7 @@ namespace Zero.NETCore.Web
         /// <param name="key"></param>
         /// <param name="func"></param>
         /// <param name="minutes"></param>
+        /// <param name="isPenetrate"></param>
         /// <returns></returns>
         public T Get<T>(string key, Func<T> func, int minutes = 15, bool isPenetrate = true)
         {

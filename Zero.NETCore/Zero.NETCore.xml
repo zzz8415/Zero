@@ -4,6 +4,16 @@
         <name>Zero.NETCore</name>
     </assembly>
     <members>
+        <member name="T:Zero.NETCore.Attribute.InjectAttribute">
+            <summary>
+            注入服务属性
+            </summary>
+        </member>
+        <member name="P:Zero.NETCore.Attribute.InjectAttribute.OptionsLifetime">
+            <summary>
+            什么周期类型,默认Scoped,线程内有效
+            </summary>
+        </member>
         <member name="T:Zero.NETCore.Extensions.DateTimeExtensions">
             <summary>
             日期扩展方法
@@ -72,6 +82,21 @@
             否则显示 mm分ss秒
             </summary>
             <param name="seconds"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Zero.NETCore.Extensions.DictionaryExtensions">
+            <summary>
+            字典扩展
+            </summary>
+        </member>
+        <member name="M:Zero.NETCore.Extensions.DictionaryExtensions.GetValue``2(System.Collections.Generic.Dictionary{``0,``1},``0)">
+            <summary>
+            获取值
+            </summary>
+            <typeparam name="Tkey"></typeparam>
+            <typeparam name="TValue"></typeparam>
+            <param name="source"></param>
+            <param name="key"></param>
             <returns></returns>
         </member>
         <member name="T:Zero.NETCore.Extensions.EnumExtensions">
@@ -1412,14 +1437,18 @@
             <param name="encryKey"></param>
             <returns></returns>
         </member>
+        <member name="T:Zero.NETCore.Web.AppPageList`1">
+            <summary>
+            移动端分页列表
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
         <member name="M:Zero.NETCore.Web.AppPageList`1.#ctor(System.Collections.Generic.List{`0},System.Int32)">
             <summary>
             初始化
             </summary>
             <param name="list"></param>
-            <param name="pageIndex"></param>
             <param name="pageSize"></param>
-            <param name="RecordCount"></param>
         </member>
         <member name="P:Zero.NETCore.Web.AppPageList`1.List">
             <summary>
@@ -1536,7 +1565,10 @@
             </summary>
             <typeparam name="T"></typeparam>
             <param name="key"></param>
-            <param name="cache"></param>
+            <param name="value"></param>
+            <param name="minutes"></param>
+            <param name="isPenetrate"></param>
+            <returns></returns>
         </member>
         <member name="M:Zero.NETCore.Web.WebCache.Get``1(System.String,System.Func{``0},System.Int32,System.Boolean)">
             <summary>
@@ -1546,6 +1578,7 @@
             <param name="key"></param>
             <param name="func"></param>
             <param name="minutes"></param>
+            <param name="isPenetrate"></param>
             <returns></returns>
         </member>
         <member name="M:Zero.NETCore.Web.WebCache.Clear">
@@ -1586,7 +1619,7 @@
             <summary>
             初始化
             </summary>
-            <param name="request"></param>
+            <param name="httpContextAccessor"></param>
         </member>
         <member name="M:Zero.NETCore.Web.WebClient.GetParam(System.String)">
             <summary>
@@ -1594,6 +1627,11 @@
             </summary>
             <param name="paramName"></param>
             <returns></returns>
+        </member>
+        <member name="P:Zero.NETCore.Web.WebClient.IP">
+            <summary>
+            客户端IP
+            </summary>
         </member>
         <member name="P:Zero.NETCore.Web.WebClient.PostData">
             <summary>
@@ -1631,7 +1669,6 @@
             </summary>
             <typeparam name="T"></typeparam>
             <param name="key"></param>
-            <param name="defaultValue"></param>
             <returns></returns>
         </member>
         <member name="M:Zero.NETCore.Web.WebConfig.Set``1(System.String,``0)">

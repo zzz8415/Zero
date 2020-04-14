@@ -26,7 +26,7 @@ namespace Zero.NETCore.Web
         /// <summary>
         /// 初始化
         /// </summary>
-        /// <param name="request"></param>
+        /// <param name="httpContextAccessor"></param>
         public WebClient(IHttpContextAccessor httpContextAccessor)
         {
             HttpContextAccessor = httpContextAccessor;
@@ -48,7 +48,9 @@ namespace Zero.NETCore.Web
             return null;
         }
 
-
+        /// <summary>
+        /// 客户端IP
+        /// </summary>
         public string IP
         {
             get

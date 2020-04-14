@@ -57,12 +57,12 @@ namespace Zero.NETCore.Redis
             return this.Client.StringSet(key, value.ToJson());
         }
 
-        /// <summary>
-        /// 存入Redis
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="key"></param>
-        /// <param name="value"></param>
+        ///// <summary>
+        ///// 存入Redis
+        ///// </summary>
+        ///// <typeparam name="T"></typeparam>
+        ///// <param name="key"></param>
+        ///// <param name="value"></param>
         //public bool SetProtobuf<T>(string key, T value)
         //{
         //    return this.Client.StringSet(key, value.ToProtoBuf());
@@ -90,13 +90,13 @@ namespace Zero.NETCore.Redis
             return this.Client.StringSet(key, value.ToJson(), expiresIn);
         }
 
-        /// <summary>
-        /// 存入Redis
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="key"></param>
-        /// <param name="value"></param>
-        /// <param name="expiresIn"></param>
+        ///// <summary>
+        ///// 存入Redis
+        ///// </summary>
+        ///// <typeparam name="T"></typeparam>
+        ///// <param name="key"></param>
+        ///// <param name="value"></param>
+        ///// <param name="expiresIn"></param>
         //public bool SetProtobuf<T>(string key, T value, TimeSpan expiresIn)
         //{
         //    return this.Client.StringSet(key, value.ToProtoBuf(), expiresIn);
@@ -125,12 +125,12 @@ namespace Zero.NETCore.Redis
             return value.IsNullOrEmpty ? default : JsonExtensions.DeserializeJson<T>(value);
         }
 
-        /// <summary>
-        /// 从Redis读取
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="key"></param>
-        /// <returns></returns>
+        ///// <summary>
+        ///// 从Redis读取
+        ///// </summary>
+        ///// <typeparam name="T"></typeparam>
+        ///// <param name="key"></param>
+        ///// <returns></returns>
         //public T GetProtobuf<T>(string key) where T : class
         //{
         //    var value = this.Client.StringGet(key);
@@ -170,12 +170,12 @@ namespace Zero.NETCore.Redis
             return dic;
         }
 
-        /// <summary>
-        /// 根据Key数组从Redis读取
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="keys"></param>
-        /// <returns></returns>
+        ///// <summary>
+        ///// 根据Key数组从Redis读取
+        ///// </summary>
+        ///// <typeparam name="T"></typeparam>
+        ///// <param name="keys"></param>
+        ///// <returns></returns>
         //public IDictionary<string, T> GetProtobuf<T>(List<string> keys) where T : class
         //{
         //    var redisKeys = new RedisKey[keys.Count];
@@ -243,11 +243,11 @@ namespace Zero.NETCore.Redis
             return this.Client.StringSet(dic.ToArray());
         }
 
-        /// <summary>
-        /// 按参数指定的键值对，逐一存入Redis，使用Protobuf序列化
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="keyValues"></param>
+        ///// <summary>
+        ///// 按参数指定的键值对，逐一存入Redis，使用Protobuf序列化
+        ///// </summary>
+        ///// <typeparam name="T"></typeparam>
+        ///// <param name="keyValues"></param>
         //public bool SetProtobuf<T>(Dictionary<string, T> keyValues)
         //{
         //    var dic = new Dictionary<RedisKey, RedisValue>();

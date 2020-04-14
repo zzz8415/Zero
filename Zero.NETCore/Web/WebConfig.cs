@@ -42,7 +42,6 @@ namespace Zero.NETCore.Web
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="key"></param>
-        /// <param name="defaultValue"></param>
         /// <returns></returns>
         public T Get<T>(string key) where T : new()
         {

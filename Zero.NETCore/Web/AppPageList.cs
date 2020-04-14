@@ -5,6 +5,10 @@ using System.Text;
 
 namespace Zero.NETCore.Web
 {
+    /// <summary>
+    /// 移动端分页列表
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     [Serializable]
     public class AppPageList<T>
     {
@@ -12,9 +16,7 @@ namespace Zero.NETCore.Web
         /// 初始化
         /// </summary>
         /// <param name="list"></param>
-        /// <param name="pageIndex"></param>
         /// <param name="pageSize"></param>
-        /// <param name="RecordCount"></param>
         public AppPageList(List<T> list, int pageSize)
         {
             this.List = list;

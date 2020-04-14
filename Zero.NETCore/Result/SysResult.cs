@@ -1,8 +1,8 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace Zero.NETCore.Result
 {
@@ -26,6 +26,7 @@ namespace Zero.NETCore.Result
         /// 是否异常
         /// </summary>
         [JsonIgnore]
+        [Newtonsoft.Json.JsonIgnore]
         public bool OccurError
         {
             get { return Code != ErrorCode.sys_success; }
@@ -35,6 +36,7 @@ namespace Zero.NETCore.Result
         /// 是否成功
         /// </summary>
         [JsonIgnore]
+        [Newtonsoft.Json.JsonIgnore]
         public bool Success
         {
             get { return Code == ErrorCode.sys_success; }

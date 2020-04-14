@@ -3,15 +3,15 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.0.3</Version>
+    <Version>1.0.4</Version>
     <Authors>Zero</Authors>
     <Description>.NET Core Redis核心类库</Description>
     <Copyright>Copyright 2018</Copyright>
     <PackageProjectUrl>https://github.com/zzz8415/Zero</PackageProjectUrl>
     <RepositoryUrl>https://github.com/zzz8415/Zero</RepositoryUrl>
     <RepositoryType>GitHub</RepositoryType>
-    <AssemblyVersion>1.0.3.0</AssemblyVersion>
-    <FileVersion>1.0.3.0</FileVersion>
+    <AssemblyVersion>1.0.4.0</AssemblyVersion>
+    <FileVersion>1.0.4.0</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -21,8 +21,7 @@
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="StackExchange.Redis" Version="2.0.601" />
-    <PackageReference Include="Zero.NETCore" Version="1.0.4" />
+    <PackageReference Include="StackExchange.Redis" Version="2.1.30" />
   </ItemGroup>
 
   <ItemGroup>
