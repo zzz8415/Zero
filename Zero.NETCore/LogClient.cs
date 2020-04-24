@@ -12,6 +12,27 @@ namespace Zero.NETCore
     /// <summary>
     /// 日志记录类
     /// 20200423:调整为新的配置文件
+    ///<variable name="logDirectory" value="Logs"/>
+    ///<targets>
+    ///  <target xsi:type="File" name="Default"
+    ///          fileName="${logDirectory}/${level}/${date:format=yyyyMMddHH}.txt"
+    ///          layout="${longdate} ${message}"
+    ///          archiveAboveSize="5000000" />
+    ///
+    ///  <target xsi:type="File" name="Custom"
+    ///          fileName="${logDirectory}/${event-context:DirOrPrefix}/${date:format=yyyyMMddHH}.txt"
+    ///          layout="${longdate} ${message}"
+    ///          archiveAboveSize="5000000" />
+    ///</targets>
+    ///<rules>
+    ///  <logger name = "*" level="Info" writeTo="Default"/>
+    ///  <logger name = "*" level="Trace" writeTo="Default"/>
+    ///  <logger name = "*" level="Debug" writeTo="Default"/>
+    ///  <logger name = "*" level="Error" writeTo="Default"/>
+    ///  <logger name = "*" level="Fatal" writeTo="Default"/>
+    ///
+    ///  <logger name = "LogCustom" level="Warn" writeTo="Custom" />
+    ///</rules>
     /// </summary>
     [Inject(OptionsLifetime = ServiceLifetime.Scoped)]
     public class LogClient

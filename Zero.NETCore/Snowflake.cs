@@ -6,7 +6,11 @@ using Zero.NETCore.Attribute;
 namespace Zero.NETCore
 {
     /// <summary>
-    /// 雪花算法
+    /// 雪花算法 配置如下
+    /// <Snowflake>
+    ///     <WorkID>0</WorkID>
+    ///     <OffsetDate>2010-10-10</OffsetDate>
+    /// </Snowflake>
     /// </summary>
     [Inject(OptionsLifetime = ServiceLifetime.Singleton)]
     public class Snowflake
