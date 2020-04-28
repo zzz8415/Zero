@@ -3,6 +3,7 @@ using Zero.NETCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Zero.NETCore.Inject;
 
 namespace Zero.NETCore.Tests
 {
@@ -15,13 +16,12 @@ namespace Zero.NETCore.Tests
             var client = new LogClient();
             try
             {
-                
                 client.WriteInfo("WriteInfo");
                 client.WriteInfo("WriteInfo");
                 client.WriteTrace("WriteTrace");
                 client.WriteTrace("WriteTrace");
-                client.WriteCustom("WriteCustom", "/WriteCustom");
-                client.WriteCustom("WriteCustom", "/WriteCustom");
+                client.WriteCustom("WriteCustom", "WriteCustom");
+                client.WriteCustom("WriteCustom", "WriteCustom");
                 client.WriteDebug("WriteDebug");
                 client.WriteDebug("WriteDebug");
                 client.WriteError("WriteError");

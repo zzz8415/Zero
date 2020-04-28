@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Zero.NETCore.Attribute;
 
-namespace Zero.NETCore.Web
+namespace Zero.NETCore.Inject
 {
     /// <summary>
     /// 配置帮助类

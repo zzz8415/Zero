@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Zero.NETCore.Web.Request;
 
 namespace Zero.NETCore.Web
 {
@@ -28,6 +29,19 @@ namespace Zero.NETCore.Web
                 this.List = this.List.Take(pageSize).ToList();
             }
         }
+
+        /// <summary>
+        /// 初始化
+        /// </summary>
+        /// <param name="list"></param>
+        /// <param name="isLastPage"></param>
+        public AppPageList(List<T> list, bool isLastPage)
+        {
+            this.List = list;
+
+            this.IsLastPage = isLastPage;
+        }
+
 
         /// <summary>
         /// 数据列表

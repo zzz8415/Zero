@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Zero.NETCore.Web.Request;
 
 namespace Zero.NETCore.Web
 {
@@ -13,41 +14,31 @@ namespace Zero.NETCore.Web
         /// <summary>
         /// 初始化
         /// </summary>
-        /// <param name="pageIndex"></param>
-        /// <param name="pageSize"></param>
-        public PageList(int pageIndex, int pageSize)
-        {
-            PageIndex = pageIndex;
-            PageSize = pageSize;
-        }
-
-        /// <summary>
-        /// 初始化
-        /// </summary>
-        /// <param name="list"></param>
-        /// <param name="pageIndex"></param>
-        /// <param name="pageSize"></param>
-        /// <param name="recordCount"></param>
-        public PageList(List<T> list, int pageIndex, int pageSize, long recordCount)
-        {
-            PageIndex = pageIndex;
-            PageSize = pageSize;
-            RecordCount = recordCount;
-            List = list;
-        }
-
-        /// <summary>
-        /// 初始化
-        /// </summary>
         /// <param name="list"></param>
         /// <param name="pageIndex"></param>
         /// <param name="pageSize"></param>
         /// <param name="recordCount"></param>
         /// <param name="extend"></param>
-        public PageList(List<T> list, int pageIndex, int pageSize, long recordCount, object extend)
+        public PageList(List<T> list, int pageIndex, int pageSize, long recordCount, object extend = null)
         {
             PageIndex = pageIndex;
             PageSize = pageSize;
+            RecordCount = recordCount;
+            List = list;
+            Extend = extend;
+        }
+
+        /// <summary>
+        /// 初始化
+        /// </summary>
+        /// <param name="list"></param>
+        /// <param name="pageRequest"></param>
+        /// <param name="recordCount"></param>
+        /// <param name="extend"></param>
+        public PageList(List<T> list, PageRequest pageRequest, long recordCount, object extend = null)
+        {
+            PageIndex = pageRequest.PageIndex;
+            PageSize = pageRequest.PageSize;
             RecordCount = recordCount;
             List = list;
             Extend = extend;

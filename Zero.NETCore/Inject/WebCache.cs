@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using Zero.NETCore.Attribute;
 
-namespace Zero.NETCore.Web
+namespace Zero.NETCore.Inject
 {
     /// <summary>
     /// 缓存帮助类

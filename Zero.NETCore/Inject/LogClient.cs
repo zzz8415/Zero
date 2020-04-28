@@ -7,7 +7,7 @@ using System.Text;
 using Zero.NETCore.Attribute;
 using Zero.NETCore.Web;
 
-namespace Zero.NETCore
+namespace Zero.NETCore.Inject
 {
     /// <summary>
     /// 日志记录类

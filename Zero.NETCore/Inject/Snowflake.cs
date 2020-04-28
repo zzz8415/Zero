@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using Zero.NETCore.Attribute;
 
-namespace Zero.NETCore
+namespace Zero.NETCore.Inject
 {
     /// <summary>
     /// 雪花算法 配置如下

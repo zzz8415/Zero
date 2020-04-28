@@ -5,7 +5,7 @@ using System.IO;
 using System.Text;
 using Zero.NETCore.Attribute;
 
-namespace Zero.NETCore.Web
+namespace Zero.NETCore.Inject
 {
     /// <summary>
     /// Web客户端信息

@@ -1,0 +1,116 @@
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Collections.Generic;
+using System.Net;
+using System.Text;
+using System.Threading.Tasks;
+using Zero.NETCore.Attribute;
+using Zero.NETCore.Converter;
+using Zero.NETCore.Extensions;
+using Zero.NETCore.Inject;
+using Zero.NETCore.Result;
+
+namespace Zero.NETCore.Web
+{
+    public class BaseStartup
+    {
+        public IConfiguration Configuration { get; }
+
+        public BaseStartup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
+        private IServiceCollection _services = null;
+
+        /// <summary>
+        /// 加入超时过滤器,实体验证,json转化,Zero及标准库注入等
+        /// </summary>
+        /// <param name="services"></param>
+        public void BaseConfigureServices(IServiceCollection services)
+        {
+            _services = services;
+
+            services.AddControllers(options =>
+            {
+                options.Filters.Add<TimerAttribute>();
+                options.Filters.Add<ModelValidAttribute>();
+            }).AddNewtonsoftJson(options =>
+            {
+                options.SerializerSettings.Converters.Add(new LongToStringConverter());
+            });
+            services.Configure<ApiBehaviorOptions>(options => options.SuppressModelStateInvalidFilter = true);
+
+            services.AddMemoryCache();
+
+            services.AddCors();
+
+            services.AddHttpClient();
+
+            services.AddHttpContextAccessor();
+
+            services.AddZeroNetCoreAssembly();
+        }
+
+        public void AddAssembly(string assemblyName)
+        {
+            _services.AddAssembly(assemblyName);
+        }
+
+        /// <summary>
+        /// 异常处理
+        /// </summary>
+        /// <param name="options"></param>
+        private void HandlerException(IApplicationBuilder options)
+        {
+            options.Run(async context =>
+            {
+                context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                context.Response.ContentType = "application/json;charset=utf-8";
+                var ex = context.Features.Get<IExceptionHandlerFeature>().Error;
+                if (ex != null)
+                {
+                    new LogClient().WriteException(ex);
+
+                    await context.Response.WriteAsync(new {
+                        code = ErrorCode.sys_fail, 
+                        errorMsg = $"错误状态码:{ (int)HttpStatusCode.InternalServerError }" 
+                    }.ToJson(), Encoding.UTF8);
+                }
+            });
+        }
+
+        /// <summary>
+        /// 处理异常状态码
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        private async Task HandlerStatusCode(StatusCodeContext context)
+        {
+            new LogClient().WriteCustom(context.HttpContext.Request.Path, $"{(int)context.HttpContext.Response.StatusCode }Error");
+
+            context.HttpContext.Response.ContentType = "application/json";
+
+            await context.HttpContext.Response.WriteAsync(new { 
+                    code = ErrorCode.sys_fail, 
+                    errorMsg = $"错误状态码:{(int)context.HttpContext.Response.StatusCode }" 
+                }.ToJson(), Encoding.UTF8);
+        }
+
+        /// <summary>
+        /// 错误信息处理
+        /// </summary>
+        /// <param name="app"></param>
+        public void BaseConfigure(IApplicationBuilder app)
+        {
+            app.UseExceptionHandler(HandlerException);
+
+            app.UseStatusCodePages(HandlerStatusCode);
+        }
+    }
+}

@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using Zero.NETCore.Inject;
 
 namespace Zero.NETCore.Extensions
 {
