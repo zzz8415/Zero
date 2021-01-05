@@ -65,7 +65,7 @@ namespace Zero.NETCore.Inject
         {
             MemoryCacheEntryOptions cacheEntryOptions = new MemoryCacheEntryOptions()
             // Keep in cache for this time, reset time if accessed.
-            .SetSlidingExpiration(TimeSpan.FromMinutes(minutes));
+            .SetAbsoluteExpiration(TimeSpan.FromMinutes(minutes));
 
             // 如果非穿透 或者 值不为空 ,则保存到缓存
             if (!isPenetrate || !IsDefaultValue(value))
@@ -91,7 +91,7 @@ namespace Zero.NETCore.Inject
             {
                 MemoryCacheEntryOptions cacheEntryOptions = new MemoryCacheEntryOptions()
                // Keep in cache for this time, reset time if accessed.
-               .SetSlidingExpiration(TimeSpan.FromMinutes(minutes));
+               .SetAbsoluteExpiration(TimeSpan.FromMinutes(minutes));
                 return MemoryCache.GetOrCreate(key, x =>
                 {
                     return func();
@@ -119,7 +119,7 @@ namespace Zero.NETCore.Inject
         {
             const BindingFlags flags = BindingFlags.Instance | BindingFlags.NonPublic;
             object entries = MemoryCache.GetType().GetField("_entries", flags).GetValue(MemoryCache);
-            if (!(entries is IDictionary cacheItems))
+            if (entries is not IDictionary cacheItems)
             {
                 return;
             }
