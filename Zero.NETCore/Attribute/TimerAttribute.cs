@@ -7,15 +7,32 @@ using Zero.NETCore.Inject;
 
 namespace Zero.NETCore.Attribute
 {
+    /// <summary>
+    /// 超时输出
+    /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
     public class TimerAttribute : ActionFilterAttribute
     {
+        /// <summary>
+        /// 
+        /// </summary>
         private readonly int _timeOutSeconds = 0;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="timeOutSeconds"></param>
         public TimerAttribute(int timeOutSeconds = 2000)
         {
             this._timeOutSeconds = timeOutSeconds;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="next"></param>
+        /// <returns></returns>
         public override async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
             var ticks = Environment.TickCount;

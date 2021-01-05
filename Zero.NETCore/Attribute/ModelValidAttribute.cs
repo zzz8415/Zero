@@ -9,9 +9,16 @@ using Zero.NETCore.Result;
 
 namespace Zero.NETCore.Attribute
 {
+    /// <summary>
+    /// 模型验证
+    /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
     public class ModelValidAttribute: ActionFilterAttribute
     {
+        /// <summary>
+        /// 模型验证
+        /// </summary>
+        /// <param name="context"></param>
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             if (!context.ModelState.IsValid)

@@ -55,10 +55,16 @@ namespace Zero.NETCore.Inject
         {
             get
             {
-                return this.Request.HttpContext.Connection.RemoteIpAddress.ToString();
+                var headers = Request.Headers;
+
+                if (headers.ContainsKey("X-Forwarded-For"))
+                {
+                    return headers["X-Forwarded-For"].ToString();
+                }
+
+                return Request.HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
             }
         }
-
         private string _postData = null;
 
         /// <summary>
@@ -70,7 +76,10 @@ namespace Zero.NETCore.Inject
             {
                 if (_postData == null && Request.Body != null)
                 {
+                    Request.Body.Position = 0;
+
                     using var reader = new StreamReader(Request.Body);
+
                     _postData = reader.ReadToEndAsync().Result;
                 }
                 return _postData;

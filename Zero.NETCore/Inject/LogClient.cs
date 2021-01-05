@@ -163,7 +163,12 @@ namespace Zero.NETCore.Inject
                 sb.AppendLine();
                 if (_webClient.PostData != null)
                 {
+                    sb.AppendFormat("Ip:{0}", _webClient.IP);
+
+                    sb.AppendLine();
+
                     sb.AppendFormat("PostData:{0}", _webClient.PostData);
+
                     sb.AppendLine();
                 }
             }
@@ -173,7 +178,7 @@ namespace Zero.NETCore.Inject
                 sb.AppendFormat("Exception:{0}", ex);
                 sb.AppendLine();
             }
-      
+
             return sb.ToString();
         }
 

@@ -17,10 +17,20 @@ using Zero.NETCore.Result;
 
 namespace Zero.NETCore.Web
 {
+    /// <summary>
+    /// 启动基类
+    /// </summary>
     public class BaseStartup
     {
+        /// <summary>
+        /// 配置
+        /// </summary>
         public IConfiguration Configuration { get; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="configuration"></param>
         public BaseStartup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -57,6 +67,10 @@ namespace Zero.NETCore.Web
             services.AddZeroNetCoreAssembly();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="assemblyName"></param>
         public void AddAssembly(string assemblyName)
         {
             _services.AddAssembly(assemblyName);
@@ -111,6 +125,15 @@ namespace Zero.NETCore.Web
             app.UseExceptionHandler(HandlerException);
 
             app.UseStatusCodePages(HandlerStatusCode);
+
+            app.Use(async (context, next) =>
+            {
+                if (context.Request.Method == "POST")
+                {
+                    HttpRequestRewindExtensions.EnableBuffering(context.Request);
+                }
+                await next();
+            });
         }
     }
 }
