@@ -14,6 +14,14 @@ namespace Zero.NETCore.Web
         /// <summary>
         /// 初始化
         /// </summary>
+        public PageList()
+        {
+
+        }
+
+        /// <summary>
+        /// 初始化
+        /// </summary>
         /// <param name="list"></param>
         /// <param name="pageIndex"></param>
         /// <param name="pageSize"></param>

@@ -1804,6 +1804,11 @@
             </summary>
             <typeparam name="T"></typeparam>
         </member>
+        <member name="M:Zero.NETCore.Web.AppPageList`1.#ctor">
+            <summary>
+            初始化
+            </summary>
+        </member>
         <member name="M:Zero.NETCore.Web.AppPageList`1.#ctor(System.Collections.Generic.List{`0},System.Int32)">
             <summary>
             初始化
@@ -1880,6 +1885,11 @@
             分页列表
             </summary>
             <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:Zero.NETCore.Web.PageList`1.#ctor">
+            <summary>
+            初始化
+            </summary>
         </member>
         <member name="M:Zero.NETCore.Web.PageList`1.#ctor(System.Collections.Generic.List{`0},System.Int32,System.Int32,System.Int64,System.Object)">
             <summary>

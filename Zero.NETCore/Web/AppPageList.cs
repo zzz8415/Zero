@@ -16,6 +16,14 @@ namespace Zero.NETCore.Web
         /// <summary>
         /// 初始化
         /// </summary>
+        public AppPageList()
+        {
+
+        }
+
+        /// <summary>
+        /// 初始化
+        /// </summary>
         /// <param name="list"></param>
         /// <param name="pageSize"></param>
         public AppPageList(List<T> list, int pageSize)
