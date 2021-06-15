@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Zero.NETCore.Inject;
+using System.Diagnostics;
+using FreeRedis;
 
 namespace Zero.NETCore.Tests
 {
@@ -38,6 +40,46 @@ namespace Zero.NETCore.Tests
                 client.WriteException(ex);
             }
 
+            Assert.Fail();
+        }
+
+
+        [TestMethod()]
+        public void RedisTest()
+        {
+            var timer = new Stopwatch();
+            var redisKey = $"Geekee.CoinBot.TacticInvest.10001";
+            //var cst = "127.0.0.1:6379,defaultDatabase=0";
+            var cst = "47.244.91.220:63791,password=Geekee2018,defaultDatabase=0";
+            timer.Start();
+            timer.Stop();
+
+
+            for (var i = 0; i < 5; i++)
+            {
+                timer.Reset();
+                timer.Start();
+                var client = new RedisClient(cst);
+                var ts = client.HKeys(redisKey);
+                timer.Stop();
+                Console.WriteLine(timer.Elapsed);
+                new LogClient().WriteInfo(i + " 1 " + timer.Elapsed.ToString());
+
+                timer.Reset();
+                timer.Start();
+                var client2 = StackExchange.Redis.ConnectionMultiplexer.Connect(cst);
+                var ts2 = client2.GetDatabase().HashKeys(redisKey);
+                timer.Stop();
+                new LogClient().WriteInfo(i + " 2 " + timer.Elapsed.ToString());
+
+                timer.Reset();
+                timer.Start();
+                var client3 = new CSRedis.CSRedisClient(cst);
+                var ts3 = client.HKeys(redisKey);
+                timer.Stop();
+                Console.WriteLine(timer.Elapsed);
+                new LogClient().WriteInfo(i + " 3 " + timer.Elapsed.ToString());
+            }
             Assert.Fail();
         }
     }
