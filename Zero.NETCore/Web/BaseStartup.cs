@@ -22,19 +22,19 @@ namespace Zero.NETCore.Web
     /// </summary>
     public class BaseStartup
     {
-        /// <summary>
-        /// 配置
-        /// </summary>
-        public IConfiguration Configuration { get; }
+        ///// <summary>
+        ///// 配置
+        ///// </summary>
+        //public IConfiguration Configuration { get; }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="configuration"></param>
-        public BaseStartup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        ///// <param name="configuration"></param>
+        //public BaseStartup(IConfiguration configuration)
+        //{
+        //    Configuration = configuration;
+        //}
 
         private IServiceCollection _services = null;
 
@@ -122,6 +122,7 @@ namespace Zero.NETCore.Web
         /// <param name="app"></param>
         public void BaseConfigure(IApplicationBuilder app)
         {
+
             app.UseExceptionHandler(HandlerException);
 
             app.UseStatusCodePages(HandlerStatusCode);

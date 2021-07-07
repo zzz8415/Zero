@@ -69,13 +69,13 @@ namespace Zero.NETCore.Extensions
             service.AddAssembly("Zero.NETCore");
         }
 
-        /// <summary>
-        /// 注入Zero.NETCore.Redis程序集,注入之前请确认是否nuget上安装了Zero.NETCore.Redis包
-        /// </summary>
-        /// <param name="service"></param>
-        public static void AddZeroNETCoreRedisAssembly(this IServiceCollection service)
-        {
-            service.AddAssembly("Zero.NETCore.Redis");
-        }
+        ///// <summary>
+        ///// 注入Zero.NETCore.Redis程序集,注入之前请确认是否nuget上安装了Zero.NETCore.Redis包
+        ///// </summary>
+        ///// <param name="service"></param>
+        //public static void AddZeroNETCoreRedisAssembly(this IServiceCollection service)
+        //{
+        //    service.AddAssembly("Zero.NETCore.Redis");
+        //}
     }
 }

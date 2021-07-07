@@ -76,9 +76,9 @@ namespace Zero.NETCore.Inject
             {
                 if (_postData == null && Request.Body != null)
                 {
-                    Request.Body.Position = 0;
-
                     using var reader = new StreamReader(Request.Body);
+
+                    reader.BaseStream.Seek(0, SeekOrigin.Begin);
 
                     _postData = reader.ReadToEndAsync().Result;
                 }
