@@ -73,11 +73,7 @@ namespace Zero.NETCore.Util
         /// <returns></returns>
         public static string MD5_Encrypt(byte[] source)
         {
-            byte[] newSource = null;
-            using (MD5 MD5 = new MD5CryptoServiceProvider())
-            {
-                newSource = MD5.ComputeHash(source);
-            }
+            byte[] newSource = MD5.HashData(source);
             string byte2String = null;
             for (int i = 0; i < newSource.Length; i++)
             {
@@ -148,11 +144,8 @@ namespace Zero.NETCore.Util
                 b[i] = t;
                 i++;
             }
-            byte[] newSource = null;
-            using (MD5 MD5 = new MD5CryptoServiceProvider())
-            {
-                newSource = MD5.ComputeHash(b);
-            }
+            byte[] newSource = MD5.HashData(b);
+
             string byte2String = null;
             for (i = 0; i < newSource.Length; i++)
             {
@@ -198,15 +191,14 @@ namespace Zero.NETCore.Util
             //使得输入密码必须输入英文文本  
             //            des.Key = UTF8Encoding.UTF8.GetBytes(key);
             //            des.IV  = UTF8Encoding.UTF8.GetBytes(key);
-            StringBuilder ret = new StringBuilder();
-            using DESCryptoServiceProvider des = new DESCryptoServiceProvider
-            {
-                Key = Encoding.Default.GetBytes(key),
-                IV = Encoding.Default.GetBytes(key)
-            };
+            StringBuilder ret = new();
 
-            using MemoryStream ms = new MemoryStream();
-            using CryptoStream cs = new CryptoStream(ms, des.CreateEncryptor(), CryptoStreamMode.Write);
+            var des = DES.Create();
+            des.Key = Encoding.UTF8.GetBytes(key);
+            des.IV = Encoding.UTF8.GetBytes(key);
+
+            using MemoryStream ms = new();
+            using CryptoStream cs = new(ms, des.CreateEncryptor(), CryptoStreamMode.Write);
             cs.Write(inputByteArray, 0, inputByteArray.Length);
             cs.FlushFinalBlock();
 
@@ -260,16 +252,13 @@ namespace Zero.NETCore.Util
 
             // 密钥必须是8位，否则会报错 System.ArgumentException: 指定键的大小对于此算法无效。
             key = BuildKey(key, 8);
+            //建立加密对象的密钥和偏移量，此值重要，不能修改  
+            var des = DES.Create();
+            des.Key = Encoding.UTF8.GetBytes(key);
+            des.IV = Encoding.UTF8.GetBytes(key);
 
-            using DESCryptoServiceProvider des = new DESCryptoServiceProvider
-            {
-                //建立加密对象的密钥和偏移量，此值重要，不能修改  
-                Key = Encoding.UTF8.GetBytes(key),
-                IV = Encoding.UTF8.GetBytes(key)
-            };
-
-            using MemoryStream ms = new MemoryStream();
-            using CryptoStream cs = new CryptoStream(ms, des.CreateDecryptor(), CryptoStreamMode.Write);
+            using MemoryStream ms = new();
+            using CryptoStream cs = new(ms, des.CreateDecryptor(), CryptoStreamMode.Write);
             cs.Write(inputByteArray, 0, inputByteArray.Length);
             cs.FlushFinalBlock();
             return Encoding.Default.GetString(ms.ToArray());
@@ -714,7 +703,7 @@ namespace Zero.NETCore.Util
             byte[] result = TripleDesEncrypt(arrKey, arrIV, arrData);
 
             // 转换为16进制字符串
-            StringBuilder ret = new StringBuilder();
+            StringBuilder ret = new();
             foreach (byte b in result)
             {
                 ret.AppendFormat("{0:X2}", b);
@@ -762,18 +751,17 @@ namespace Zero.NETCore.Util
         /// <returns>加密后的字节数组</returns>
         private static byte[] TripleDesEncrypt(byte[] key, byte[] iv, byte[] source)
         {
-            using (TripleDESCryptoServiceProvider dsp = new TripleDESCryptoServiceProvider()
-            {
-                Mode = CipherMode.CBC, // 默认值
-                Padding = PaddingMode.PKCS7 // 默认值
-            })
-            {
-                using MemoryStream mStream = new MemoryStream();
-                using CryptoStream cStream = new CryptoStream(mStream, dsp.CreateEncryptor(key, iv), CryptoStreamMode.Write);
-                cStream.Write(source, 0, source.Length);
-                cStream.FlushFinalBlock();
-                return mStream.ToArray();
-            };
+            using var dsp = TripleDES.Create();
+
+            dsp.Mode = CipherMode.CBC; // 默认值
+            dsp.Padding = PaddingMode.PKCS7;// 默认值
+
+            using MemoryStream mStream = new();
+            using CryptoStream cStream = new(mStream, dsp.CreateEncryptor(key, iv), CryptoStreamMode.Write);
+            cStream.Write(source, 0, source.Length);
+            cStream.FlushFinalBlock();
+            return mStream.ToArray();
+
         }
         #endregion
 
@@ -788,13 +776,13 @@ namespace Zero.NETCore.Util
         /// <returns>解密后的字节数组</returns>
         private static byte[] TripleDesDecrypt(byte[] key, byte[] iv, byte[] source, out int dataLen)
         {
-            using TripleDESCryptoServiceProvider dsp = new TripleDESCryptoServiceProvider
-            {
-                Mode = CipherMode.CBC, // 默认值
-                Padding = PaddingMode.PKCS7 // 默认值
-            };
-            using MemoryStream mStream = new MemoryStream(source);
-            using CryptoStream cStream = new CryptoStream(mStream, dsp.CreateDecryptor(key, iv), CryptoStreamMode.Read);
+            using var dsp = TripleDES.Create();
+
+            dsp.Mode = CipherMode.CBC; // 默认值
+            dsp.Padding = PaddingMode.PKCS7;// 默认值
+
+            using MemoryStream mStream = new(source);
+            using CryptoStream cStream = new(mStream, dsp.CreateDecryptor(key, iv), CryptoStreamMode.Read);
             byte[] result = new byte[source.Length];
             dataLen = cStream.Read(result, 0, result.Length);
             return result;
@@ -839,11 +827,7 @@ namespace Zero.NETCore.Util
         public static string SHA1_Encrypt(string source)
         {
             byte[] temp1 = Encoding.UTF8.GetBytes(source);
-            byte[] temp2 = null;
-            using (SHA1CryptoServiceProvider sha = new SHA1CryptoServiceProvider())
-            {
-                temp2 = sha.ComputeHash(temp1);
-            }
+            byte[] temp2 = SHA1.HashData(temp1);
 
             //注意，不能用这个
             //string output = Convert.ToBase64String(temp2); 
@@ -917,8 +901,8 @@ namespace Zero.NETCore.Util
         /// <returns></returns>
         public static string GetMD5HashFromFile(string fileName)
         {
-            using FileStream file = new FileStream(fileName, FileMode.Open);
-            using MD5 md5 = new MD5CryptoServiceProvider();
+            using FileStream file = new(fileName, FileMode.Open);
+            using MD5 md5 = MD5.Create();
             byte[] retVal = md5.ComputeHash(file);
             return BitConverter.ToString(retVal).Replace("-", "");
         }
@@ -934,14 +918,13 @@ namespace Zero.NETCore.Util
         {
             byte[] _Key = Encoding.ASCII.GetBytes(BuildKey(key, 32));
             byte[] _Source = Encoding.UTF8.GetBytes(toEncrypt);
-            ICryptoTransform cTransform = null;
-            using (Aes aes = Aes.Create("AES"))
-            {
-                aes.Mode = CipherMode.ECB;
-                aes.Padding = PaddingMode.PKCS7;
-                aes.Key = _Key;
-                cTransform = aes.CreateEncryptor();
-            }
+            using Aes aes = Aes.Create();
+
+            aes.Mode = CipherMode.ECB;
+            aes.Padding = PaddingMode.PKCS7;
+            aes.Key = _Key;
+            ICryptoTransform cTransform = aes.CreateEncryptor();
+
             byte[] cryptData = cTransform.TransformFinalBlock(_Source, 0, _Source.Length);
             //string HexCryptString = Hex_2To16(cryptData);
             //byte[] HexCryptData = Encoding.UTF8.GetBytes(HexCryptString);
@@ -958,14 +941,12 @@ namespace Zero.NETCore.Util
         public static string AES_Decrypt(string encryptedSource, string key)
         {
             byte[] _Key = Encoding.ASCII.GetBytes(BuildKey(key, 32));
-            ICryptoTransform cTransform = null;
-            using (Aes aes = Aes.Create("AES"))
-            {
-                aes.Mode = CipherMode.ECB;
-                aes.Padding = PaddingMode.PKCS7;
-                aes.Key = _Key;
-                cTransform = aes.CreateDecryptor();
-            }
+            using Aes aes = Aes.Create();
+            aes.Mode = CipherMode.ECB;
+            aes.Padding = PaddingMode.PKCS7;
+            aes.Key = _Key;
+            ICryptoTransform cTransform = aes.CreateDecryptor();
+
 
             byte[] encryptedData = Convert.FromBase64String(encryptedSource);
             //string encryptedString = Encoding.UTF8.GetString(encryptedData);
@@ -976,7 +957,7 @@ namespace Zero.NETCore.Util
 
         private static string BuildKey(string key, int length = 8)
         {
-            return ((key ?? string.Empty) + KEY_Complement).Substring(0, length);
+            return ((key ?? string.Empty) + KEY_Complement)[..length];
         }
 
         //private static string Hex_2To16(byte[] bytes)

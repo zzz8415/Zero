@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Text;
 using Zero.NETCore.Inject;
 using System.Diagnostics;
-using FreeRedis;
 
 namespace Zero.NETCore.Tests
 {
