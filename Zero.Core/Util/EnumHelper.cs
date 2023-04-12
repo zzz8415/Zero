@@ -8,7 +8,7 @@ using System.Text;
 namespace Zero.Core.Util
 {
     /// <summary>
-    /// 
+    /// 枚举帮助类
     /// </summary>
     public class EnumHelper
     {

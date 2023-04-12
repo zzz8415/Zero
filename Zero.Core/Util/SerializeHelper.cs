@@ -6,7 +6,7 @@ using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace Zero.Core.Util
+namespace Zero.NETCore.Util
 {
     /// <summary>
     /// 序列化辅助类

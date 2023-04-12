@@ -5,34 +5,36 @@ using System.Configuration;
 using NLog;
 using System.Text;
 using System.Web;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Primitives;
 
-namespace Zero.Core.Util
+namespace Zero.NETCore.Util
 {
     /// <summary>
     /// 日志记录类
     /// </summary>
     public class LogHelper
     {
-        private static bool isinit = false;
+        private static readonly bool _isinit = false;
+
+        private static HttpRequest _request = null;
 
         static LogHelper()
         {
-            if (isinit == false)
+            if (_isinit == false)
             {
-                isinit = true;
+                _isinit = true;
                 SetConfig();
             }
         }
 
-        //private static readonly log4net.ILog LogInfo = log4net.LogManager.GetLogger("LogInfo");
-
-        //private static readonly log4net.ILog LogError = log4net.LogManager.GetLogger("LogError");
-
-        //private static readonly log4net.ILog LogException = log4net.LogManager.GetLogger("LogException");
-
-        //private static readonly log4net.ILog LogComplement = log4net.LogManager.GetLogger("LogComplement");
-
-        //private static readonly log4net.ILog LogDubug = log4net.LogManager.GetLogger("LogDubug");
+        /// <summary>
+        /// 设置请求参数
+        /// </summary>
+        /// <param name="request"></param>
+        public static void SetRequest(HttpRequest request) {
+            _request = request;
+        }
 
 
         private static bool LogInfoEnable = false;
@@ -40,31 +42,19 @@ namespace Zero.Core.Util
         private static bool LogExceptionEnable = false;
         private static bool LogComplementEnable = false;
         private static bool LogDubugEnable = false;
-        //private static bool LogFatalEnabled = false;
 
         private static Logger logger = LogManager.GetCurrentClassLogger();
-
-
 
         /// <summary>
         /// 设置初始值。
         /// </summary>
         public static void SetConfig()
         {
-            //log4net.Config.DOMConfigurator.Configure();
-            //LogInfoEnable=LogInfo.IsInfoEnabled;
-            //LogErrorEnable=LogError.IsErrorEnabled;
-            //LogExceptionEnable=LogException.IsErrorEnabled;
-            //LogComplementEnable=LogComplement.IsErrorEnabled;
-            //LogDubugEnable = LogDubug.IsDebugEnabled;
-
             LogInfoEnable = logger.IsInfoEnabled;
             LogErrorEnable = logger.IsErrorEnabled;
             LogExceptionEnable = logger.IsErrorEnabled;
             LogComplementEnable = logger.IsTraceEnabled;
-            //LogFatalEnabled = logger.IsFatalEnabled;
             LogDubugEnable = logger.IsDebugEnabled;
-
         }
         /// <summary>
         /// 写入普通日志消息
@@ -75,7 +65,6 @@ namespace Zero.Core.Util
             if (LogInfoEnable)
             {
                 logger.Info(BuildMessage(info));
-                //LogInfo.Info(info);
             }
         }
         /// <summary>
@@ -87,7 +76,6 @@ namespace Zero.Core.Util
             if (LogDubugEnable)
             {
                 logger.Debug(BuildMessage(info));
-                //LogDubug.Debug(info);
             }
         }
         /// <summary>
@@ -99,7 +87,6 @@ namespace Zero.Core.Util
             if (LogErrorEnable)
             {
                 logger.Error(BuildMessage(info));
-                //LogError.Error(info);
             }
         }
 
@@ -130,7 +117,6 @@ namespace Zero.Core.Util
             if (LogExceptionEnable)
             {
                 logger.Error(BuildMessage(info, ex));
-                //LogException.Error(info,ex);
             }
         }
         /// <summary>
@@ -153,7 +139,6 @@ namespace Zero.Core.Util
             if (LogComplementEnable)
             {
                 logger.Trace(BuildMessage(info));
-                //LogComplement.Error(info);
             }
         }
         /// <summary>
@@ -169,7 +154,6 @@ namespace Zero.Core.Util
             }
         }
 
-
         static string BuildMessage(string info)
         {
             return BuildMessage(info, null);
@@ -178,37 +162,22 @@ namespace Zero.Core.Util
         static string BuildMessage(string info, Exception ex)
         {
             StringBuilder sb = new StringBuilder();
-            HttpRequest request = null;
-            try
-            {
-                if (HttpContext.Current != null && HttpContext.Current.Request != null)
-                    request = HttpContext.Current.Request;
-            }
-            catch { }
 
             sb.AppendFormat("Time:{0}-{1}\r\n", DateTime.Now, info);
 
-            if (request != null)
+            if (_request != null)
             {
-                sb.AppendFormat("Url:{0}\r\n", request.Url);
-                if (null != request.UrlReferrer)
+                sb.AppendFormat("Url:{0}://{1}{2}{3}\r\n", _request.Scheme, _request.Host, _request.Path, _request.QueryString);
+                if (_request.Headers.TryGetValue("referrer", out StringValues values))
                 {
-                    sb.AppendFormat("UrlReferrer:{0}\r\n", request.UrlReferrer);
+                    sb.AppendFormat("UrlReferrer:{0}\r\n", values);
                 }
-                string realip = request.ServerVariables == null
-                                    ? string.Empty
-                                    : request.ServerVariables["HTTP_X_REAL_IP"];
-                string proxy = request.Headers == null
-                                    ? string.Empty
-                                    : request.Headers.Get("HTTP_NDUSER_FORWARDED_FOR_HAPROXY");
-                sb.AppendFormat("UserHostAddress:{0};{1};{2}\r\n", request.UserHostAddress, realip, proxy);
-                sb.AppendFormat("WebServer:{0}\r\n", request.ServerVariables["LOCAL_ADDR"]);
+                sb.AppendFormat("UserHostAddress:{0}:{1}\r\n", _request.HttpContext.Connection.RemoteIpAddress, _request.HttpContext.Connection.RemotePort);
+                sb.AppendFormat("WebServer:{0}:{1}\r\n", _request.HttpContext.Connection.LocalIpAddress, _request.HttpContext.Connection.LocalPort);
             }
 
             if (ex != null)
             {
-                if (ex is SqlException)
-                    sb.AppendFormat("Database:{0}\r\n", ((SqlException)ex).Server);
                 sb.AppendFormat("Exception:{0}\r\n", ex);
             }
             sb.AppendLine();

@@ -64,11 +64,21 @@ namespace Zero.Core.Extensions
         /// <summary>
         /// 将unix timestamp时间戳(秒) 转换为.NET的DateTime  
         /// </summary>
-        /// <param name="timeStamp"></param>
+        /// <param name="seconds"></param>
         /// <returns></returns>
-        public static DateTime ToUnixDateTime(this long timeStamp)
+        public static DateTime ToUnixDateTimeFromSeconds(this long seconds)
         {
-            return TimeZone.CurrentTimeZone.ToLocalTime(new DateTime(1970, 1, 1)).AddSeconds(timeStamp);
+            return DateTimeOffset.FromUnixTimeSeconds(seconds).LocalDateTime;
+        }
+
+        /// <summary>
+        /// 将unix timestamp时间戳(毫秒) 转换为.NET的DateTime  
+        /// </summary>
+        /// <param name="milliseconds"></param>
+        /// <returns></returns>
+        public static DateTime ToUnixDateTimeFromMilliSeconds(this long milliseconds)
+        {
+            return DateTimeOffset.FromUnixTimeMilliseconds(milliseconds).LocalDateTime;
         }
 
         /// <summary>
@@ -76,9 +86,32 @@ namespace Zero.Core.Extensions
         /// </summary>
         /// <param name="dateTime"></param>
         /// <returns></returns>
-        public static long ToUnixTimeStamp(this DateTime dateTime)
+        public static long ToUnixTimeSeconds(this DateTime dateTime)
         {
-            return (long)dateTime.Subtract(TimeZone.CurrentTimeZone.ToLocalTime(new DateTime(1970, 1, 1))).TotalSeconds;
+            return new DateTimeOffset(dateTime).ToUnixTimeSeconds();
+        }
+
+        /// <summary>
+        /// 将.NET的DateTime转换为unix timestamp时间戳(毫秒)
+        /// </summary>
+        /// <param name="dateTime"></param>
+        /// <returns></returns>
+        public static long ToUnixTimeMilliseconds(this DateTime dateTime)
+        {
+            return new DateTimeOffset(dateTime).ToUnixTimeMilliseconds();
+        }
+
+        /// <summary>
+        /// 将秒转换成时间字符串
+        /// 如果小时>0则显示 HH时mm分ss秒
+        /// 否则显示 mm分ss秒
+        /// </summary>
+        /// <param name="seconds"></param>
+        /// <returns></returns>
+        public static string ToTimeString(this int seconds)
+        {
+            var time = DateTime.MinValue.AddSeconds(seconds);
+            return time.Hour > 0 ? time.ToString("HH时mm分ss秒") : time.ToString("mm分ss秒");
         }
     }
 }

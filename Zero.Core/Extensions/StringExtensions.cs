@@ -734,7 +734,7 @@ namespace Zero.Core.Extensions
             string myStr = "";
             for (int i = 0; i < len; i++)
             {
-                myStr += getSpell(strText.Substring(i, 1));
+                myStr += GetSpell(strText.Substring(i, 1));
             }
             return myStr;
         }
@@ -744,7 +744,7 @@ namespace Zero.Core.Extensions
         /// </summary>
         /// <param name="cnChar"></param>
         /// <returns></returns>
-        private static string getSpell(string cnChar)
+        private static string GetSpell(string cnChar)
         {
             if (string.IsNullOrEmpty(cnChar))
                 return string.Empty;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Zero.Core.Web.Request;
 
 namespace Zero.Core.Web
 {
@@ -13,27 +14,9 @@ namespace Zero.Core.Web
         /// <summary>
         /// 初始化
         /// </summary>
-        /// <param name="pageIndex"></param>
-        /// <param name="pageSize"></param>
-        public PageList(int pageIndex, int pageSize)
+        public PageList()
         {
-            PageIndex = pageIndex;
-            PageSize = pageSize;
-        }
 
-        /// <summary>
-        /// 初始化
-        /// </summary>
-        /// <param name="list"></param>
-        /// <param name="pageIndex"></param>
-        /// <param name="pageSize"></param>
-        /// <param name="recordCount"></param>
-        public PageList(List<T> list, int pageIndex, int pageSize, long recordCount)
-        {
-            PageIndex = pageIndex;
-            PageSize = pageSize;
-            RecordCount = recordCount;
-            List = list;
         }
 
         /// <summary>
@@ -44,10 +27,26 @@ namespace Zero.Core.Web
         /// <param name="pageSize"></param>
         /// <param name="recordCount"></param>
         /// <param name="extend"></param>
-        public PageList(List<T> list, int pageIndex, int pageSize, long recordCount, object extend)
+        public PageList(List<T> list, int pageIndex, int pageSize, long recordCount, object extend = null)
         {
             PageIndex = pageIndex;
             PageSize = pageSize;
+            RecordCount = recordCount;
+            List = list;
+            Extend = extend;
+        }
+
+        /// <summary>
+        /// 初始化
+        /// </summary>
+        /// <param name="list"></param>
+        /// <param name="pageRequest"></param>
+        /// <param name="recordCount"></param>
+        /// <param name="extend"></param>
+        public PageList(List<T> list, PageRequest pageRequest, long recordCount, object extend = null)
+        {
+            PageIndex = pageRequest.PageIndex;
+            PageSize = pageRequest.PageSize;
             RecordCount = recordCount;
             List = list;
             Extend = extend;

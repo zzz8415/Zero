@@ -1,8 +1,8 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace Zero.Core.Result
 {
@@ -10,7 +10,7 @@ namespace Zero.Core.Result
     /// <summary>
     /// 返回结果集
     /// </summary>
-    public abstract class SysResult
+    public class SysResult
     {
         /// <summary>
         /// 错误码
@@ -26,6 +26,7 @@ namespace Zero.Core.Result
         /// 是否异常
         /// </summary>
         [JsonIgnore]
+        [Newtonsoft.Json.JsonIgnore]
         public bool OccurError
         {
             get { return Code != ErrorCode.sys_success; }
@@ -35,16 +36,11 @@ namespace Zero.Core.Result
         /// 是否成功
         /// </summary>
         [JsonIgnore]
+        [Newtonsoft.Json.JsonIgnore]
         public bool Success
         {
             get { return Code == ErrorCode.sys_success; }
         }
-
-        /// <summary>
-        /// 获取数据
-        /// </summary>
-        /// <returns></returns>
-        public abstract object GetData();
 
     }
 
@@ -65,7 +61,7 @@ namespace Zero.Core.Result
         /// 获取数据
         /// </summary>
         /// <returns></returns>
-        public override object GetData()
+        public object GetResult()
         {
             return this.Result;
         }

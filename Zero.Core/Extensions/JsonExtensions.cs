@@ -1,4 +1,12 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Logging;
+
+using Newtonsoft.Json;
+using System;
+using Zero.Core.Inject;
+
+using NLog.Web;
+using NLog.Extensions.Logging;
 
 namespace Zero.Core.Extensions
 {
@@ -19,7 +27,7 @@ namespace Zero.Core.Extensions
             {
                 return null;
             }
-            settings = settings ?? new JsonSerializerSettings
+            settings ??= new JsonSerializerSettings
             {
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore,//忽略循环引用 即不序列化循环引用
             };
@@ -37,13 +45,40 @@ namespace Zero.Core.Extensions
         {
             if (json.IsNullOrEmpty())
             {
-                return default(T);
+                return default;
             }
-            settings = settings ?? new JsonSerializerSettings
+            settings ??= new JsonSerializerSettings
             {
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore,//忽略循环引用 即不序列化循环引用
             };
             return JsonConvert.DeserializeObject(json, typeof(T), settings) as T;
+        }
+
+        /// <summary>
+        /// 尝试解析json字符串,不抛出异常.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="json"></param>
+        /// <param name="settings"></param>
+        /// <returns></returns>
+        public static T TryDeserializeJson<T>(this string json, JsonSerializerSettings settings = null) where T : class
+        {
+            if (string.IsNullOrEmpty(json))
+            {
+                return null;
+            }
+
+            try
+            {
+                return json.DeserializeJson<T>(settings);
+            }
+            catch (Exception ex)
+            {
+                var logger = LoggerFactory.Create(x => x.AddNLog()).CreateLogger(nameof(JsonExtensions));
+                logger.LogError(ex, ex.Message);
+
+                return null;
+            }
         }
     }
 }

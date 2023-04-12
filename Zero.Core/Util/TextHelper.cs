@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Microsoft.VisualBasic;
 
 namespace Zero.Core.Util
 {
@@ -308,32 +307,5 @@ namespace Zero.Core.Util
 
         #endregion
 
-        #region 将简体转为繁体(ToTraditionalChinese)
-
-        /// <summary>
-        /// 将简体转为繁体。
-        /// </summary>
-        /// <param name="text"></param>
-        /// <returns></returns>
-        public static string ToTraditionalChinese(string text)
-        {
-            return Strings.StrConv(text, VbStrConv.TraditionalChinese, 0);
-        }
-
-        #endregion
-
-        #region 将繁体转换为简体(ToSimplifiedChinese)
-
-        /// <summary>
-        /// 将繁体转换为简体。
-        /// </summary>
-        /// <param name="text"></param>
-        /// <returns></returns>
-        public static string ToSimplifiedChinese(string text)
-        {
-            return Strings.StrConv(text, VbStrConv.SimplifiedChinese, 0);
-        }
-
-        #endregion
     }
 }
