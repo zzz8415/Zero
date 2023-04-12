@@ -60,7 +60,7 @@ namespace Zero.Core.Attribute
 
                 var logger = LoggerFactory.Create(x => x.AddNLog()).CreateLogger<TimerAttribute>();
 
-                logger.LogWarning(message, "TimeOut");
+                logger.LogWarning(message);
             }
         }
     }
