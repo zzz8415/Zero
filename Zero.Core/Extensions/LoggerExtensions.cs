@@ -33,5 +33,16 @@ namespace Zero.Core.Extensions
         {
             logger.LogError(exception, "Fail");
         }
+
+        /// <summary>
+        /// 自定义异常日志
+        /// </summary>
+        /// <param name="logger"></param>
+        /// <param name="exception"></param>
+        /// <param name="dir"></param>
+        public static void LogFail(this ILogger logger, Exception exception, string dir)
+        {
+            logger.LogError(new EventId(-65535, dir), exception, "Fail");
+        }
     }
 }

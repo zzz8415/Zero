@@ -4,9 +4,9 @@
     <TargetFramework>net7.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <NeutralLanguage>zh</NeutralLanguage>
-    <AssemblyVersion>4.0.1</AssemblyVersion>
-    <FileVersion>4.0.1</FileVersion>
-    <Version>4.0.1</Version>
+    <AssemblyVersion>4.0.3</AssemblyVersion>
+    <FileVersion>4.0.3</FileVersion>
+    <Version>4.0.3</Version>
     <Authors>Zero</Authors>
     <Description>.NET Core核心类库</Description>
     <PackageReleaseNotes>.NET Core核心类库</PackageReleaseNotes>
