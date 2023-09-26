@@ -30,7 +30,7 @@ namespace Zero.Core.Web
         {
             this.List = list;
 
-            this.IsLastPage = this.List == null || this.List.Count < pageSize;
+            this.IsLastPage = this.List == null || this.List.Count <= pageSize;
 
             if (!this.IsLastPage)
             {

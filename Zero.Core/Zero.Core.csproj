@@ -6,7 +6,7 @@
     <NeutralLanguage>zh</NeutralLanguage>
     <AssemblyVersion>4.0.4</AssemblyVersion>
     <FileVersion>4.0.4</FileVersion>
-    <Version>4.0.5</Version>
+    <Version>4.0.6</Version>
     <Authors>Zero</Authors>
     <Description>.NET Core核心类库</Description>
     <PackageReleaseNotes>.NET Core核心类库</PackageReleaseNotes>
