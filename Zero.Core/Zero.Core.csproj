@@ -1,15 +1,15 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <NeutralLanguage>zh</NeutralLanguage>
-    <AssemblyVersion>4.0.4</AssemblyVersion>
-    <FileVersion>4.0.4</FileVersion>
-    <Version>4.0.7</Version>
+    <AssemblyVersion>4.0.8</AssemblyVersion>
+    <FileVersion>4.0.8</FileVersion>
+    <Version>4.0.8</Version>
     <Authors>Zero</Authors>
-    <Description>.NET Core核心库</Description>
-    <PackageReleaseNotes>.NET Core核心库</PackageReleaseNotes>
+    <Description>.NET Core</Description>
+    <PackageReleaseNotes>.NET Core</PackageReleaseNotes>
     <Copyright>Copyright 2018</Copyright>
     <PackageProjectUrl>https://github.com/zzz8415/Zero</PackageProjectUrl>
     <RepositoryUrl>https://github.com/zzz8415/Zero</RepositoryUrl>
