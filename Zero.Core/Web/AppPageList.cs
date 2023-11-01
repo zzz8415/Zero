@@ -22,7 +22,7 @@ namespace Zero.Core.Web
         }
 
         /// <summary>
-        /// 初始化
+        /// 初始化,获取数量建议pageSize+1,这样可以准确判断是否还有下一页
         /// </summary>
         /// <param name="list"></param>
         /// <param name="pageSize"></param>

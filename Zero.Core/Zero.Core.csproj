@@ -6,10 +6,10 @@
     <NeutralLanguage>zh</NeutralLanguage>
     <AssemblyVersion>4.0.4</AssemblyVersion>
     <FileVersion>4.0.4</FileVersion>
-    <Version>4.0.6</Version>
+    <Version>4.0.7</Version>
     <Authors>Zero</Authors>
-    <Description>.NET Core核心类库</Description>
-    <PackageReleaseNotes>.NET Core核心类库</PackageReleaseNotes>
+    <Description>.NET Core核心库</Description>
+    <PackageReleaseNotes>.NET Core核心库</PackageReleaseNotes>
     <Copyright>Copyright 2018</Copyright>
     <PackageProjectUrl>https://github.com/zzz8415/Zero</PackageProjectUrl>
     <RepositoryUrl>https://github.com/zzz8415/Zero</RepositoryUrl>
@@ -17,7 +17,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>C:\Users\Zero\代码\Zero\Zero.Core\Zero.Core.xml</DocumentationFile>
+    <DocumentationFile></DocumentationFile>
     <OutputPath></OutputPath>
   </PropertyGroup>
 
@@ -38,10 +38,6 @@
     <None Update="NLog.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Web\Response\" />
   </ItemGroup>
 
 </Project>
