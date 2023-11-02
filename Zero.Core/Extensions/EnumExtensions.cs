@@ -22,6 +22,8 @@ namespace Zero.Core.Extensions
             return Convert.ToInt32(source);
         }
 
+        private static Dictionary<Type, Dictionary<string, string>> _enumDiscriptionArray = new();
+
         /// <summary>
         /// 获取枚举值的描述信息
         /// </summary>
@@ -29,30 +31,29 @@ namespace Zero.Core.Extensions
         /// <returns></returns>
         public static string GetDescription(this Enum source)
         {
-            Type typeDescription = typeof(DescriptionAttribute);
-            System.Reflection.FieldInfo[] fields = source.GetType().GetFields();
-            string strText = string.Empty;
-            string strValue = string.Empty;
-            foreach (FieldInfo field in fields)
+            var type = source.GetType();
+            var array = _enumDiscriptionArray.GetValueOrDefault(type);
+            if(array == null)
             {
-                if (field.FieldType.IsEnum && field.Name.Equals(source.ToString()))
+                var typeDescription = typeof(DescriptionAttribute);
+                var fields = type.GetFields();
+                array = fields.ToDictionary(x => x.Name, x =>
                 {
-                    object[] arr = field.GetCustomAttributes(typeDescription, true);
+                    object[] arr = x.GetCustomAttributes(typeDescription, true);
                     if (arr.Length > 0)
                     {
-                        DescriptionAttribute aa = (DescriptionAttribute)arr[0];
-                        strText = aa.Description;
+                        DescriptionAttribute da = (DescriptionAttribute)arr[0];
+                        return da.Description;
                     }
                     else
                     {
-                        strText = field.Name;
+                        return x.Name;
                     }
-
-                    break;
-                }
+                });
+                _enumDiscriptionArray.Add(type, array);
             }
 
-            return strText;
+            return array.GetValueOrDefault(source.ToString());
         }
 
         /// <summary>
@@ -63,30 +64,28 @@ namespace Zero.Core.Extensions
         /// <returns></returns>
         public static string GetDescription(this Enum source, Type enumType)
         {
-            Type typeDescription = typeof(DescriptionAttribute);
-            System.Reflection.FieldInfo[] fields = enumType.GetFields();
-            string strText = string.Empty;
-            string strValue = string.Empty;
-            foreach (FieldInfo field in fields)
+            var array = _enumDiscriptionArray.GetValueOrDefault(enumType);
+            if (array == null)
             {
-                if (field.FieldType.IsEnum && field.Name.Equals(source.ToString()))
+                var typeDescription = typeof(DescriptionAttribute);
+                var fields = enumType.GetFields();
+                array = fields.ToDictionary(x => x.Name, x =>
                 {
-                    object[] arr = field.GetCustomAttributes(typeDescription, true);
+                    object[] arr = x.GetCustomAttributes(typeDescription, true);
                     if (arr.Length > 0)
                     {
-                        DescriptionAttribute aa = (DescriptionAttribute)arr[0];
-                        strText = aa.Description;
+                        DescriptionAttribute da = (DescriptionAttribute)arr[0];
+                        return da.Description;
                     }
                     else
                     {
-                        strText = field.Name;
+                        return x.Name;
                     }
-
-                    break;
-                }
+                });
+                _enumDiscriptionArray.Add(enumType, array);
             }
 
-            return strText;
+            return array.GetValueOrDefault(source.ToString());
         }
     }
 }

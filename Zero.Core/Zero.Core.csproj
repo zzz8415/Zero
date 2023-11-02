@@ -4,9 +4,9 @@
     <TargetFramework>net7.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <NeutralLanguage>zh</NeutralLanguage>
-    <AssemblyVersion>4.0.8</AssemblyVersion>
-    <FileVersion>4.0.8</FileVersion>
-    <Version>4.0.8</Version>
+    <AssemblyVersion>4.0.11</AssemblyVersion>
+    <FileVersion>4.0.11</FileVersion>
+    <Version>4.0.11</Version>
     <Authors>Zero</Authors>
     <Description>.NET Core</Description>
     <PackageReleaseNotes>.NET Core</PackageReleaseNotes>
@@ -28,10 +28,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="7.0.11" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="7.0.13" />
     <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="7.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="7.0.11" />
-    <PackageReference Include="NLog.Web.AspNetCore" Version="5.3.4" />
+    <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="7.0.13" />
+    <PackageReference Include="NLog.Web.AspNetCore" Version="5.3.5" />
   </ItemGroup>
 
   <ItemGroup>
