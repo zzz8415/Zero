@@ -10,8 +10,12 @@ namespace Zero.Core.Inject
     /// <summary>
     /// Web客户端信息
     /// </summary>
+    /// <remarks>
+    /// 初始化
+    /// </remarks>
+    /// <param name="httpContextAccessor"></param>
     [Inject(OptionsLifetime = ServiceLifetime.Scoped)]
-    public class WebClient
+    public class WebClient(IHttpContextAccessor httpContextAccessor)
     {
         /// <summary>
         /// http请求信息
@@ -21,16 +25,7 @@ namespace Zero.Core.Inject
         /// <summary>
         /// http上下文
         /// </summary>
-        public IHttpContextAccessor HttpContextAccessor { get; set; }
-
-        /// <summary>
-        /// 初始化
-        /// </summary>
-        /// <param name="httpContextAccessor"></param>
-        public WebClient(IHttpContextAccessor httpContextAccessor)
-        {
-            HttpContextAccessor = httpContextAccessor;
-        }
+        public IHttpContextAccessor HttpContextAccessor { get; set; } = httpContextAccessor;
 
         #region 请求相关
         /// <summary>
@@ -55,11 +50,9 @@ namespace Zero.Core.Inject
         {
             get
             {
-                var headers = Request.Headers;
-
-                if (headers.ContainsKey("X-Forwarded-For"))
+                if (Request.Headers.TryGetValue("X-Forwarded-For", out StringValues value))
                 {
-                    return headers["X-Forwarded-For"].ToString();
+                    return value.ToString();
                 }
 
                 return Request.HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();

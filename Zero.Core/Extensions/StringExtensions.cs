@@ -10,7 +10,7 @@ namespace Zero.Core.Extensions
     /// <summary>
     /// 字符串扩展方法
     /// </summary>
-    public static class StringExtensions
+    public static partial class StringExtensions
     {
         #region 字符串操作
         /// <summary>
@@ -55,7 +55,7 @@ namespace Zero.Core.Extensions
                     }
                     if (i > resultLength)
                     {
-                        source = source.Substring(0, j);
+                        source = source[..j];
                         break;
                     }
                     j++;
@@ -111,8 +111,8 @@ namespace Zero.Core.Extensions
             {
                 return false;
             }
-            int i;
-            return Int32.TryParse(source, out i);
+
+            return Int32.TryParse(source, out _);
         }
 
         /// <summary>
@@ -121,7 +121,7 @@ namespace Zero.Core.Extensions
         /// <param name="source"></param>
         public static bool IsEmail(this string source)
         {
-            return Regex.IsMatch(source, @"^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$");
+            return IsEmailRegex().IsMatch(source);
         }
 
         /// <summary>
@@ -131,7 +131,7 @@ namespace Zero.Core.Extensions
         /// <returns></returns>
         public static bool IsPublicIP(this string source)
         {
-            return Regex.IsMatch(source, @"^(((25[0-5]|2[0-4][0-9]|19[0-1]|19[3-9]|18[0-9]|17[0-1]|17[3-9]|1[0-6][0-9]|1[1-9]|[2-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9]))|(192\.(25[0-5]|2[0-4][0-9]|16[0-7]|169|1[0-5][0-9]|1[7-9][0-9]|[1-9][0-9]|[0-9]))|(172\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|1[0-5]|3[2-9]|[4-9][0-9]|[0-9])))\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])$");
+            return IsPublicIPRegex().IsMatch(source);
         }
 
         /// <summary>
@@ -141,7 +141,7 @@ namespace Zero.Core.Extensions
         /// <returns></returns>
         public static bool IsIP(this string source)
         {
-            return Regex.IsMatch(source, @"^(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])$");
+            return IsIPRegex().IsMatch(source);
         }
 
         /// <summary>
@@ -151,7 +151,7 @@ namespace Zero.Core.Extensions
         /// <returns>是否有特殊字符</returns>
         public static bool IsLetterOrNumber(this string source)
         {
-            bool b = System.Text.RegularExpressions.Regex.IsMatch(source, @"\w");
+            bool b = IsLetterOrNumberRegex().IsMatch(source);
             return b;
         }
 
@@ -162,8 +162,7 @@ namespace Zero.Core.Extensions
         /// <returns></returns>
         public static bool IsSpecialChar(this string source)
         {
-            Regex r = new Regex(@"[/\<>:.?*|$]");
-            return r.IsMatch(source);
+            return IsSpecialCharRegex().IsMatch(source);
         }
 
         /// <summary>
@@ -175,7 +174,7 @@ namespace Zero.Core.Extensions
         {
             //中文/日文/韩文: [\u4E00-\u9FA5]
             //英文:[a-zA-Z]
-            return Regex.IsMatch(source, @"^[\u4E00-\u9FA5]+$");
+            return IsChineseCharRegex().IsMatch(source);
         }
 
         /// <summary>
@@ -185,7 +184,7 @@ namespace Zero.Core.Extensions
         /// <returns></returns>
         public static bool IsDoubleChar(this string source)
         {
-            return Regex.IsMatch(source, @"[^\x00-\xff]");
+            return IsDoubleCharRegex().IsMatch(source);
         }
 
         /// <summary>
@@ -195,7 +194,7 @@ namespace Zero.Core.Extensions
         /// <returns></returns>
         public static bool IsDate(this string source)
         {
-            return Regex.IsMatch(source, @"^((((1[6-9]|[2-9]\d)\d{2})-(0?[13578]|1[02])-(0?[1-9]|[12]\d|3[01]))|(((1[6-9]|[2-9]\d)\d{2})-(0?[13456789]|1[012])-(0?[1-9]|[12]\d|30))|(((1[6-9]|[2-9]\d)\d{2})-0?2-(0?[1-9]|1\d|2[0-8]))|(((1[6-9]|[2-9]\d)(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00))-0?2-29-))$");
+            return IsDateRegex().IsMatch(source);
         }
 
 
@@ -206,7 +205,7 @@ namespace Zero.Core.Extensions
         /// <returns></returns>
         public static bool IsTime(this string source)
         {
-            return Regex.IsMatch(source, @"^((20|21|22|23|[0-1]?\d):[0-5]?\d:[0-5]?\d)$");
+            return IsTimeRegex().IsMatch(source);
         }
 
         /// <summary>
@@ -216,7 +215,7 @@ namespace Zero.Core.Extensions
         /// <returns></returns>
         public static bool IsDateTime(this string source)
         {
-            return Regex.IsMatch(source, @"^(((((1[6-9]|[2-9]\d)\d{2})-(0?[13578]|1[02])-(0?[1-9]|[12]\d|3[01]))|(((1[6-9]|[2-9]\d)\d{2})-(0?[13456789]|1[012])-(0?[1-9]|[12]\d|30))|(((1[6-9]|[2-9]\d)\d{2})-0?2-(0?[1-9]|1\d|2[0-8]))|(((1[6-9]|[2-9]\d)(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00))-0?2-29-)) (20|21|22|23|[0-1]?\d):[0-5]?\d:[0-5]?\d)$");
+            return IsDateTimeRegex().IsMatch(source);
         }
 
         /// <summary>
@@ -226,7 +225,7 @@ namespace Zero.Core.Extensions
         /// <returns></returns>
         public static bool IsPhysicalPath(this string source)
         {
-            return Regex.IsMatch(source, @"^[a-zA-Z]:[\\/]+(?:[^\<\>\/\\\|\:""\*\?\r\n]+[\\/]+)*[^\<\>\/\\\|\:""\*\?\r\n]*$");
+            return IsPhysicalPathRegex().IsMatch(source);
         }
 
         #endregion
@@ -292,7 +291,6 @@ namespace Zero.Core.Extensions
             byte[] oribyte = new byte[source.Length / 2];
             for (int i = 0; i < source.Length; i += 2)
             {
-                string str = Convert.ToInt32(source.Substring(i, 2), 16).ToString();
                 oribyte[i / 2] = Convert.ToByte(source.Substring(i, 2), 16);
             }
             return Encoding.Default.GetString(oribyte);
@@ -308,23 +306,19 @@ namespace Zero.Core.Extensions
             if (string.IsNullOrEmpty(source))
                 return string.Empty;
             int i = source.Length;
-            string temp;
             string end = "";
-            byte[] array = new byte[2];
             int i1, i2;
             for (int j = 0; j < i; j++)
             {
-                temp = source.Substring(j, 1);
-                array = Encoding.Default.GetBytes(temp);
-                if (array.Length.ToString() == "1")
+                if ((new byte[2]).Length.ToString() == "1")
                 {
-                    i1 = Convert.ToInt32(array[0]);
+                    i1 = Convert.ToInt32((new byte[2])[0]);
                     end += Convert.ToString(i1, 16);
                 }
                 else
                 {
-                    i1 = Convert.ToInt32(array[0]);
-                    i2 = Convert.ToInt32(array[1]);
+                    i1 = Convert.ToInt32((new byte[2])[0]);
+                    i2 = Convert.ToInt32((new byte[2])[1]);
                     end += Convert.ToString(i1, 16);
                     end += Convert.ToString(i2, 16);
                 }
@@ -341,7 +335,7 @@ namespace Zero.Core.Extensions
         {
             if (string.IsNullOrEmpty(source))
                 return string.Empty;
-            StringBuilder sa = new StringBuilder();//Unicode
+            StringBuilder sa = new();//Unicode
             string s1;
             string s2;
             for (int i = 0; i < source.Length; i++)
@@ -370,7 +364,7 @@ namespace Zero.Core.Extensions
         {
             if (string.IsNullOrEmpty(source))
                 return string.Empty;
-            StringBuilder sb = new StringBuilder();//UTF8
+            StringBuilder sb = new();//UTF8
             string s1;
             string s2;
             for (int i = 0; i < source.Length; i++)
@@ -482,7 +476,7 @@ namespace Zero.Core.Extensions
                     }
                 }
             }
-            string returnString = new string(c);
+            string returnString = new(c);
             return returnString;   // 返回半角字符   
         }
 
@@ -507,7 +501,7 @@ namespace Zero.Core.Extensions
                     }
                 }
             }
-            string returnString = new string(c);
+            string returnString = new(c);
             return returnString;   // 返回全角字符   
         }
         #endregion
@@ -532,8 +526,7 @@ namespace Zero.Core.Extensions
         {
             if (!string.IsNullOrEmpty(source))
             {
-                int result;
-                if (Int32.TryParse(source, out result))
+                if (Int32.TryParse(source, out int result))
                 {
                     return result;
                 }
@@ -559,8 +552,7 @@ namespace Zero.Core.Extensions
         {
             if (!string.IsNullOrEmpty(source))
             {
-                Int64 result;
-                if (Int64.TryParse(source, out result))
+                if (Int64.TryParse(source, out long result))
                 {
                     return result;
                 }
@@ -586,8 +578,7 @@ namespace Zero.Core.Extensions
         {
             if (!string.IsNullOrEmpty(source))
             {
-                double result;
-                if (Double.TryParse(source, out result))
+                if (Double.TryParse(source, out double result))
                 {
                     return result;
                 }
@@ -613,8 +604,7 @@ namespace Zero.Core.Extensions
         {
             if (!string.IsNullOrEmpty(source))
             {
-                DateTime result;
-                if (DateTime.TryParse(source, out result))
+                if (DateTime.TryParse(source, out DateTime result))
                 {
                     return result;
                 }
@@ -630,8 +620,7 @@ namespace Zero.Core.Extensions
         {
             if (!string.IsNullOrEmpty(source))
             {
-                Boolean result;
-                if (Boolean.TryParse(source, out result))
+                if (Boolean.TryParse(source, out bool result))
                 {
                     return result;
                 }
@@ -695,7 +684,7 @@ namespace Zero.Core.Extensions
             if (string.IsNullOrEmpty(filenameNoDir))
                 return string.Empty;
             //替换这9个字符<>/\|:"*? 以及 回车换行
-            return Regex.Replace(filenameNoDir, @"[\<\>\/\\\|\:""\*\?\r\n]", replaceWith, RegexOptions.Compiled);
+            return ReplaceNonValidCharsRegex().Replace(filenameNoDir, replaceWith);
         }
 
         /// <summary>
@@ -707,7 +696,7 @@ namespace Zero.Core.Extensions
         {
             if (string.IsNullOrEmpty(source))
                 return string.Empty;
-            Regex reg = new Regex("[\x00-\x08\x0B\x0C\x0E-\x1F]");
+            Regex reg = RemoveNonPrintCharsRegex();
             return reg.Replace(source, "");
         }
 
@@ -754,7 +743,7 @@ namespace Zero.Core.Extensions
                 int area = (short)arrCN[0];
                 int pos = (short)arrCN[1];
                 int code = (area << 8) + pos;
-                int[] areacode = { 45217, 45253, 45761, 46318, 46826, 47010, 47297, 47614, 48119, 48119, 49062, 49324, 49896, 50371, 50614, 50622, 50906, 51387, 51446, 52218, 52698, 52698, 52698, 52980, 53689, 54481 };
+                int[] areacode = [45217, 45253, 45761, 46318, 46826, 47010, 47297, 47614, 48119, 48119, 49062, 49324, 49896, 50371, 50614, 50622, 50906, 51387, 51446, 52218, 52698, 52698, 52698, 52980, 53689, 54481];
                 for (int i = 0; i < 26; i++)
                 {
                     int max = 55290;
@@ -768,5 +757,43 @@ namespace Zero.Core.Extensions
             }
             else return cnChar;
         }
+
+        [GeneratedRegex(@"^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$")]
+        private static partial Regex IsEmailRegex();
+
+        [GeneratedRegex(@"^(((25[0-5]|2[0-4][0-9]|19[0-1]|19[3-9]|18[0-9]|17[0-1]|17[3-9]|1[0-6][0-9]|1[1-9]|[2-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9]))|(192\.(25[0-5]|2[0-4][0-9]|16[0-7]|169|1[0-5][0-9]|1[7-9][0-9]|[1-9][0-9]|[0-9]))|(172\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|1[0-5]|3[2-9]|[4-9][0-9]|[0-9])))\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])$")]
+        private static partial Regex IsPublicIPRegex();
+
+        [GeneratedRegex(@"\w")]
+        private static partial Regex IsLetterOrNumberRegex();
+
+        [GeneratedRegex(@"[/\<>:.?*|$]")]
+        private static partial Regex IsSpecialCharRegex();
+
+        [GeneratedRegex(@"^[\u4E00-\u9FA5]+$")]
+        private static partial Regex IsChineseCharRegex();
+
+        [GeneratedRegex("[\x00-\x08\x0B\x0C\x0E-\x1F]")]
+        private static partial Regex RemoveNonPrintCharsRegex();
+
+        [GeneratedRegex(@"^((((1[6-9]|[2-9]\d)\d{2})-(0?[13578]|1[02])-(0?[1-9]|[12]\d|3[01]))|(((1[6-9]|[2-9]\d)\d{2})-(0?[13456789]|1[012])-(0?[1-9]|[12]\d|30))|(((1[6-9]|[2-9]\d)\d{2})-0?2-(0?[1-9]|1\d|2[0-8]))|(((1[6-9]|[2-9]\d)(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00))-0?2-29-))$")]
+        private static partial Regex IsDateRegex();
+
+        [GeneratedRegex(@"[\<\>\/\\\|\:""\*\?\r\n]", RegexOptions.Compiled)]
+        private static partial Regex ReplaceNonValidCharsRegex();
+
+        [GeneratedRegex(@"^[a-zA-Z]:[\\/]+(?:[^\<\>\/\\\|\:""\*\?\r\n]+[\\/]+)*[^\<\>\/\\\|\:""\*\?\r\n]*$")]
+        private static partial Regex IsPhysicalPathRegex();
+        [GeneratedRegex(@"^((20|21|22|23|[0-1]?\d):[0-5]?\d:[0-5]?\d)$")]
+        private static partial Regex IsTimeRegex();
+
+        [GeneratedRegex(@"^(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])$")]
+        private static partial Regex IsIPRegex();
+
+        [GeneratedRegex(@"[^\x00-\xff]")]
+        private static partial Regex IsDoubleCharRegex();
+
+        [GeneratedRegex(@"^(((((1[6-9]|[2-9]\d)\d{2})-(0?[13578]|1[02])-(0?[1-9]|[12]\d|3[01]))|(((1[6-9]|[2-9]\d)\d{2})-(0?[13456789]|1[012])-(0?[1-9]|[12]\d|30))|(((1[6-9]|[2-9]\d)\d{2})-0?2-(0?[1-9]|1\d|2[0-8]))|(((1[6-9]|[2-9]\d)(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00))-0?2-29-)) (20|21|22|23|[0-1]?\d):[0-5]?\d:[0-5]?\d)$")]
+        private static partial Regex IsDateTimeRegex();
     }
 }
