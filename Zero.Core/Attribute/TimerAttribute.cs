@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -25,15 +25,15 @@ namespace Zero.Core.Attribute
         /// <summary>
         /// 
         /// </summary>
-        private readonly int _timeOutSeconds = 0;
+        private readonly int _timeOutMilliseconds = 0;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="timeOutSeconds"></param>
-        public TimerAttribute(int timeOutSeconds = 2000)
+        public TimerAttribute(int timeOutMilliseconds = 2000)
         {
-            this._timeOutSeconds = timeOutSeconds;
+            this._timeOutMilliseconds = timeOutMilliseconds;
         }
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace Zero.Core.Attribute
 
             var time = Environment.TickCount - ticks;
 
-            if (time > _timeOutSeconds)
+            if (time > _timeOutMilliseconds)
             {
                 var controllerName = context.RouteData.Values["Controller"].ToString();
 

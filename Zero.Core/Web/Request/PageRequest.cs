@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -18,6 +18,11 @@ namespace Zero.Core.Web.Request
         /// 每页显示多少条,默认24条
         /// </summary>
         public int PageSize { get; set; } = 24;
+        
+        /// <summary>
+        /// app页面每次多获取一个用于判断是否还有下一页
+        /// </summary>
+        public int AppPageGetCount => PageSize + 1;
 
         /// <summary>
         /// 跳过多少页

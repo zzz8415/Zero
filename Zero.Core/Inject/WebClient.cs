@@ -1,9 +1,16 @@
-﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Primitives;
+
+using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
+
 using Zero.Core.Attribute;
+using Zero.Core.Web.Request;
 
 namespace Zero.Core.Inject
 {
@@ -58,26 +65,31 @@ namespace Zero.Core.Inject
                 return Request.HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
             }
         }
-        private string _postData = null;
+
 
         /// <summary>
         /// Post数据流
         /// </summary>
-        public string PostData
+        public async Task<string> GetPostDataAsync()
         {
-            get
+            if (Request.Body?.Length > 0)
             {
-                if (_postData == null && Request.Body != null)
+                var body = new List<byte>();
+                var buffer = new byte[8192];
+                while (true)
                 {
-                    using var reader = new StreamReader(Request.Body);
-
-                    reader.BaseStream.Seek(0, SeekOrigin.Begin);
-
-                    _postData = reader.ReadToEndAsync().Result;
+                    var length = await Request.Body.ReadAsync(buffer);
+                    if (length == 0)
+                    {
+                        break;
+                    }
+                    body.AddRange(buffer.Take(length));
                 }
-                return _postData;
+                return Encoding.Default.GetString(body.ToArray());
             }
+            return string.Empty;
         }
+
         #endregion
 
     }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,14 +13,6 @@ namespace Zero.Core.Web
     [Serializable]
     public class AppPageList<T>
     {
-        /// <summary>
-        /// 初始化
-        /// </summary>
-        public AppPageList()
-        {
-
-        }
-
         /// <summary>
         /// 初始化,获取数量建议pageSize+1,这样可以准确判断是否还有下一页
         /// </summary>
@@ -60,5 +52,10 @@ namespace Zero.Core.Web
         /// 是否最后一页
         /// </summary>
         public bool IsLastPage { get; set; }
+
+        /// <summary>
+        /// 扩展对象
+        /// </summary>
+        public object Extend { get; set; }
     }
 }

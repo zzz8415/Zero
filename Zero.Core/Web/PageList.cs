@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Zero.Core.Web.Request;
 
@@ -11,14 +11,6 @@ namespace Zero.Core.Web
     [Serializable]
     public class PageList<T>
     {
-        /// <summary>
-        /// 初始化
-        /// </summary>
-        public PageList()
-        {
-
-        }
-
         /// <summary>
         /// 初始化
         /// </summary>

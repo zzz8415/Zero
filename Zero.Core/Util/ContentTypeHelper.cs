@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -585,7 +585,7 @@ namespace Zero.Core.Util
             {
                 return "application/octet-stream";
             }
-            return _mappings.TryGetValue(Path.GetExtension(fileName), out string val) ? val : "application/octet-stream";
+            return _mappings.TryGetValue(Path.GetExtension(fileName).TrimStart('.'), out string val) ? val : "application/octet-stream";
         }
 
         /// <summary>
@@ -599,7 +599,7 @@ namespace Zero.Core.Util
             {
                 return "application/octet-stream";
             }
-            return _mappings.TryGetValue(extName, out string val) ? val : "application/octet-stream";
+            return _mappings.TryGetValue(extName.TrimStart('.'), out string val) ? val : "application/octet-stream";
         }
     }
 }

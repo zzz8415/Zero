@@ -6,55 +6,54 @@ using System.Text;
 namespace Zero.Core.Util
 {
     /// <summary>
-    /// ¼ÓÃÜ°ïÖúÀà 
+    /// åŠ å¯†å¸®åŠ©ç±» 
     /// </summary>
     public class CryptoHelper
     {
 
         /// <summary>
-        /// 3DES¼Ó½âÃÜµÄÄ¬ÈÏÃÜÔ¿, Ç°8Î»×÷ÎªÏòÁ¿
+        /// 3DESåŠ è§£å¯†çš„é»˜è®¤å¯†é’¥, å‰8ä½ä½œä¸ºå‘é‡
         /// </summary>
         private const string KEY_Complement = "Z!E@R#O$Z%H^E&N*G(L)I_N+G{J}U|N?";
 
-
-        #region Ê¹ÓÃGet´«ÊäÌæ»»¹Ø¼ü×Ö·ûÎªÈ«½ÇºÍ°ë½Ç×ª»»
+        #region ä½¿ç”¨Getä¼ è¾“æ›¿æ¢å…³é”®å­—ç¬¦ä¸ºå…¨è§’å’ŒåŠè§’è½¬æ¢
         /// <summary>
-        /// Ê¹ÓÃGet´«ÊäÌæ»»¹Ø¼ü×Ö·ûÎªÈ«½Ç
+        /// ä½¿ç”¨Getä¼ è¾“æ›¿æ¢å…³é”®å­—ç¬¦ä¸ºå…¨è§’
         /// </summary>
         /// <param name="UrlParam"></param>
         /// <returns></returns>
         public static string UrlParamUrlEncodeRun(string UrlParam)
         {
-            UrlParam = UrlParam.Replace("+", "£«");
-            UrlParam = UrlParam.Replace("=", "£½");
-            UrlParam = UrlParam.Replace("&", "£¦");
-            UrlParam = UrlParam.Replace("?", "£¿");
+            UrlParam = UrlParam.Replace("+", "ï¼‹");
+            UrlParam = UrlParam.Replace("=", "ï¼");
+            UrlParam = UrlParam.Replace("&", "ï¼†");
+            UrlParam = UrlParam.Replace("?", "ï¼Ÿ");
             return UrlParam;
         }
 
         /// <summary>
-        /// Ê¹ÓÃGet´«ÊäÌæ»»¹Ø¼ü×Ö·ûÎª°ë½Ç
+        /// ä½¿ç”¨Getä¼ è¾“æ›¿æ¢å…³é”®å­—ç¬¦ä¸ºåŠè§’
         /// </summary>
         /// <param name="UrlParam"></param>
         /// <returns></returns>
         public static string UrlParamUrlDecodeRun(string UrlParam)
         {
-            UrlParam = UrlParam.Replace("£«", "+");
-            UrlParam = UrlParam.Replace("£½", "=");
-            UrlParam = UrlParam.Replace("£¦", "&");
-            UrlParam = UrlParam.Replace("£¿", "?");
+            UrlParam = UrlParam.Replace("ï¼‹", "+");
+            UrlParam = UrlParam.Replace("ï¼", "=");
+            UrlParam = UrlParam.Replace("ï¼†", "&");
+            UrlParam = UrlParam.Replace("ï¼Ÿ", "?");
             return UrlParam;
         }
         #endregion
 
-        #region  MD5¼ÓÃÜ
+        #region  MD5åŠ å¯†
 
         /// <summary>
-        /// ±ê×¼MD5¼ÓÃÜ
+        /// æ ‡å‡†MD5åŠ å¯†
         /// </summary>
-        /// <param name="source">´ı¼ÓÃÜ×Ö·û´®</param>
-        /// <param name="addKey">¸½¼Ó×Ö·û´®</param>
-        /// <param name="encoding">±àÂë·½Ê½</param>
+        /// <param name="source">å¾…åŠ å¯†å­—ç¬¦ä¸²</param>
+        /// <param name="addKey">é™„åŠ å­—ç¬¦ä¸²</param>
+        /// <param name="encoding">ç¼–ç æ–¹å¼</param>
         /// <returns></returns>
         public static string MD5_Encrypt(string source, string addKey, Encoding encoding)
         {
@@ -65,9 +64,8 @@ namespace Zero.Core.Util
             return MD5_Encrypt(encoding.GetBytes(source));
         }
 
-
         /// <summary>
-        /// ±ê×¼md5¼ÓÃÜ
+        /// æ ‡å‡†md5åŠ å¯†
         /// </summary>
         /// <param name="source"></param>
         /// <returns></returns>
@@ -89,39 +87,37 @@ namespace Zero.Core.Util
         }
 
         /// <summary>
-        /// ±ê×¼MD5¼ÓÃÜ
+        /// æ ‡å‡†MD5åŠ å¯†
         /// </summary>
-        /// <param name="source">´ı¼ÓÃÜ×Ö·û´®</param>
-        /// <param name="encoding">±àÂë·½Ê½</param>
+        /// <param name="source">å¾…åŠ å¯†å­—ç¬¦ä¸²</param>
+        /// <param name="encoding">ç¼–ç æ–¹å¼</param>
         /// <returns></returns>
         public static string MD5_Encrypt(string source, Encoding encoding)
         {
             return MD5_Encrypt(source, string.Empty, encoding);
         }
         /// <summary>
-        /// ±ê×¼MD5¼ÓÃÜ
+        /// æ ‡å‡†MD5åŠ å¯†
         /// </summary>
-        /// <param name="source">±»¼ÓÃÜµÄ×Ö·û´®</param>
+        /// <param name="source">è¢«åŠ å¯†çš„å­—ç¬¦ä¸²</param>
         /// <returns></returns>
         public static string MD5_Encrypt(string source)
         {
             return MD5_Encrypt(source, string.Empty, Encoding.UTF8);
         }
-
-
         #endregion
 
-        #region ÃÜÂë¼ÓÃÜ
+        #region å¯†ç åŠ å¯†
         /// <summary>
-        /// ·µ»ØÊ¹ÓÃMD5¼ÓÃÜºó×Ö·û´®
+        /// è¿”å›ä½¿ç”¨MD5åŠ å¯†åå­—ç¬¦ä¸²
         /// </summary>
-        /// <param name="strpwd">´ı¼ÓÃÜ×Ö·û´®</param>
-        /// <returns>¼ÓÃÜºó×Ö·û´®</returns>
+        /// <param name="strpwd">å¾…åŠ å¯†å­—ç¬¦ä¸²</param>
+        /// <returns>åŠ å¯†åå­—ç¬¦ä¸²</returns>
         public static string RegUser_MD5_Pwd(string strpwd)
         {
             #region
 
-            string appkey = KEY_Complement; //£¬¡£¼ÓÒ»ÌØÊâµÄ×Ö·ûºóÔÙ¼ÓÃÜ£¬ÕâÑù¸ü°²È«Ğ©
+            string appkey = KEY_Complement; //ï¼Œã€‚åŠ ä¸€ç‰¹æ®Šçš„å­—ç¬¦åå†åŠ å¯†ï¼Œè¿™æ ·æ›´å®‰å…¨äº›
                                             //strpwd += appkey;
 
             byte[] a = Encoding.Default.GetBytes(appkey);
@@ -163,12 +159,12 @@ namespace Zero.Core.Util
         }
         #endregion
 
-        #region  DES ¼Ó½âÃÜ
+        #region  DES åŠ è§£å¯†
         /// <summary>
-        /// Desc¼ÓÃÜ Encoding.Default
+        /// DescåŠ å¯† Encoding.Default
         /// </summary>
-        /// <param name="source">´ı¼ÓÃÜ×Ö·û</param>
-        /// <param name="key">ÃÜÔ¿</param>
+        /// <param name="source">å¾…åŠ å¯†å­—ç¬¦</param>
+        /// <param name="key">å¯†é’¥</param>
         /// <returns>string</returns>
         public static string DES_Encrypt(string source, string key)
         {
@@ -177,18 +173,15 @@ namespace Zero.Core.Util
                 return null;
             }
 
-
-
-
-            //°Ñ×Ö·û´®·Åµ½byteÊı×éÖĞ  
+            //æŠŠå­—ç¬¦ä¸²æ”¾åˆ°byteæ•°ç»„ä¸­  
             byte[] inputByteArray = Encoding.Default.GetBytes(source);
 
-            // ÃÜÔ¿±ØĞëÊÇ8Î»£¬·ñÔò»á±¨´í System.ArgumentException: Ö¸¶¨¼üµÄ´óĞ¡¶ÔÓÚ´ËËã·¨ÎŞĞ§¡£
+            // å¯†é’¥å¿…é¡»æ˜¯8ä½ï¼Œå¦åˆ™ä¼šæŠ¥é”™ System.ArgumentException: æŒ‡å®šé”®çš„å¤§å°å¯¹äºæ­¤ç®—æ³•æ— æ•ˆã€‚
             key = BuildKey(key, 8);
 
-            //½¨Á¢¼ÓÃÜ¶ÔÏóµÄÃÜÔ¿ºÍÆ«ÒÆÁ¿  
-            //Ô­ÎÄÊ¹ÓÃASCIIEncoding.ASCII·½·¨µÄGetBytes·½·¨  
-            //Ê¹µÃÊäÈëÃÜÂë±ØĞëÊäÈëÓ¢ÎÄÎÄ±¾  
+            //å»ºç«‹åŠ å¯†å¯¹è±¡çš„å¯†é’¥å’Œåç§»é‡  
+            //åŸæ–‡ä½¿ç”¨ASCIIEncoding.ASCIIæ–¹æ³•çš„GetBytesæ–¹æ³•  
+            //ä½¿å¾—è¾“å…¥å¯†ç å¿…é¡»è¾“å…¥è‹±æ–‡æ–‡æœ¬  
             //            des.Key = UTF8Encoding.UTF8.GetBytes(key);
             //            des.IV  = UTF8Encoding.UTF8.GetBytes(key);
             StringBuilder ret = new();
@@ -210,31 +203,30 @@ namespace Zero.Core.Util
         }
 
         /// <summary>
-        /// Ê¹ÓÃÄ¬ÈÏkey ×ö DES¼ÓÃÜ Encoding.Default
+        /// ä½¿ç”¨é»˜è®¤key åš DESåŠ å¯† Encoding.Default
         /// </summary>
-        /// <param name="source">Ã÷ÎÄ</param>
-        /// <returns>ÃÜÎÄ</returns>
+        /// <param name="source">æ˜æ–‡</param>
+        /// <returns>å¯†æ–‡</returns>
         public static string DES_Encrypt(string source)
         {
-
             return DES_Encrypt(source, KEY_Complement);
         }
         /// <summary>
-        /// Ê¹ÓÃÄ¬ÈÏkey ×ö DES½âÃÜ Encoding.Default
+        /// ä½¿ç”¨é»˜è®¤key åš DESè§£å¯† Encoding.Default
         /// </summary>
-        /// <param name="source">ÃÜÎÄ</param>
-        /// <returns>Ã÷ÎÄ</returns>
+        /// <param name="source">å¯†æ–‡</param>
+        /// <returns>æ˜æ–‡</returns>
         public static string DES_Decrypt(string source)
         {
             return DES_Decrypt(source, KEY_Complement);
         }
 
         /// <summary>
-        /// DES½âÃÜ Encoding.Default
+        /// DESè§£å¯† Encoding.Default
         /// </summary>
-        /// <param name="source">ÃÜÎÄ</param>
-        /// <param name="key">ÃÜÔ¿</param>
-        /// <returns>Ã÷ÎÄ</returns>
+        /// <param name="source">å¯†æ–‡</param>
+        /// <param name="key">å¯†é’¥</param>
+        /// <returns>æ˜æ–‡</returns>
         public static string DES_Decrypt(string source, string key)
         {
             if (string.IsNullOrEmpty(source))
@@ -242,7 +234,7 @@ namespace Zero.Core.Util
                 return null;
             }
 
-            //½«×Ö·û´®×ªÎª×Ö½ÚÊı×é  
+            //å°†å­—ç¬¦ä¸²è½¬ä¸ºå­—èŠ‚æ•°ç»„  
             byte[] inputByteArray = new byte[source.Length / 2];
             for (int x = 0; x < source.Length / 2; x++)
             {
@@ -250,9 +242,9 @@ namespace Zero.Core.Util
                 inputByteArray[x] = (byte)i;
             }
 
-            // ÃÜÔ¿±ØĞëÊÇ8Î»£¬·ñÔò»á±¨´í System.ArgumentException: Ö¸¶¨¼üµÄ´óĞ¡¶ÔÓÚ´ËËã·¨ÎŞĞ§¡£
+            // å¯†é’¥å¿…é¡»æ˜¯8ä½ï¼Œå¦åˆ™ä¼šæŠ¥é”™ System.ArgumentException: æŒ‡å®šé”®çš„å¤§å°å¯¹äºæ­¤ç®—æ³•æ— æ•ˆã€‚
             key = BuildKey(key, 8);
-            //½¨Á¢¼ÓÃÜ¶ÔÏóµÄÃÜÔ¿ºÍÆ«ÒÆÁ¿£¬´ËÖµÖØÒª£¬²»ÄÜĞŞ¸Ä  
+            //å»ºç«‹åŠ å¯†å¯¹è±¡çš„å¯†é’¥å’Œåç§»é‡ï¼Œæ­¤å€¼é‡è¦ï¼Œä¸èƒ½ä¿®æ”¹  
             var des = DES.Create();
             des.Key = Encoding.UTF8.GetBytes(key);
             des.IV = Encoding.UTF8.GetBytes(key);
@@ -264,13 +256,13 @@ namespace Zero.Core.Util
             return Encoding.Default.GetString(ms.ToArray());
         }
 
-        #region ÅäºÏJSÓÃµÄC#°æDES¼Ó½âÃÜ·½·¨¼°Ïà¹Øº¯Êı
+        #region é…åˆJSç”¨çš„C#ç‰ˆDESåŠ è§£å¯†æ–¹æ³•åŠç›¸å…³å‡½æ•°
 
         /// <summary>
-        /// Óë¿Í»§¶ËÍ¨ÓÃµÄdes¼ÓÃÜ
+        /// ä¸å®¢æˆ·ç«¯é€šç”¨çš„desåŠ å¯†
         /// </summary>
-        /// <param name="source">Ã÷ÎÄ</param>
-        /// <param name="key">ÃÜÔ¿</param>
+        /// <param name="source">æ˜æ–‡</param>
+        /// <param name="key">å¯†é’¥</param>
         /// <returns></returns>
         public static string DES_Encrypt_Client(string source, string key)
         {
@@ -283,10 +275,10 @@ namespace Zero.Core.Util
         }
 
         /// <summary>
-        /// Óë¿Í»§¶ËÍ¨ÓÃµÄdes½âÃÜ
+        /// ä¸å®¢æˆ·ç«¯é€šç”¨çš„desè§£å¯†
         /// </summary>
-        /// <param name="source">ÃÜÎÄ</param>
-        /// <param name="key">ÃÜ³×</param>
+        /// <param name="source">å¯†æ–‡</param>
+        /// <param name="key">å¯†åŒ™</param>
         /// <returns></returns>
         public static string DES_Decrypt_Client(string source, string key)
         {
@@ -300,8 +292,8 @@ namespace Zero.Core.Util
         }
 
         /// <summary>
-        /// °Ñ×Ö·û´®×ª»»Îª16½øÖÆ×Ö·û´®
-        /// Èç£ºa±ä³É61£¨¼´10½øÖÆµÄ97£©£»abc±ä³É616263
+        /// æŠŠå­—ç¬¦ä¸²è½¬æ¢ä¸º16è¿›åˆ¶å­—ç¬¦ä¸²
+        /// å¦‚ï¼šaå˜æˆ61ï¼ˆå³10è¿›åˆ¶çš„97ï¼‰ï¼›abcå˜æˆ616263
         /// </summary>
         /// <param name="s"></param>
         /// <returns></returns>
@@ -317,8 +309,8 @@ namespace Zero.Core.Util
         }
 
         /// <summary>
-        /// 16½øÖÆ×Ö·û´®×ª»»Îª×Ö·û´®
-        /// Èç£º61£¨¼´10½øÖÆµÄ97£©±ä³Éa£»616263±ä³Éabc
+        /// 16è¿›åˆ¶å­—ç¬¦ä¸²è½¬æ¢ä¸ºå­—ç¬¦ä¸²
+        /// å¦‚ï¼š61ï¼ˆå³10è¿›åˆ¶çš„97ï¼‰å˜æˆaï¼›616263å˜æˆabc
         /// </summary>
         /// <param name="s"></param>
         /// <returns></returns>
@@ -335,10 +327,10 @@ namespace Zero.Core.Util
         }
 
         /// <summary>
-        /// ´ø·ûºÅÎ»ÓÒÒÆ£¨ÀàËÆÓÚjsµÄ>>>£©
+        /// å¸¦ç¬¦å·ä½å³ç§»ï¼ˆç±»ä¼¼äºjsçš„>>>ï¼‰
         /// </summary>
-        /// <param name="a">ÓÃÓÚÓÒÒÆµÄ²Ù×÷Êı</param>
-        /// <param name="bit">ÓÒÒÆÎ»Êı</param>
+        /// <param name="a">ç”¨äºå³ç§»çš„æ“ä½œæ•°</param>
+        /// <param name="bit">å³ç§»ä½æ•°</param>
         /// <returns></returns>
         private static int RM(int a, int bit)
         {
@@ -351,13 +343,13 @@ namespace Zero.Core.Util
         }
 
         /// <summary>
-        /// ¼Ó½âÃÜÖ÷µ÷·½·¨
+        /// åŠ è§£å¯†ä¸»è°ƒæ–¹æ³•
         /// </summary>
-        /// <param name="beinetkey">ÃÜÔ¿</param>
-        /// <param name="message">¼ÓÃÜÊ±Îªstring£¬½âÃÜÊ±Îªbyte[]</param>
-        /// <param name="encrypt">true£º¼ÓÃÜ£»false£º½âÃÜ</param>
-        /// <param name="mode">true£ºCBC mode£»false£º·ÇCBC mode</param>
-        /// <param name="iv">³õÊ¼»¯ÏòÁ¿</param>
+        /// <param name="beinetkey">å¯†é’¥</param>
+        /// <param name="message">åŠ å¯†æ—¶ä¸ºstringï¼Œè§£å¯†æ—¶ä¸ºbyte[]</param>
+        /// <param name="encrypt">trueï¼šåŠ å¯†ï¼›falseï¼šè§£å¯†</param>
+        /// <param name="mode">trueï¼šCBC modeï¼›falseï¼šéCBC mode</param>
+        /// <param name="iv">åˆå§‹åŒ–å‘é‡</param>
         /// <returns></returns>
         private static string Des(string beinetkey, string message, bool encrypt, bool mode, string iv)
         {
@@ -428,7 +420,7 @@ namespace Zero.Core.Util
             while (m < len)
             {
                 if (encrypt)
-                {/*¼ÓÃÜÊ±°´Ë«×Ö½Ú²Ù×÷*/
+                {/*åŠ å¯†æ—¶æŒ‰åŒå­—èŠ‚æ“ä½œ*/
                     left = (message[m++] << 16) | message[m++];
                     right = (message[m++] << 16) | message[m++];
                 }
@@ -516,7 +508,7 @@ namespace Zero.Core.Util
                 }
                 else
                 {
-                    // ½âÃÜÊ±£¬×îºóÒ»¸ö×Ö·ûÈç¹ûÊÇ\0£¬È¥³ı
+                    // è§£å¯†æ—¶ï¼Œæœ€åä¸€ä¸ªå­—ç¬¦å¦‚æœæ˜¯\0ï¼Œå»é™¤
                     //arrInt = new int[] { (RM(left, 16) & 0xffff), (left & 0xffff), (RM(right, 16) & 0xffff), (right & 0xffff) };
                     int tmpch = (RM(left, 16) & 0xffff);
                     if (tmpch != 0)
@@ -545,7 +537,7 @@ namespace Zero.Core.Util
                     //    (char)(left & 0xffff),
                     //    (char)(RM(right, 16) & 0xffff),
                     //    (char)(right & 0xffff));
-                }/*½âÃÜÊ±Êä³öË«×Ö½Ú*/
+                }/*è§£å¯†æ—¶è¾“å‡ºåŒå­—èŠ‚*/
                 //byte[] arrByte = new byte[arrInt.Length];
                 //for (int loop = 0; loop < arrInt.Length; loop++)
                 //{
@@ -680,14 +672,14 @@ namespace Zero.Core.Util
         #endregion
 
 
-        #region 3DES¼Ó½âÃÜ
+        #region 3DESåŠ è§£å¯†
 
         /// <summary>
-        /// Ê¹ÓÃÖ¸¶¨µÄkeyºÍiv£¬¼ÓÃÜinputÊı¾İ
+        /// ä½¿ç”¨æŒ‡å®šçš„keyå’Œivï¼ŒåŠ å¯†inputæ•°æ®
         /// </summary>
         /// <param name="input"></param>
-        /// <param name="key">ÃÜÔ¿£¬±ØĞëÎª24Î»³¤¶È</param>
-        /// <param name="iv">Î¢Á¿£¬±ØĞëÎª8Î»³¤¶È</param>
+        /// <param name="key">å¯†é’¥ï¼Œå¿…é¡»ä¸º24ä½é•¿åº¦</param>
+        /// <param name="iv">å¾®é‡ï¼Œå¿…é¡»ä¸º8ä½é•¿åº¦</param>
         /// <returns></returns>
         public static string TripleDES_Encrypt(string input, string key = null, string iv = null)
         {
@@ -698,11 +690,11 @@ namespace Zero.Core.Util
             byte[] arrKey = Encoding.UTF8.GetBytes(key);
             byte[] arrIV = Encoding.UTF8.GetBytes(iv);
 
-            // »ñÈ¡¼ÓÃÜºóµÄ×Ö½ÚÊı¾İ
+            // è·å–åŠ å¯†åçš„å­—èŠ‚æ•°æ®
             byte[] arrData = Encoding.UTF8.GetBytes(input);
             byte[] result = TripleDesEncrypt(arrKey, arrIV, arrData);
 
-            // ×ª»»Îª16½øÖÆ×Ö·û´®
+            // è½¬æ¢ä¸º16è¿›åˆ¶å­—ç¬¦ä¸²
             StringBuilder ret = new();
             foreach (byte b in result)
             {
@@ -712,11 +704,11 @@ namespace Zero.Core.Util
         }
 
         /// <summary>
-        /// Ê¹ÓÃÖ¸¶¨µÄkeyºÍiv£¬½âÃÜinputÊı¾İ
+        /// ä½¿ç”¨æŒ‡å®šçš„keyå’Œivï¼Œè§£å¯†inputæ•°æ®
         /// </summary>
         /// <param name="input"></param>
-        /// <param name="key">ÃÜÔ¿£¬±ØĞëÎª24Î»³¤¶È</param>
-        /// <param name="iv">Î¢Á¿£¬±ØĞëÎª8Î»³¤¶È</param>
+        /// <param name="key">å¯†é’¥ï¼Œå¿…é¡»ä¸º24ä½é•¿åº¦</param>
+        /// <param name="iv">å¾®é‡ï¼Œå¿…é¡»ä¸º8ä½é•¿åº¦</param>
         /// <returns></returns>
         public static string TripleDES_Decrypt(string input, string key = null, string iv = null)
         {
@@ -727,7 +719,7 @@ namespace Zero.Core.Util
             byte[] arrKey = Encoding.UTF8.GetBytes(key);
             byte[] arrIV = Encoding.UTF8.GetBytes(iv);
 
-            // »ñÈ¡¼ÓÃÜºóµÄ×Ö½ÚÊı¾İ
+            // è·å–åŠ å¯†åçš„å­—èŠ‚æ•°æ®
             int len = input.Length / 2;
             byte[] arrData = new byte[len];
             for (int x = 0; x < len; x++)
@@ -741,20 +733,20 @@ namespace Zero.Core.Util
         }
 
 
-        #region TripleDesEncrypt¼ÓÃÜ(3DES¼ÓÃÜ)
+        #region TripleDesEncryptåŠ å¯†(3DESåŠ å¯†)
         /// <summary>
-        /// 3Des¼ÓÃÜ£¬ÃÜÔ¿³¤¶È±ØĞèÊÇ24×Ö½Ú
+        /// 3DesåŠ å¯†ï¼Œå¯†é’¥é•¿åº¦å¿…éœ€æ˜¯24å­—èŠ‚
         /// </summary>
-        /// <param name="key">ÃÜÔ¿×Ö½ÚÊı×é</param>
-        /// <param name="iv">ÏòÁ¿×Ö½ÚÊı×é</param>
-        /// <param name="source">Ô´×Ö½ÚÊı×é</param>
-        /// <returns>¼ÓÃÜºóµÄ×Ö½ÚÊı×é</returns>
+        /// <param name="key">å¯†é’¥å­—èŠ‚æ•°ç»„</param>
+        /// <param name="iv">å‘é‡å­—èŠ‚æ•°ç»„</param>
+        /// <param name="source">æºå­—èŠ‚æ•°ç»„</param>
+        /// <returns>åŠ å¯†åçš„å­—èŠ‚æ•°ç»„</returns>
         private static byte[] TripleDesEncrypt(byte[] key, byte[] iv, byte[] source)
         {
             using var dsp = TripleDES.Create();
 
-            dsp.Mode = CipherMode.CBC; // Ä¬ÈÏÖµ
-            dsp.Padding = PaddingMode.PKCS7;// Ä¬ÈÏÖµ
+            dsp.Mode = CipherMode.CBC; // é»˜è®¤å€¼
+            dsp.Padding = PaddingMode.PKCS7;// é»˜è®¤å€¼
 
             using MemoryStream mStream = new();
             using CryptoStream cStream = new(mStream, dsp.CreateEncryptor(key, iv), CryptoStreamMode.Write);
@@ -765,21 +757,21 @@ namespace Zero.Core.Util
         }
         #endregion
 
-        #region TripleDesDecrypt½âÃÜ(3DES½âÃÜ)
+        #region TripleDesDecryptè§£å¯†(3DESè§£å¯†)
         /// <summary>
-        /// 3Des½âÃÜ£¬ÃÜÔ¿³¤¶È±ØĞèÊÇ24×Ö½Ú
+        /// 3Desè§£å¯†ï¼Œå¯†é’¥é•¿åº¦å¿…éœ€æ˜¯24å­—èŠ‚
         /// </summary>
-        /// <param name="key">ÃÜÔ¿×Ö½ÚÊı×é</param>
-        /// <param name="iv">ÏòÁ¿×Ö½ÚÊı×é</param>
-        /// <param name="source">¼ÓÃÜºóµÄ×Ö½ÚÊı×é</param>
-        /// <param name="dataLen">½âÃÜºóµÄÊı¾İ³¤¶È</param>
-        /// <returns>½âÃÜºóµÄ×Ö½ÚÊı×é</returns>
+        /// <param name="key">å¯†é’¥å­—èŠ‚æ•°ç»„</param>
+        /// <param name="iv">å‘é‡å­—èŠ‚æ•°ç»„</param>
+        /// <param name="source">åŠ å¯†åçš„å­—èŠ‚æ•°ç»„</param>
+        /// <param name="dataLen">è§£å¯†åçš„æ•°æ®é•¿åº¦</param>
+        /// <returns>è§£å¯†åçš„å­—èŠ‚æ•°ç»„</returns>
         private static byte[] TripleDesDecrypt(byte[] key, byte[] iv, byte[] source, out int dataLen)
         {
             using var dsp = TripleDES.Create();
 
-            dsp.Mode = CipherMode.CBC; // Ä¬ÈÏÖµ
-            dsp.Padding = PaddingMode.PKCS7;// Ä¬ÈÏÖµ
+            dsp.Mode = CipherMode.CBC; // é»˜è®¤å€¼
+            dsp.Padding = PaddingMode.PKCS7;// é»˜è®¤å€¼
 
             using MemoryStream mStream = new(source);
             using CryptoStream cStream = new(mStream, dsp.CreateDecryptor(key, iv), CryptoStreamMode.Read);
@@ -789,19 +781,19 @@ namespace Zero.Core.Util
         }
 
         /// <summary>
-        /// 3Des½âÃÜ£¬ÃÜÔ¿³¤¶È±ØĞèÊÇ24×Ö½Ú
+        /// 3Desè§£å¯†ï¼Œå¯†é’¥é•¿åº¦å¿…éœ€æ˜¯24å­—èŠ‚
         /// </summary>
-        /// <param name="key">ÃÜÔ¿×Ö½ÚÊı×é</param>
-        /// <param name="iv">ÏòÁ¿×Ö½ÚÊı×é</param>
-        /// <param name="source">¼ÓÃÜºóµÄ×Ö½ÚÊı×é</param>
-        /// <returns>½âÃÜºóµÄ×Ö½ÚÊı×é</returns>
+        /// <param name="key">å¯†é’¥å­—èŠ‚æ•°ç»„</param>
+        /// <param name="iv">å‘é‡å­—èŠ‚æ•°ç»„</param>
+        /// <param name="source">åŠ å¯†åçš„å­—èŠ‚æ•°ç»„</param>
+        /// <returns>è§£å¯†åçš„å­—èŠ‚æ•°ç»„</returns>
         private static byte[] TripleDesDecrypt(byte[] key, byte[] iv, byte[] source)
         {
             byte[] result = TripleDesDecrypt(key, iv, source, out int dataLen);
 
             if (result.Length != dataLen)
             {
-                // Èç¹ûÊı×é³¤¶È²»ÊÇ½âÃÜºóµÄÊµ¼Ê³¤¶È£¬ĞèÒª½Ø¶Ï¶àÓàµÄÊı¾İ£¬ÓÃÀ´½â¾öGzipµÄ"Magic byte doesn't match"µÄÎÊÌâ
+                // å¦‚æœæ•°ç»„é•¿åº¦ä¸æ˜¯è§£å¯†åçš„å®é™…é•¿åº¦ï¼Œéœ€è¦æˆªæ–­å¤šä½™çš„æ•°æ®ï¼Œç”¨æ¥è§£å†³Gzipçš„"Magic byte doesn't match"çš„é—®é¢˜
                 byte[] resultToReturn = new byte[dataLen];
                 Array.Copy(result, resultToReturn, dataLen);
                 return resultToReturn;
@@ -817,19 +809,19 @@ namespace Zero.Core.Util
         #endregion
 
 
-        #region SHA1¼ÓÃÜ
+        #region SHA1åŠ å¯†
 
         /// <summary>
-        /// SHA1¼ÓÃÜ£¬µÈĞ§ÓÚ PHP µÄ SHA1() ´úÂë
+        /// SHA1åŠ å¯†ï¼Œç­‰æ•ˆäº PHP çš„ SHA1() ä»£ç 
         /// </summary>
-        /// <param name="source">±»¼ÓÃÜµÄ×Ö·û´®</param>
-        /// <returns>¼ÓÃÜºóµÄ×Ö·û´®</returns>
+        /// <param name="source">è¢«åŠ å¯†çš„å­—ç¬¦ä¸²</param>
+        /// <returns>åŠ å¯†åçš„å­—ç¬¦ä¸²</returns>
         public static string SHA1_Encrypt(string source)
         {
             byte[] temp1 = Encoding.UTF8.GetBytes(source);
             byte[] temp2 = SHA1.HashData(temp1);
 
-            //×¢Òâ£¬²»ÄÜÓÃÕâ¸ö
+            //æ³¨æ„ï¼Œä¸èƒ½ç”¨è¿™ä¸ª
             //string output = Convert.ToBase64String(temp2); 
 
             string output = BitConverter.ToString(temp2);
@@ -839,63 +831,63 @@ namespace Zero.Core.Util
         }
         #endregion
 
-        #region Í¨¹ıHTTP´«µİµÄBase64±àÂë
+        #region é€šè¿‡HTTPä¼ é€’çš„Base64ç¼–ç 
         /// <summary>
-        /// ±àÂë Í¨¹ıHTTP´«µİµÄBase64±àÂë
+        /// ç¼–ç  é€šè¿‡HTTPä¼ é€’çš„Base64ç¼–ç 
         /// </summary>
-        /// <param name="source">±àÂëÇ°µÄ</param>
-        /// <returns>±àÂëºóµÄ</returns>
+        /// <param name="source">ç¼–ç å‰çš„</param>
+        /// <returns>ç¼–ç åçš„</returns>
         public static string HttpBase64Encode(string source)
         {
-            //¿Õ´®´¦Àí
+            //ç©ºä¸²å¤„ç†
             if (string.IsNullOrEmpty(source))
             {
                 return "";
             }
 
-            //±àÂë
+            //ç¼–ç 
             string encodeString = Convert.ToBase64String(Encoding.UTF8.GetBytes(source));
 
-            //¹ıÂË
+            //è¿‡æ»¤
             encodeString = encodeString.Replace("+", "~");
             encodeString = encodeString.Replace("/", "@");
             encodeString = encodeString.Replace("=", "$");
 
-            //·µ»Ø
+            //è¿”å›
             return encodeString;
         }
         #endregion
 
-        #region Í¨¹ıHTTP´«µİµÄBase64½âÂë
+        #region é€šè¿‡HTTPä¼ é€’çš„Base64è§£ç 
         /// <summary>
-        /// ½âÂë Í¨¹ıHTTP´«µİµÄBase64½âÂë
+        /// è§£ç  é€šè¿‡HTTPä¼ é€’çš„Base64è§£ç 
         /// </summary>
-        /// <param name="source">½âÂëÇ°µÄ</param>
-        /// <returns>½âÂëºóµÄ</returns>
+        /// <param name="source">è§£ç å‰çš„</param>
+        /// <returns>è§£ç åçš„</returns>
         public static string HttpBase64Decode(string source)
         {
-            //¿Õ´®´¦Àí
+            //ç©ºä¸²å¤„ç†
             if (string.IsNullOrEmpty(source))
             {
                 return "";
             }
 
-            //»¹Ô­
+            //è¿˜åŸ
             string deocdeString = source;
             deocdeString = deocdeString.Replace("~", "+");
             deocdeString = deocdeString.Replace("@", "/");
             deocdeString = deocdeString.Replace("$", "=");
 
-            //Base64½âÂë
+            //Base64è§£ç 
             deocdeString = Encoding.UTF8.GetString(Convert.FromBase64String(deocdeString));
 
-            //·µ»Ø
+            //è¿”å›
             return deocdeString;
         }
         #endregion
 
         /// <summary>
-        /// ¼ÆËãÎÄ¼şµÄMD5Öµ²¢·µ»Ø
+        /// è®¡ç®—æ–‡ä»¶çš„MD5å€¼å¹¶è¿”å›
         /// </summary>
         /// <param name="fileName"></param>
         /// <returns></returns>
@@ -908,12 +900,12 @@ namespace Zero.Core.Util
         }
 
         /// <summary>  
-        ///AES¼ÓÃÜ£¨¼ÓÃÜ²½Öè£©  
-        ///1£¬¼ÓÃÜ×Ö·û´®µÃµ½2½øÖÆÊı×é£»    
-        ///2£¬½øĞĞbase64±àÂë  
+        ///AESåŠ å¯†ï¼ˆåŠ å¯†æ­¥éª¤ï¼‰  
+        ///1ï¼ŒåŠ å¯†å­—ç¬¦ä¸²å¾—åˆ°2è¿›åˆ¶æ•°ç»„ï¼›    
+        ///2ï¼Œè¿›è¡Œbase64ç¼–ç   
         /// </summary>  
-        /// <param name="toEncrypt">Òª¼ÓÃÜµÄ×Ö·û´®</param>  
-        /// <param name="key">ÃÜÔ¿</param>  
+        /// <param name="toEncrypt">è¦åŠ å¯†çš„å­—ç¬¦ä¸²</param>  
+        /// <param name="key">å¯†é’¥</param>  
         public static string AES_Encrypt(string toEncrypt, string key)
         {
             byte[] _Key = Encoding.ASCII.GetBytes(BuildKey(key, 32));
@@ -932,12 +924,12 @@ namespace Zero.Core.Util
         }
 
         /// <summary>  
-        /// AES½âÃÜ£¨½âÃÜ²½Öè£©  
-        /// 1£¬½«BASE64×Ö·û´®×ªÎªÊı×é  
-        /// 2£¬ÓÃAES½âÃÜÊı¾İ  
+        /// AESè§£å¯†ï¼ˆè§£å¯†æ­¥éª¤ï¼‰  
+        /// 1ï¼Œå°†BASE64å­—ç¬¦ä¸²è½¬ä¸ºæ•°ç»„  
+        /// 2ï¼Œç”¨AESè§£å¯†æ•°æ®  
         /// </summary>  
-        /// <param name="encryptedSource">ÒÑ¼ÓÃÜµÄÄÚÈİ</param>  
-        /// <param name="key">ÃÜÔ¿</param>  
+        /// <param name="encryptedSource">å·²åŠ å¯†çš„å†…å®¹</param>  
+        /// <param name="key">å¯†é’¥</param>  
         public static string AES_Decrypt(string encryptedSource, string key)
         {
             byte[] _Key = Encoding.ASCII.GetBytes(BuildKey(key, 32));
