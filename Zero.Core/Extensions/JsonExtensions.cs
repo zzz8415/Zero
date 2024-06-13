@@ -1,12 +1,9 @@
-﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Logging;
 
 using Newtonsoft.Json;
 using System;
 using Zero.Core.Inject;
-
-using NLog.Web;
-using NLog.Extensions.Logging;
 
 namespace Zero.Core.Extensions
 {
@@ -65,19 +62,16 @@ namespace Zero.Core.Extensions
         {
             if (string.IsNullOrEmpty(json))
             {
-                return null;
+                return default;
             }
 
             try
             {
                 return json.DeserializeJson<T>(settings);
             }
-            catch (Exception ex)
+            catch
             {
-                var logger = LoggerFactory.Create(x => x.AddNLog()).CreateLogger(nameof(JsonExtensions));
-                logger.LogError(ex, ex.Message);
-
-                return null;
+                return default;
             }
         }
     }

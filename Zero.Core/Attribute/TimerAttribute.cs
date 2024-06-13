@@ -2,9 +2,6 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-using NLog.Extensions.Logging;
-using NLog.Web;
-
 using System;
 using System.Collections.Generic;
 using System.Numerics;
@@ -58,7 +55,7 @@ namespace Zero.Core.Attribute
 
                 var message = string.Format("Controller:[{0}] Action:[{1}],本次请求耗时 {2} 秒.", controllerName, actionName, (double)time / 1000);
 
-                var logger = LoggerFactory.Create(x => x.AddNLog()).CreateLogger<TimerAttribute>();
+                var logger = context.HttpContext.RequestServices.GetService<ILogger<TimerAttribute>>();
 
                 logger.LogWarning(message);
             }
