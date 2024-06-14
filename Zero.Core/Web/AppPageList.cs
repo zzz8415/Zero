@@ -13,6 +13,7 @@ namespace Zero.Core.Web
     [Serializable]
     public class AppPageList<T>
     {
+        public AppPageList() { }
         /// <summary>
         /// 初始化,获取数量建议pageSize+1,这样可以准确判断是否还有下一页
         /// </summary>

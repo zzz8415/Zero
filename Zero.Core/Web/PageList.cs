@@ -11,6 +11,7 @@ namespace Zero.Core.Web
     [Serializable]
     public class PageList<T>
     {
+        public PageList() { }
         /// <summary>
         /// 初始化
         /// </summary>
