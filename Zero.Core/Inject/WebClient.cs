@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Zero.Core.Attribute;
+using Zero.Core.Extensions;
 using Zero.Core.Web.Request;
 
 namespace Zero.Core.Inject
@@ -66,28 +67,22 @@ namespace Zero.Core.Inject
             }
         }
 
+        private string _postData = null;
 
         /// <summary>
         /// Post数据流
         /// </summary>
         public async Task<string> GetPostDataAsync()
         {
-            if (Request.Body?.Length > 0)
+            if (_postData.IsNullOrEmpty())
             {
-                var body = new List<byte>();
-                var buffer = new byte[8192];
-                while (true)
-                {
-                    var length = await Request.Body.ReadAsync(buffer);
-                    if (length == 0)
-                    {
-                        break;
-                    }
-                    body.AddRange(buffer.Take(length));
-                }
-                return Encoding.Default.GetString(body.ToArray());
+                Request.EnableBuffering();
+                StreamReader stream = new(Request.Body);
+                _postData = await stream.ReadToEndAsync();
+                Request.Body.Seek(0, SeekOrigin.Begin);
             }
-            return string.Empty;
+          
+            return _postData;
         }
 
         #endregion
