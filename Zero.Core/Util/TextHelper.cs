@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,7 +20,7 @@ namespace Zero.Core.Util
         /// <returns></returns>
         public static string GetChineseInitials(string chineseString)
         {
-            StringBuilder initialsBuilder = new StringBuilder();
+            StringBuilder initialsBuilder = new();
             for (int i = 0; i < chineseString.Length; i++)
             {
                 char curChar = chineseString[i];
@@ -121,15 +121,13 @@ namespace Zero.Core.Util
             byte[] destBytes = new byte[dataLength];
             int byteIndex1 = 0;
             int bitIndex1 = 0;
-            int byteIndex2 = 0;
-            int bitIndex2 = 0;
             int index = 0;
             while (byteIndex1 < destBytes.Length)
             {
                 int m = 8 * byteIndex1 + bitIndex1;
                 int n = m + 6;
-                byteIndex2 = byteIndex1;
-                bitIndex2 = n - 8 * byteIndex2;
+                int byteIndex2 = byteIndex1;
+                int bitIndex2 = n - 8 * byteIndex2;
                 if (bitIndex2 > 7)
                 {
                     byteIndex2 = byteIndex1 + 1;
@@ -170,15 +168,13 @@ namespace Zero.Core.Util
             byte[] destBytes = new byte[destBytesLength];
             int byteIndex1 = 0;
             int bitIndex1 = 0;
-            int byteIndex2 = 0;
-            int bitIndex2 = 0;
             int index = 0;
             while (byteIndex1 < sourceBytes.Length)
             {
                 int m = 8 * byteIndex1 + bitIndex1;
                 int n = m + 6;
-                byteIndex2 = byteIndex1;
-                bitIndex2 = n - 8 * byteIndex2;
+                int byteIndex2 = byteIndex1;
+                int bitIndex2 = n - 8 * byteIndex2;
                 if (bitIndex2 > 7)
                 {
                     byteIndex2 = byteIndex1 + 1;
@@ -210,7 +206,7 @@ namespace Zero.Core.Util
         #region 将字节数组转换为十六进制字符串
 
 
-        private static char[] hexDigits = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
+        private static readonly char[] hexDigits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'];
 
         /// <summary>
         /// 将字节数组转换为十六进制字符串。
@@ -254,55 +250,32 @@ namespace Zero.Core.Util
 
         private static byte ToByte(char hexChar)
         {
-            switch (hexChar)
+            return hexChar switch
             {
-                case '0':
-                    return 0;
-                case '1':
-                    return 1;
-                case '2':
-                    return 2;
-                case '3':
-                    return 3;
-                case '4':
-                    return 4;
-                case '5':
-                    return 5;
-                case '6':
-                    return 6;
-                case '7':
-                    return 7;
-                case '8':
-                    return 8;
-                case '9':
-                    return 9;
-                case 'A':
-                    return 10;
-                case 'B':
-                    return 11;
-                case 'C':
-                    return 12;
-                case 'D':
-                    return 13;
-                case 'E':
-                    return 14;
-                case 'F':
-                    return 15;
-                case 'a':
-                    return 10;
-                case 'b':
-                    return 11;
-                case 'c':
-                    return 12;
-                case 'd':
-                    return 13;
-                case 'e':
-                    return 14;
-                case 'f':
-                    return 15;
-                default:
-                    return 0;
-            }
+                '0' => 0,
+                '1' => 1,
+                '2' => 2,
+                '3' => 3,
+                '4' => 4,
+                '5' => 5,
+                '6' => 6,
+                '7' => 7,
+                '8' => 8,
+                '9' => 9,
+                'A' => 10,
+                'B' => 11,
+                'C' => 12,
+                'D' => 13,
+                'E' => 14,
+                'F' => 15,
+                'a' => 10,
+                'b' => 11,
+                'c' => 12,
+                'd' => 13,
+                'e' => 14,
+                'f' => 15,
+                _ => 0,
+            };
         }
 
         #endregion

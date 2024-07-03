@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -19,8 +19,7 @@ namespace Zero.Core.Util
         /// <returns>键值对</returns>
         public static string GetNVCFromEnumValue(Type enumType)
         {
-            StringBuilder sb = new StringBuilder();
-            string strDesc = string.Empty;
+            StringBuilder sb = new();
             Type typeDescription = typeof(DescriptionAttribute);
             System.Reflection.FieldInfo[] fields = enumType.GetFields();
             foreach (FieldInfo field in fields)
@@ -28,6 +27,7 @@ namespace Zero.Core.Util
                 if (field.FieldType.IsEnum)
                 {
                     object[] arr = field.GetCustomAttributes(typeDescription, true);
+                    string strDesc;
                     if (arr.Length > 0)
                     {
                         DescriptionAttribute aa = (DescriptionAttribute)arr[0];

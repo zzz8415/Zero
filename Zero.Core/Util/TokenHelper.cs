@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,7 +22,7 @@ namespace Zero.Core.Util
         {
             var type = typeof(T);
 
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new();
 
             var properties = type.GetProperties();
 
@@ -32,7 +32,7 @@ namespace Zero.Core.Util
                 sb.Append(model.GetType().GetProperty(p.Name).GetValue(model, null).ToString());
                 if (++i < properties.Length)
                 {
-                    sb.Append("&");
+                    sb.Append('&');
                 }
             }
             if (encryKey.IsNullOrEmpty())
@@ -55,7 +55,7 @@ namespace Zero.Core.Util
         public static T Deserialize<T>(string token, string encryKey = null) where T : new()
         {
             if (token.IsNullOrEmpty())
-                return default(T);
+                return default;
 
             var sessionText = encryKey.IsNullOrEmpty() ?
                 CryptoHelper.DES_Decrypt(token) :
@@ -68,7 +68,7 @@ namespace Zero.Core.Util
             var ps = type.GetProperties();
 
             if (tokens.Length != ps.Length)
-                return default(T);
+                return default;
 
             var model = new T();
 

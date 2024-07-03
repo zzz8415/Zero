@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Zero.Core.Attribute;
 
@@ -7,22 +7,17 @@ namespace Zero.Core.Inject
     /// <summary>
     /// 配置帮助类
     /// </summary>
+    /// <remarks>
+    /// 配置初始化
+    /// </remarks>
+    /// <param name="configuration"></param>
     [Inject(OptionsLifetime = ServiceLifetime.Singleton)]
-    public class WebConfig
+    public class WebConfig(IConfiguration configuration)
     {
         /// <summary>
         /// 配置文件
         /// </summary>
-        public IConfiguration Configuration { get; set; }
-
-        /// <summary>
-        /// 配置初始化
-        /// </summary>
-        /// <param name="configuration"></param>
-        public WebConfig(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
+        public IConfiguration Configuration { get; set; } = configuration;
 
         #region 配置相关
         /// <summary>

@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections;
@@ -11,23 +11,18 @@ namespace Zero.Core.Inject
     /// <summary>
     /// 缓存帮助类
     /// </summary>
+    /// <remarks>
+    /// 缓存初始化
+    /// </remarks>
+    /// <param name="memoryCache"></param>
     [Inject(OptionsLifetime = ServiceLifetime.Singleton)]
-    public class WebCache
+    public class WebCache(IMemoryCache memoryCache)
     {
 
         /// <summary>
         /// 缓存
         /// </summary>
-        public IMemoryCache MemoryCache { get; set; }
-
-        /// <summary>
-        /// 缓存初始化
-        /// </summary>
-        /// <param name="memoryCache"></param>
-        public WebCache(IMemoryCache memoryCache)
-        {
-            MemoryCache = memoryCache;
-        }
+        public IMemoryCache MemoryCache { get; set; } = memoryCache;
 
         #region 缓存相关
         /// <summary>
@@ -63,7 +58,7 @@ namespace Zero.Core.Inject
         /// <returns></returns>
         public T Set<T>(string key, T value, int minutes = 15, bool isPenetrate = true)
         {
-            MemoryCacheEntryOptions cacheEntryOptions = new MemoryCacheEntryOptions()
+            var cacheEntryOptions = new MemoryCacheEntryOptions()
             // Keep in cache for this time, reset time if accessed.
             .SetAbsoluteExpiration(TimeSpan.FromMinutes(minutes));
 
@@ -137,7 +132,7 @@ namespace Zero.Core.Inject
         /// <returns></returns>
         private bool IsDefaultValue<T>(T value)
         {
-            return value == null || value.Equals(default(T));
+            return value == null || value.Equals(default);
         }
 
         /// <summary>

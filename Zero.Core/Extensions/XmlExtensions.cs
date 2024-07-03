@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Text;
@@ -23,11 +23,9 @@ namespace Zero.Core.Extensions
         public static void XmlSerialize<T>(T obj, string serializeFilePath)
         {
             //FileMode.Create:创建或覆盖     FileMode.CreateNew：创建，文件已经存在时异常
-            using (FileStream fs = new FileStream(serializeFilePath, FileMode.Create))
-            {
-                var formatter = new DataContractSerializer(typeof(T));
-                formatter.WriteObject(fs, obj);
-            }
+            using FileStream fs = new(serializeFilePath, FileMode.Create);
+            var formatter = new DataContractSerializer(typeof(T));
+            formatter.WriteObject(fs, obj);
         }
         /// <summary>
         /// 反序列化XML文件为对象
@@ -41,16 +39,14 @@ namespace Zero.Core.Extensions
         {
             //using (var xmlreader = XmlDictionaryReader.CreateTextReader(serializeFilePath))
             //using (var sr = new StreamReader(serializeFilePath))
-            using (var xmlreader = new XmlTextReader(serializeFilePath))
-            {
-                // [\x0-\x8\x11\x12\x14-\x32]
-                // 默认为true，如果序列化的对象含有比如0x1e之类的非打印字符，反序列化就会出错，因此设置为false http://msdn.microsoft.com/en-us/library/aa302290.aspx
-                xmlreader.Normalization = false;
-                xmlreader.WhitespaceHandling = WhitespaceHandling.Significant;
-                xmlreader.XmlResolver = null;
-                var formatter = new DataContractSerializer(typeof(T));
-                return formatter.ReadObject(xmlreader) as T;
-            }
+            using var xmlreader = new XmlTextReader(serializeFilePath);
+            // [\x0-\x8\x11\x12\x14-\x32]
+            // 默认为true，如果序列化的对象含有比如0x1e之类的非打印字符，反序列化就会出错，因此设置为false http://msdn.microsoft.com/en-us/library/aa302290.aspx
+            xmlreader.Normalization = false;
+            xmlreader.WhitespaceHandling = WhitespaceHandling.Significant;
+            xmlreader.XmlResolver = null;
+            var formatter = new DataContractSerializer(typeof(T));
+            return formatter.ReadObject(xmlreader) as T;
         }
 
         /// <summary>
@@ -62,15 +58,11 @@ namespace Zero.Core.Extensions
         public static string XmlSerializeToString<T>(this T obj)
         {
             var formatter = new DataContractSerializer(typeof(T));
-            using (var memory = new MemoryStream())
-            {
-                formatter.WriteObject(memory, obj);
-                memory.Seek(0, SeekOrigin.Begin);
-                using (var sr = new StreamReader(memory, Encoding.UTF8))
-                {
-                    return sr.ReadToEnd();
-                }
-            }
+            using var memory = new MemoryStream();
+            formatter.WriteObject(memory, obj);
+            memory.Seek(0, SeekOrigin.Begin);
+            using var sr = new StreamReader(memory, Encoding.UTF8);
+            return sr.ReadToEnd();
         }
 
         /// <summary>
@@ -82,16 +74,14 @@ namespace Zero.Core.Extensions
         public static T XmlDeserializeFromStrNew<T>(this string xml) where T : class
         {
             var xs = new DataContractSerializer(typeof(T));
-            using (var memoryStream = new MemoryStream(Encoding.UTF8.GetBytes(xml)))
-            using (var xmlreader = new XmlTextReader(memoryStream))
-            {
-                // [\x0-\x8\x11\x12\x14-\x32]
-                // 默认为true，如果序列化的对象含有比如0x1e之类的非打印字符，反序列化就会出错，因此设置为false http://msdn.microsoft.com/en-us/library/aa302290.aspx
-                xmlreader.Normalization = false;
-                xmlreader.WhitespaceHandling = WhitespaceHandling.Significant;
-                xmlreader.XmlResolver = null;
-                return xs.ReadObject(xmlreader) as T;
-            }
+            using var memoryStream = new MemoryStream(Encoding.UTF8.GetBytes(xml));
+            using var xmlreader = new XmlTextReader(memoryStream);
+            // [\x0-\x8\x11\x12\x14-\x32]
+            // 默认为true，如果序列化的对象含有比如0x1e之类的非打印字符，反序列化就会出错，因此设置为false http://msdn.microsoft.com/en-us/library/aa302290.aspx
+            xmlreader.Normalization = false;
+            xmlreader.WhitespaceHandling = WhitespaceHandling.Significant;
+            xmlreader.XmlResolver = null;
+            return xs.ReadObject(xmlreader) as T;
         }
     }
 }

@@ -10,7 +10,7 @@ namespace Zero.Core.Util
     /// </summary>
     public class ContentTypeHelper
     {
-        private static readonly IDictionary<string, string> _mappings = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase) {
+        private static readonly Dictionary<string, string> _mappings = new(StringComparer.InvariantCultureIgnoreCase) {
              {"323", "text/h323"},
              {"3g2", "video/3gpp2"},
              {"3gp", "video/3gpp"},

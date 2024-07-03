@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using Zero.Core.Attribute;
@@ -17,7 +17,7 @@ namespace Zero.Core.Inject
     {
         private long _lastTicks = 0L;
         private long _lastFlowID = 0L;
-        private static readonly object _lock = new object();
+        private static readonly object _lock = new();
         private readonly long _workID = 0;
         private readonly long _maxFlowID = 1L << 4;
         private readonly long _maxWorkID = 1L << 6;

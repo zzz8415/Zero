@@ -16,22 +16,17 @@ namespace Zero.Core.Attribute
     /// <summary>
     /// 超时输出
     /// </summary>
+    /// <remarks>
+    /// 
+    /// </remarks>
+    /// <param name="timeOutSeconds"></param>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
-    public class TimerAttribute : ActionFilterAttribute
+    public class TimerAttribute(int timeOutMilliseconds = 2000) : ActionFilterAttribute
     {
         /// <summary>
         /// 
         /// </summary>
-        private readonly int _timeOutMilliseconds = 0;
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="timeOutSeconds"></param>
-        public TimerAttribute(int timeOutMilliseconds = 2000)
-        {
-            this._timeOutMilliseconds = timeOutMilliseconds;
-        }
+        private readonly int _timeOutMilliseconds = timeOutMilliseconds;
 
         /// <summary>
         /// 

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -22,7 +22,7 @@ namespace Zero.Core.Extensions
             return Convert.ToInt32(source);
         }
 
-        private static Dictionary<Type, Dictionary<string, string>> _enumDiscriptionArray = new();
+        private static readonly Dictionary<Type, Dictionary<string, string>> _enumDiscriptionArray = [];
 
         /// <summary>
         /// 获取枚举值的描述信息

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,7 +16,7 @@ namespace Zero.Core.Util
         /// <param name="valueKeys"></param>
         /// <param name="key"></param>
         /// <returns></returns>
-        public string GetValue(string valueKeys, string key)
+        public static string GetValue(string valueKeys, string key)
         {
             if (string.IsNullOrEmpty(valueKeys) || string.IsNullOrEmpty(key))
             {
@@ -42,7 +42,7 @@ namespace Zero.Core.Util
         /// <param name="valueKeys"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        public string GetKey(string valueKeys, string value)
+        public static string GetKey(string valueKeys, string value)
         {
             if (string.IsNullOrEmpty(valueKeys) || string.IsNullOrEmpty(value))
             {
@@ -59,7 +59,7 @@ namespace Zero.Core.Util
                 }
             }
 
-            return "";
+            return string.Empty;
         }
     }
 }
