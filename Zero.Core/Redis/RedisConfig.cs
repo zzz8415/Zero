@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +8,16 @@ namespace Zero.Core.Redis
 {
     /// <summary>
     /// Redis配置
+    ///"RedisConfig": {
+    ///  "Host": "127.0.0.1",
+    ///  "Port": "6379",
+    ///  "Password": "Password",
+    ///  "DBRegion": 0,
+    ///  "ConnectTimeout": 3000,
+    ///  "SyncTimeout": 3000,
+    ///  "KeepAlive": 30,
+    ///  "ConnectRetry": 3,
+    ///}
     /// </summary>
     public class RedisConfig
     {
