@@ -57,7 +57,7 @@ namespace Zero.Core.Redis
         /// <typeparam name="T"></typeparam>
         /// <param name="key"></param>
         /// <param name="value"></param>
-        public bool Set<T>(string key, T value)
+        public bool Set<T>(string key, T value) where T : class
         {
             return this.Client.StringSet(key, value.ToJson());
         }
@@ -90,7 +90,7 @@ namespace Zero.Core.Redis
         /// <param name="key"></param>
         /// <param name="value"></param>
         /// <param name="expiresIn"></param>
-        public bool Set<T>(string key, T value, TimeSpan expiresIn)
+        public bool Set<T>(string key, T value, TimeSpan expiresIn) where T : class
         {
             return this.Client.StringSet(key, value.ToJson(), expiresIn);
         }
@@ -238,7 +238,7 @@ namespace Zero.Core.Redis
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="keyValues"></param>
-        public bool Set<T>(Dictionary<string, T> keyValues)
+        public bool Set<T>(Dictionary<string, T> keyValues) where T : class
         {
             var dic = new Dictionary<RedisKey, RedisValue>();
             foreach (var i in keyValues)
@@ -278,7 +278,7 @@ namespace Zero.Core.Redis
         /// <typeparam name="T"></typeparam>
         /// <param name="func"></param>
         /// <returns></returns>
-        public T Using<T>(Func<IDatabase, T> func)
+        public T Using<T>(Func<IDatabase, T> func) where T : class
         {
             return func(this.Client);
         }
@@ -298,7 +298,7 @@ namespace Zero.Core.Redis
         /// <typeparam name="T"></typeparam>
         /// <param name="func"></param>
         /// <returns></returns>
-        public T UsingChannel<T>(Func<ConnectionMultiplexer, T> func)
+        public T UsingChannel<T>(Func<ConnectionMultiplexer, T> func) where T : class
         {
             return func(this._channel);
         }
@@ -376,52 +376,11 @@ namespace Zero.Core.Redis
         /// 生成RedisKey
         /// </summary>
         /// <param name="prefixKey"></param>
-        /// <param name="arg0"></param>
-        /// <returns></returns>
-        public string RenderRedisKey(string prefixKey, string arg0)
-        {
-            return string.Format("{0}.{1}", prefixKey, arg0);
-        }
-
-        /// <summary>
-        /// 生成RedisKey
-        /// </summary>
-        /// <param name="prefixKey"></param>
-        /// <param name="arg0"></param>
-        /// <param name="arg1"></param>
-        /// <returns></returns>
-        public string RenderRedisKey(string prefixKey, string arg0, string arg1)
-        {
-            return string.Format("{0}.{1}.{2}", prefixKey, arg0, arg1);
-        }
-
-        /// <summary>
-        /// 生成RedisKey
-        /// </summary>
-        /// <param name="prefixKey"></param>
-        /// <param name="arg0"></param>
-        /// <param name="arg1"></param>
-        /// <param name="arg2"></param>
-        /// <returns></returns>
-        public string RenderRedisKey(string prefixKey, string arg0, string arg1, string arg2)
-        {
-            return string.Format("{0}.{1}.{2}.{3}", prefixKey, arg0, arg1, arg2);
-        }
-
-        /// <summary>
-        /// 生成RedisKey
-        /// </summary>
-        /// <param name="prefixKey"></param>
         /// <param name="args"></param>
         /// <returns></returns>
         public string RenderRedisKey(string prefixKey, params string[] args)
         {
-            var sb = new StringBuilder(prefixKey);
-            for (var i = 0; i < args.Length; i++)
-            {
-                sb.AppendFormat(".{0}", args[i]);
-            }
-            return sb.ToString();
+            return $"{prefixKey}:{string.Join(":", args)}";
         }
 
         ///// <summary>

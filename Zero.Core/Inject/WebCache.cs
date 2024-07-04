@@ -33,7 +33,7 @@ namespace Zero.Core.Inject
         /// <returns></returns>
         public string RenderKey(string prefixKey, params string[] args)
         {
-            return $"{prefixKey}.{string.Join(".", args)}";
+            return $"{prefixKey}:{string.Join(":", args)}";
         }
 
         /// <summary>
