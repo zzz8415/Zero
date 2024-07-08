@@ -1,9 +1,13 @@
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
+
 using Zero.Core.Attribute;
 
 namespace Zero.Core.Inject
@@ -110,17 +114,20 @@ namespace Zero.Core.Inject
         /// <summary>
         /// 清除所有缓存
         /// </summary>
-        public void Clear()
+        public void Clear(string prefixKey = default)
         {
             const BindingFlags flags = BindingFlags.Instance | BindingFlags.NonPublic;
-            object entries = MemoryCache.GetType().GetField("_entries", flags).GetValue(MemoryCache);
-            if (entries is not IDictionary cacheItems)
-            {
-                return;
-            }
+            var coherentState = MemoryCache.GetType().GetField("_coherentState", flags).GetValue(MemoryCache);
+            var entries = coherentState.GetType().GetField("_entries", flags).GetValue(coherentState);
+            var cacheItems = entries as IDictionary;
+
             foreach (DictionaryEntry cacheItem in cacheItems)
             {
-                Remove(cacheItem.Key.ToString());
+                var key = cacheItem.Key.ToString();
+                if (prefixKey == default || key.StartsWith(prefixKey))
+                {
+                    Remove(key);
+                }
             }
         }
 
@@ -132,7 +139,7 @@ namespace Zero.Core.Inject
         /// <returns></returns>
         private bool IsDefaultValue<T>(T value)
         {
-            return value == null || value.Equals(default);
+            return value == null || value.Equals(default(T));
         }
 
         /// <summary>
