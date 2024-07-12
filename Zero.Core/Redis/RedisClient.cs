@@ -278,7 +278,7 @@ namespace Zero.Core.Redis
         /// <typeparam name="T"></typeparam>
         /// <param name="func"></param>
         /// <returns></returns>
-        public T Using<T>(Func<IDatabase, T> func) where T : class
+        public T Using<T>(Func<IDatabase, T> func)
         {
             return func(this.Client);
         }
@@ -298,7 +298,7 @@ namespace Zero.Core.Redis
         /// <typeparam name="T"></typeparam>
         /// <param name="func"></param>
         /// <returns></returns>
-        public T UsingChannel<T>(Func<ConnectionMultiplexer, T> func) where T : class
+        public T UsingChannel<T>(Func<ConnectionMultiplexer, T> func)
         {
             return func(this._channel);
         }
@@ -378,7 +378,7 @@ namespace Zero.Core.Redis
         /// <param name="prefixKey"></param>
         /// <param name="args"></param>
         /// <returns></returns>
-        public string RenderRedisKey(string prefixKey, params string[] args)
+        public string RenderKey(string prefixKey, params string[] args)
         {
             return $"{prefixKey}:{string.Join(":", args)}";
         }
