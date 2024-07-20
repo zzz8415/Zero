@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 using System;
@@ -27,7 +27,7 @@ namespace Zero.Core.Attribute
             {
                 context.Result = new JsonResult(new
                 {
-                    Ccode = ErrorCode.sys_param_format_error,
+                    Ccode = ErrorCode.SYS_PARAM_FORMAT_ERROR,
                     ErrorDesc = context.ModelState?.Values.FirstOrDefault()?.Errors?.FirstOrDefault()?.ErrorMessage
                 });
             }

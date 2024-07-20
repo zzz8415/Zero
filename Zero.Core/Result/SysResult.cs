@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -29,7 +29,7 @@ namespace Zero.Core.Result
         [Newtonsoft.Json.JsonIgnore]
         public bool OccurError
         {
-            get { return Code != ErrorCode.sys_success; }
+            get { return Code != ErrorCode.SYS_SUCCESS; }
         }
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace Zero.Core.Result
         [Newtonsoft.Json.JsonIgnore]
         public bool Success
         {
-            get { return Code == ErrorCode.sys_success; }
+            get { return Code == ErrorCode.SYS_SUCCESS; }
         }
 
     }

@@ -21,12 +21,12 @@ namespace Zero.Core.Attribute
     /// </remarks>
     /// <param name="timeOutSeconds"></param>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
-    public class TimerAttribute(int timeOutMilliseconds = 2000) : ActionFilterAttribute
+    public class TimerAttribute(long timeOutMilliseconds = 2000) : ActionFilterAttribute
     {
         /// <summary>
         /// 
         /// </summary>
-        private readonly int _timeOutMilliseconds = timeOutMilliseconds;
+        private readonly long _timeOutMilliseconds = timeOutMilliseconds;
 
         /// <summary>
         /// 
