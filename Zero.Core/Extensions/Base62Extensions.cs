@@ -29,6 +29,20 @@ namespace Zero.Core.Extensions
         {
             var array = BitConverter.GetBytes(original);
 
+            var length = array.Length;
+
+            for (var i = length - 1; i > 0; i--)
+            {
+                if (array[i] == 0)
+                {
+                    length--;
+                    continue;
+                }
+                break;
+            }
+
+            array = array.Take(length).ToArray();
+
             if (BitConverter.IsLittleEndian)
             {
                 Array.Reverse(array);
@@ -47,6 +61,20 @@ namespace Zero.Core.Extensions
         {
             var array = BitConverter.GetBytes(original);
 
+            var length = array.Length;
+
+            for (var i = length - 1; i > 0; i--)
+            {
+                if (array[i] == 0)
+                {
+                    length--;
+                    continue;
+                }
+                break;
+            }
+
+            array = array.Take(length).ToArray();
+
             if (BitConverter.IsLittleEndian)
             {
                 Array.Reverse(array);
@@ -64,6 +92,20 @@ namespace Zero.Core.Extensions
         public static string ToBase62(this long original, bool inverted = false)
         {
             var array = BitConverter.GetBytes(original);
+
+            var length = array.Length;
+
+            for (var i = length - 1; i > 0; i--)
+            {
+                if (array[i] == 0)
+                {
+                    length--;
+                    continue;
+                }
+                break;
+            }
+
+            array = array.Take(length).ToArray();
 
             if (BitConverter.IsLittleEndian)
             {
@@ -123,22 +165,52 @@ namespace Zero.Core.Extensions
                     {
                         Array.Reverse(array);
                     }
-
-                    return (T)Convert.ChangeType(BitConverter.ToInt16(array, 0), typeof(T), CultureInfo.InvariantCulture);
+  
+                    var list16 = new List<byte>();
+                    for(var i = 0; i < 2; i++)
+                    {
+                        if (array.Length > i)
+                        {
+                            list16.Add(array[i]);
+                            continue;
+                        }
+                        list16.Add(0);
+                    }
+                    return (T)Convert.ChangeType(BitConverter.ToInt16([.. list16], 0), typeof(T), CultureInfo.InvariantCulture);
                 case TypeCode.Int32:
                     if (BitConverter.IsLittleEndian)
                     {
                         Array.Reverse(array);
                     }
 
-                    return (T)Convert.ChangeType(BitConverter.ToInt32(array, 0), typeof(T), CultureInfo.InvariantCulture);
+                    var list32 = new List<byte>();
+                    for (var i = 0; i < 4; i++)
+                    {
+                        if (array.Length > i)
+                        {
+                            list32.Add(array[i]);
+                            continue;
+                        }
+                        list32.Add(0);
+                    }
+
+                    return (T)Convert.ChangeType(BitConverter.ToInt32([.. list32], 0), typeof(T), CultureInfo.InvariantCulture);
                 case TypeCode.Int64:
                     if (BitConverter.IsLittleEndian)
                     {
                         Array.Reverse(array);
                     }
-
-                    return (T)Convert.ChangeType(BitConverter.ToInt64(array, 0), typeof(T), CultureInfo.InvariantCulture);
+                    var list64 = new List<byte>();
+                    for (var i = 0; i < 8; i++)
+                    {
+                        if (array.Length > i)
+                        {
+                            list64.Add(array[i]);
+                            continue;
+                        }
+                        list64.Add(0);
+                    }
+                    return (T)Convert.ChangeType(BitConverter.ToInt64([.. list64], 0), typeof(T), CultureInfo.InvariantCulture);
                 default:
                     throw new Exception($"Type of {typeof(T)} does not support.");
             }
@@ -183,7 +255,6 @@ namespace Zero.Core.Extensions
                         quotient.Add(digit);
                     }
                 }
-
                 result.Insert(0, remainder);
                 source = quotient.ToArray();
             }
