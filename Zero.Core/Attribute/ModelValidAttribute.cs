@@ -27,7 +27,7 @@ namespace Zero.Core.Attribute
             {
                 context.Result = new JsonResult(new
                 {
-                    Ccode = ErrorCode.SYS_PARAM_FORMAT_ERROR,
+                    Code = ErrorCode.SYS_PARAM_FORMAT_ERROR,
                     ErrorDesc = context.ModelState?.Values.FirstOrDefault()?.Errors?.FirstOrDefault()?.ErrorMessage
                 });
             }
