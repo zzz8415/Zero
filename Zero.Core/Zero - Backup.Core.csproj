@@ -1,0 +1,40 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <NeutralLanguage>zh</NeutralLanguage>
+    <Version>5.1.4</Version>
+    <Authors>Zero</Authors>
+    <Description>.NET Core</Description>
+    <PackageReleaseNotes>.NET Core</PackageReleaseNotes>
+    <Copyright>Copyright 2018</Copyright>
+    <PackageProjectUrl>https://github.com/zzz8415/Zero</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/zzz8415/Zero</RepositoryUrl>
+    <RepositoryType>GitHub</RepositoryType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile></DocumentationFile>
+    <OutputPath></OutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Util\LogHelper.cs" />
+    <Compile Remove="Util\SerializeHelper.cs" />
+    <Compile Remove="Web\BaseStartup.cs" />
+    <Compile Remove="Web\HttpHelper.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="8.0.7" />
+    <PackageReference Include="StackExchange.Redis" Version="2.8.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="NLog.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

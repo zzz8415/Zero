@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace Zero.Core.Extensions
@@ -45,7 +45,7 @@ namespace Zero.Core.Extensions
         /// </summary>
         /// <param name="source"></param>
         /// <returns></returns>
-        public static Int64 ToInt64(this object source)
+        public static long ToInt64(this object source)
         {
             return source.ToInt64(-1);
         }
@@ -55,7 +55,7 @@ namespace Zero.Core.Extensions
         /// <param name="source"></param>
         /// <param name="defaultValue">如果转换失败，返回的数值</param>
         /// <returns></returns>
-        public static Int64 ToInt64(this object source, Int64 defaultValue)
+        public static long ToInt64(this object source, Int64 defaultValue)
         {
             if (null != source)
             {
@@ -142,7 +142,7 @@ namespace Zero.Core.Extensions
         /// <param name="source"></param>
         /// <param name="defaultValue">如果转换失败，返回的数值</param>
         /// <returns></returns>
-        public static Byte ToByte(this object source, Byte defaultValue)
+        public static byte ToByte(this object source, Byte defaultValue)
         {
             if (source != null)
             {
@@ -194,9 +194,42 @@ namespace Zero.Core.Extensions
         /// </summary>
         /// <param name="source"></param>
         /// <returns></returns>
-        public static Byte ToByte(this object source)
+        public static byte ToByte(this object source)
         {
-            return source.ToByte(default(Byte));
+            return source.ToByte(default);
+        }
+
+        /// <summary>
+        /// 将对象转成Decimal类型，如果转换失败，则返回-1
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public static decimal ToDecimal(this object source)
+        {
+            return source.ToDecimal(-1M);
+        }
+
+        /// <summary>
+        /// 将对象转成Decimal类型
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="defaultValue">如果转换失败，返回的数值</param>
+        /// <returns></returns>
+        public static decimal ToDecimal(this object source, Decimal defaultValue)
+        {
+            if (source != null)
+            {
+                if (source is Decimal v)
+                {
+                    return v;
+                }
+
+                if (Decimal.TryParse(source.ToString(), out Decimal result))
+                {
+                    return result;
+                }
+            }
+            return defaultValue;
         }
     }
 }
