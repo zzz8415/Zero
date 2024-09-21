@@ -48,7 +48,7 @@ namespace Zero.Core.Attribute
                 return;
             }
             
-            using var mutex = new Mutex(true, key, out var flag);
+            var mutex = new Mutex(true, key, out var flag);
 
             if (!flag)
             {
@@ -61,6 +61,9 @@ namespace Zero.Core.Attribute
             }
 
             await next();
+
+            mutex.Close();
+            mutex.Dispose();
 
         }
 

@@ -44,15 +44,9 @@ namespace Zero.Core.Attribute
 
             if (time > _timeOutMilliseconds)
             {
-                var controllerName = context.RouteData.Values["Controller"].ToString();
-
-                var actionName = context.RouteData.Values["Action"].ToString();
-
-                var message = string.Format("Controller:[{0}] Action:[{1}],本次请求耗时 {2} 秒.", controllerName, actionName, (double)time / 1000);
-
                 var logger = context.HttpContext.RequestServices.GetService<ILogger<TimerAttribute>>();
 
-                logger.LogWarning(message);
+                logger.LogCustom($"本次请求耗时 {(double)time / 1000} 秒.", "Timeout");
             }
         }
     }
