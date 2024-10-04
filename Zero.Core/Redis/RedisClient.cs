@@ -19,12 +19,15 @@ namespace Zero.Core.Redis
     /// Redis客户端,提供Get,Set及Remove方法
     /// </summary>
     [Inject(OptionsLifetime = ServiceLifetime.Singleton)]
-    public class RedisClient(ConnectionMultiplexer multiplexer)
+    public class RedisClient(WebConfig webConfig)
     {
         /// <summary>
         /// Redis客户端
         /// </summary>
-        protected IDatabase Client => multiplexer.GetDatabase();
+        protected IDatabase Client => _multiplexer.GetDatabase();
+
+        protected ConnectionMultiplexer _multiplexer => ConnectionMultiplexer.Connect(webConfig.Configuration.GetConnectionString("redis"));
+
 
         /// <summary>
         /// 存入Redis，使用默认的JsonSerializer
@@ -264,7 +267,7 @@ namespace Zero.Core.Redis
         /// <param name="action"></param>
         public void UsingChannel(Action<ConnectionMultiplexer> action)
         {
-            action(multiplexer);
+            action(_multiplexer);
         }
 
         /// <summary>
@@ -275,7 +278,7 @@ namespace Zero.Core.Redis
         /// <returns></returns>
         public T UsingChannel<T>(Func<ConnectionMultiplexer, T> func)
         {
-            return func(multiplexer);
+            return func(_multiplexer);
         }
 
         ///// <summary>
