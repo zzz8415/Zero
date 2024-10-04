@@ -19,37 +19,12 @@ namespace Zero.Core.Redis
     /// Redis客户端,提供Get,Set及Remove方法
     /// </summary>
     [Inject(OptionsLifetime = ServiceLifetime.Singleton)]
-    public class RedisClient : IDisposable
+    public class RedisClient(ConnectionMultiplexer multiplexer)
     {
         /// <summary>
         /// Redis客户端
         /// </summary>
-        protected IDatabase Client => _channel.GetDatabase();
-
-        private readonly ConnectionMultiplexer _channel = null;
-
-        /// <summary>
-        /// 实例化Redis链接
-        /// </summary>
-        /// <param name="webConfig"></param>
-        public RedisClient(WebConfig webConfig)
-        {
-            var config = webConfig.Get<RedisConfig>("RedisConfig");
-            var options = new ConfigurationOptions
-            {
-                Password = config.Password,
-                KeepAlive = config.KeepAlive,
-                ConnectRetry = config.ConnectRetry,
-                AbortOnConnectFail = false,
-                ConnectTimeout = config.ConnectTimeout,
-                DefaultDatabase = config.DBRegion,
-                SyncTimeout = config.SyncTimeout
-            };
-
-            options.EndPoints.Add(config.Host, config.Port);
-
-            this._channel = ConnectionMultiplexer.Connect(options);
-        }
+        protected IDatabase Client => multiplexer.GetDatabase();
 
         /// <summary>
         /// 存入Redis，使用默认的JsonSerializer
@@ -289,7 +264,7 @@ namespace Zero.Core.Redis
         /// <param name="action"></param>
         public void UsingChannel(Action<ConnectionMultiplexer> action)
         {
-            action(this._channel);
+            action(multiplexer);
         }
 
         /// <summary>
@@ -300,7 +275,7 @@ namespace Zero.Core.Redis
         /// <returns></returns>
         public T UsingChannel<T>(Func<ConnectionMultiplexer, T> func)
         {
-            return func(this._channel);
+            return func(multiplexer);
         }
 
         ///// <summary>
@@ -383,103 +358,5 @@ namespace Zero.Core.Redis
             return $"{prefixKey}:{string.Join(":", args)}";
         }
 
-        ///// <summary>
-        ///// 还原Key中包含的参数
-        ///// </summary>
-        ///// <param name="key"></param>
-        ///// <param name="prefixKey"></param>
-        ///// <returns></returns>
-        //public string RestoreParams(string key, string prefixKey)
-        //{
-        //    if (key.Length <= prefixKey.Length)
-        //    {
-        //        return string.Empty;
-        //    }
-        //    return key.Substring(prefixKey.Length + 1);
-        //}
-
-        ///// <summary>
-        ///// 还原Key中包含的参数
-        ///// </summary>
-        ///// <param name="key"></param>
-        ///// <param name="prefixKey"></param>
-        ///// <param name="arg0"></param>
-        ///// <returns></returns>
-        //public string RestoreParams(string key, string prefixKey, string arg0)
-        //{
-        //    var pKey = RenderRedisKey(prefixKey, arg0);
-        //    return RestoreParams(key, pKey);
-        //}
-
-        ///// <summary>
-        ///// 还原Key中包含的参数
-        ///// </summary>
-        ///// <param name="key"></param>
-        ///// <param name="prefixKey"></param>
-        ///// <param name="arg0"></param>
-        ///// <param name="arg1"></param>
-        ///// <returns></returns>
-        //public string RestoreParams(string key, string prefixKey, string arg0, string arg1)
-        //{
-        //    var pKey = RenderRedisKey(prefixKey, arg0, arg1);
-        //    return RestoreParams(key, pKey);
-        //}
-
-        ///// <summary>
-        ///// 还原Key中包含的参数
-        ///// </summary>
-        ///// <param name="key"></param>
-        ///// <param name="prefixKey"></param>
-        ///// <param name="arg0"></param>
-        ///// <param name="arg1"></param>
-        ///// <param name="arg2"></param>
-        ///// <returns></returns>
-        //public string RestoreParams(string key, string prefixKey, string arg0, string arg1, string arg2)
-        //{
-        //    var pKey = RenderRedisKey(prefixKey, arg0, arg1, arg2);
-        //    return RestoreParams(key, pKey);
-        //}
-
-        ///// <summary>
-        ///// 还原Key中包含的参数
-        ///// </summary>
-        ///// <param name="key"></param>
-        ///// <param name="prefixKey"></param>
-        ///// <param name="args"></param>
-        ///// <returns></returns>
-        //public string RestoreParams(string key, string prefixKey, params string[] args)
-        //{
-        //    var pKey = RenderRedisKey(prefixKey, args);
-        //    return RestoreParams(key, pKey);
-        //}
-
-        #region IDisposable Support
-        private bool disposedValue = false; // 要检测冗余调用
-
-        /// <summary>
-        /// 释放资源
-        /// </summary>
-        /// <param name="disposing"></param>
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!disposedValue)
-            {
-                if (disposing)
-                {
-                    this._channel?.Close();
-                }
-
-                disposedValue = true;
-            }
-        }
-
-        public void Dispose()
-        {
-            // 不要更改此代码。请将清理代码放入“Dispose(bool disposing)”方法中
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        #endregion
     }
 }
