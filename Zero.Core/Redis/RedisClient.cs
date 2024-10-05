@@ -22,11 +22,14 @@ namespace Zero.Core.Redis
     public class RedisClient(WebConfig webConfig)
     {
         /// <summary>
-        /// Redis客户端
+        /// Redis Database
         /// </summary>
-        protected IDatabase Client => _multiplexer.GetDatabase();
+        public IDatabase Database => Multiplexer.GetDatabase();
 
-        protected ConnectionMultiplexer _multiplexer => ConnectionMultiplexer.Connect(webConfig.Configuration.GetConnectionString("redis"));
+        /// <summary>
+        /// Multiplexer
+        /// </summary>
+        public ConnectionMultiplexer Multiplexer => ConnectionMultiplexer.Connect(webConfig.Configuration.GetConnectionString("redis"));
 
 
         /// <summary>
@@ -37,7 +40,7 @@ namespace Zero.Core.Redis
         /// <param name="value"></param>
         public bool Set<T>(string key, T value) where T : class
         {
-            return this.Client.StringSet(key, value.ToJson());
+            return this.Database.StringSet(key, value.ToJson());
         }
 
         ///// <summary>
@@ -58,7 +61,7 @@ namespace Zero.Core.Redis
         /// <param name="value"></param>
         public bool Set(string key, string value)
         {
-            return this.Client.StringSet(key, value);
+            return this.Database.StringSet(key, value);
         }
 
         /// <summary>
@@ -70,7 +73,7 @@ namespace Zero.Core.Redis
         /// <param name="expiresIn"></param>
         public bool Set<T>(string key, T value, TimeSpan expiresIn) where T : class
         {
-            return this.Client.StringSet(key, value.ToJson(), expiresIn);
+            return this.Database.StringSet(key, value.ToJson(), expiresIn);
         }
 
         ///// <summary>
@@ -93,7 +96,7 @@ namespace Zero.Core.Redis
         /// <param name="expiresIn"></param>
         public bool Set(string key, string value, TimeSpan expiresIn)
         {
-            return this.Client.StringSet(key, value, expiresIn);
+            return this.Database.StringSet(key, value, expiresIn);
         }
 
         /// <summary>
@@ -104,7 +107,7 @@ namespace Zero.Core.Redis
         /// <returns></returns>
         public T Get<T>(string key) where T : class
         {
-            var value = this.Client.StringGet(key);
+            var value = this.Database.StringGet(key);
             return value.IsNullOrEmpty ? default : JsonExtensions.DeserializeJson<T>(value);
         }
 
@@ -127,7 +130,7 @@ namespace Zero.Core.Redis
         /// <returns></returns>
         public string Get(string key)
         {
-            return this.Client.StringGet(key);
+            return this.Database.StringGet(key);
         }
 
         /// <summary>
@@ -143,7 +146,7 @@ namespace Zero.Core.Redis
             {
                 redisKeys[i] = keys[i];
             }
-            var values = this.Client.StringGet(redisKeys);
+            var values = this.Database.StringGet(redisKeys);
             var dic = new Dictionary<string, T>();
             for (var i = 0; i < values.Length; i++)
             {
@@ -188,7 +191,7 @@ namespace Zero.Core.Redis
             {
                 redisKeys[i] = keys[i];
             }
-            var values = this.Client.StringGet(redisKeys);
+            var values = this.Database.StringGet(redisKeys);
             var dic = new Dictionary<string, string>();
             for (var i = 0; i < values.Length; i++)
             {
@@ -208,7 +211,7 @@ namespace Zero.Core.Redis
             {
                 dic[i.Key] = i.Value;
             }
-            return this.Client.StringSet([.. dic]);
+            return this.Database.StringSet([.. dic]);
         }
 
         /// <summary>
@@ -223,7 +226,7 @@ namespace Zero.Core.Redis
             {
                 dic[i.Key] = i.Value.ToJson();
             }
-            return this.Client.StringSet([.. dic]);
+            return this.Database.StringSet([.. dic]);
         }
 
         ///// <summary>
@@ -245,10 +248,10 @@ namespace Zero.Core.Redis
         /// 调用客户端
         /// </summary>
         /// <param name="action"></param>
-        public void Using(Action<IDatabase> action)
-        {
-            action(this.Client);
-        }
+        //public void Using(Action<IDatabase> action)
+        //{
+        //    action(this.Client);
+        //}
 
         /// <summary>
         /// 调用客户端
@@ -256,19 +259,19 @@ namespace Zero.Core.Redis
         /// <typeparam name="T"></typeparam>
         /// <param name="func"></param>
         /// <returns></returns>
-        public T Using<T>(Func<IDatabase, T> func)
-        {
-            return func(this.Client);
-        }
+        //public T Using<T>(Func<IDatabase, T> func)
+        //{
+        //    return func(this.Client);
+        //}
 
         /// <summary>
         /// 调用连接渠道
         /// </summary>
         /// <param name="action"></param>
-        public void UsingChannel(Action<ConnectionMultiplexer> action)
-        {
-            action(_multiplexer);
-        }
+        //public void UsingChannel(Action<ConnectionMultiplexer> action)
+        //{
+        //    action(_multiplexer);
+        //}
 
         /// <summary>
         /// 调用连接渠道
@@ -276,10 +279,10 @@ namespace Zero.Core.Redis
         /// <typeparam name="T"></typeparam>
         /// <param name="func"></param>
         /// <returns></returns>
-        public T UsingChannel<T>(Func<ConnectionMultiplexer, T> func)
-        {
-            return func(_multiplexer);
-        }
+        //public T UsingChannel<T>(Func<ConnectionMultiplexer, T> func)
+        //{
+        //    return func(_multiplexer);
+        //}
 
         ///// <summary>
         ///// 移除指定的key,并返回移除的条数（isPrefix为true，表示所有key为前缀的记录都移除）
@@ -331,7 +334,7 @@ namespace Zero.Core.Redis
         /// <param name="key"></param>
         public void Remove(string key)
         {
-            this.Client.KeyDelete(key);
+            this.Database .KeyDelete(key);
         }
 
         /// <summary>
@@ -347,7 +350,7 @@ namespace Zero.Core.Redis
                 redisKeys[i] = keys[i];
             }
 
-            this.Client.KeyDelete(redisKeys);
+            this.Database.KeyDelete(redisKeys);
         }
 
         /// <summary>

@@ -1,7 +1,12 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+
 using System;
+using System.Net;
+
 using Zero.Core.Attribute;
+using Zero.Core.Config;
+using Zero.Core.Extensions;
 
 namespace Zero.Core.Inject
 {
@@ -18,31 +23,50 @@ namespace Zero.Core.Inject
         private long _lastTicks = 0L;
         private long _lastFlowID = 0L;
         private static readonly object _lock = new();
-        private readonly long _workID = 0;
+        //public long _workID = 0;
         private readonly long _maxFlowID = 1L << 4;
         private readonly long _maxWorkID = 1L << 6;
         private readonly long _offsetTicks = 0;
 
-
         /// <summary>
-        /// 初始化机器码,范围0-31,如果超过范围,则WorkID等于0
+        /// 配置
         /// </summary>
-        /// <param name="workID"></param>
-        public Snowflake(long workID)
-        {
-            _workID = workID >= _maxWorkID ? 0 : workID;
-        }
+        public SnowflakeConfig Config { get; set; }
 
         /// <summary>
         /// DI容器注册
         /// </summary>
         /// <param name="configuration"></param>
-        public Snowflake(IConfiguration configuration)
+        public Snowflake(WebConfig webConfig)
         {
-            int workID = configuration.GetValue("Snowflake:WorkID", 0);
-            _workID = workID >= _maxWorkID ? 0 : workID;
-            DateTime offsetDate = configuration.GetValue("Snowflake:OffsetDate", DateTime.MinValue);
-            _offsetTicks = offsetDate.Ticks;
+            Config = webConfig.Get<SnowflakeConfig>("Snowflake");
+            if (Config == null)
+            {
+                Config = new SnowflakeConfig
+                {
+                    WorkId = 0,
+                    OffsetDate = new DateTime(2000, 1, 1)
+                };
+                return;
+            }
+            if (Config.HostNameList?.Count > 0)
+            {
+                var hostName = Dns.GetHostName();
+                if (!hostName.IsNullOrEmpty())
+                {
+                    var index = Config.HostNameList.IndexOf(hostName);
+                    if (index >= 0)
+                    {
+                        Config.WorkId = index;
+                    }
+                }
+            }
+            if(Config.WorkId < 0 || Config.WorkId > _maxWorkID)
+            {
+                Config.WorkId = 0;
+            }
+
+            _offsetTicks = Config.OffsetDate.Ticks;
         }
 
         /// <summary>
@@ -110,7 +134,7 @@ namespace Zero.Core.Inject
         /// <returns></returns>
         private long GetWorkID()
         {
-            return _workID << 3;
+            return Config.WorkId << 3;
         }
 
         /// <summary>
