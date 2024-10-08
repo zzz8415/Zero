@@ -24,12 +24,12 @@ namespace Zero.Core.Redis
         /// <summary>
         /// Redis Database
         /// </summary>
-        public IDatabase Database => Multiplexer.GetDatabase();
+        public IDatabase Database => _multiplexer.GetDatabase();
 
         /// <summary>
         /// Multiplexer
         /// </summary>
-        public ConnectionMultiplexer Multiplexer => ConnectionMultiplexer.Connect(webConfig.Configuration.GetConnectionString("redis"));
+        private readonly ConnectionMultiplexer _multiplexer = ConnectionMultiplexer.Connect(webConfig.Configuration.GetConnectionString("redis"));
 
 
         /// <summary>
@@ -334,7 +334,7 @@ namespace Zero.Core.Redis
         /// <param name="key"></param>
         public void Remove(string key)
         {
-            this.Database .KeyDelete(key);
+            this.Database.KeyDelete(key);
         }
 
         /// <summary>
