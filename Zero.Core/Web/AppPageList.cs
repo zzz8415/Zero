@@ -19,7 +19,7 @@ namespace Zero.Core.Web
         /// </summary>
         /// <param name="list"></param>
         /// <param name="pageSize"></param>
-        public AppPageList(List<T> list, int pageSize)
+        public AppPageList(List<T> list, int pageSize, object extend = null)
         {
             this.List = list;
 
@@ -29,6 +29,8 @@ namespace Zero.Core.Web
             {
                 this.List = this.List.Take(pageSize).ToList();
             }
+
+            this.Extend = extend;
         }
 
         /// <summary>
@@ -36,11 +38,13 @@ namespace Zero.Core.Web
         /// </summary>
         /// <param name="list"></param>
         /// <param name="isLastPage"></param>
-        public AppPageList(List<T> list, bool isLastPage)
+        public AppPageList(List<T> list, bool isLastPage, object extend = null)
         {
             this.List = list;
 
             this.IsLastPage = isLastPage;
+
+            this.Extend = extend;
         }
 
 

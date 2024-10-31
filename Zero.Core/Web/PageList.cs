@@ -73,7 +73,7 @@ namespace Zero.Core.Web
         /// <summary>
         /// 是否最后一页
         /// </summary>
-        public bool IsLastPage => List.Count < PageSize || PageCount <= PageIndex;
+        public bool IsLastPage => PageCount <= PageIndex;
 
         /// <summary>
         /// 扩展对象
