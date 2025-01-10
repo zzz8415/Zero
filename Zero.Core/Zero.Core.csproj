@@ -4,7 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <NeutralLanguage>zh</NeutralLanguage>
-    <Version>5.2.2</Version>
+    <Version>5.2.3</Version>
     <Authors>Zero</Authors>
     <Description>.NET Core</Description>
     <PackageReleaseNotes>.NET Core</PackageReleaseNotes>
@@ -28,8 +28,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="8.0.8" />
-    <PackageReference Include="StackExchange.Redis" Version="2.8.16" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="8.0.11" />
+    <PackageReference Include="StackExchange.Redis" Version="2.8.24" />
   </ItemGroup>
 
   <ItemGroup>

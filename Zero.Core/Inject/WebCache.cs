@@ -75,6 +75,29 @@ namespace Zero.Core.Inject
         }
 
         /// <summary>
+        ///  设置缓存,默认15秒
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        /// <param name="seconds"></param>
+        /// <param name="isPenetrate"></param>
+        /// <returns></returns>
+        public T SetInSeconds<T>(string key, T value, int seconds = 15, bool isPenetrate = true)
+        {
+            var cacheEntryOptions = new MemoryCacheEntryOptions()
+            // Keep in cache for this time, reset time if accessed.
+            .SetAbsoluteExpiration(TimeSpan.FromSeconds(seconds));
+
+            // 如果非穿透 或者 值不为空 ,则保存到缓存
+            if (!isPenetrate || !IsDefaultValue(value))
+            {
+                return MemoryCache.Set(key, value, cacheEntryOptions);
+            }
+            return value;
+        }
+
+        /// <summary>
         /// 获取缓存,如果不存在则创建新缓存
         /// </summary>
         /// <typeparam name="T"></typeparam>
@@ -109,6 +132,43 @@ namespace Zero.Core.Inject
             value = func();
 
             return Set(key, value, minutes, isPenetrate);
+        }
+
+        /// <summary>
+        /// 获取缓存,如果不存在则创建新缓存
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="key"></param>
+        /// <param name="func"></param>
+        /// <param name="seconds"></param>
+        /// <param name="isPenetrate"></param>
+        /// <returns></returns>
+        public T GetInSeconds<T>(string key, Func<T> func, int seconds = 15, bool isPenetrate = true)
+        {
+            // 如果不穿透,使用默认方法
+            if (!isPenetrate)
+            {
+                MemoryCacheEntryOptions cacheEntryOptions = new MemoryCacheEntryOptions()
+               // Keep in cache for this time, reset time if accessed.
+               .SetAbsoluteExpiration(TimeSpan.FromSeconds(seconds));
+                return MemoryCache.GetOrCreate(key, x =>
+                {
+                    return func();
+                });
+            }
+
+            // 如果要穿透,先获取值
+            T value = MemoryCache.Get<T>(key);
+            // 如果非空值,返回数据
+            if (!IsDefaultValue(value))
+            {
+                return value;
+            }
+
+            // 调用回调方法
+            value = func();
+
+            return SetInSeconds(key, value, seconds, isPenetrate);
         }
 
         /// <summary>
