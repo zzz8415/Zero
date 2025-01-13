@@ -1,41 +1,49 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <NeutralLanguage>zh</NeutralLanguage>
-    <Version>5.2.3</Version>
-    <Authors>Zero</Authors>
-    <Description>.NET Core</Description>
-    <PackageReleaseNotes>.NET Core</PackageReleaseNotes>
-    <Copyright>Copyright 2018</Copyright>
-    <PackageProjectUrl>https://github.com/zzz8415/Zero</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/zzz8415/Zero</RepositoryUrl>
-    <RepositoryType>GitHub</RepositoryType>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<NeutralLanguage>zh</NeutralLanguage>
+		<Version>5.2.5</Version>
+		<Authors>Zero</Authors>
+		<Description>.NET Core</Description>
+		<PackageReleaseNotes>.NET Core</PackageReleaseNotes>
+		<Copyright>Copyright 2018</Copyright>
+		<PackageProjectUrl>https://github.com/zzz8415/Zero</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/zzz8415/Zero</RepositoryUrl>
+		<RepositoryType>GitHub</RepositoryType>
+		<IncludeSymbols>False</IncludeSymbols>
+	</PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile></DocumentationFile>
-    <OutputPath></OutputPath>
-  </PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<DocumentationFile></DocumentationFile>
+		<OutputPath></OutputPath>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="Redis\RedisConfig.cs" />
-    <Compile Remove="Util\LogHelper.cs" />
-    <Compile Remove="Util\SerializeHelper.cs" />
-    <Compile Remove="Web\BaseStartup.cs" />
-    <Compile Remove="Web\HttpHelper.cs" />
-  </ItemGroup>
+	<ItemGroup>
+		<Compile Remove="Redis\RedisConfig.cs" />
+		<Compile Remove="Util\LogHelper.cs" />
+		<Compile Remove="Util\SerializeHelper.cs" />
+		<Compile Remove="Web\BaseStartup.cs" />
+		<Compile Remove="Web\HttpHelper.cs" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="8.0.11" />
-    <PackageReference Include="StackExchange.Redis" Version="2.8.24" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Remove="NLog.config" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <None Update="NLog.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
+	<ItemGroup>
+		<Content Include="NLog.config">
+			<Pack>true</Pack>
+			<PackagePath>contentFiles\any\any\NLog.config</PackagePath>
+			<PackageCopyToOutput>true</PackageCopyToOutput>
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="8.0.11" />
+		<PackageReference Include="StackExchange.Redis" Version="2.8.24" />
+	</ItemGroup>
 
 </Project>
