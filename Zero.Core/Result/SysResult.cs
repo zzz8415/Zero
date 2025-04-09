@@ -15,12 +15,13 @@ namespace Zero.Core.Result
         /// <summary>
         /// 错误码
         /// </summary>
-        public ErrorCode Code;
+        public ErrorCode Code { get; set; }
 
         /// <summary>
         /// 附加消息
         /// </summary>
-        public string ErrorDesc { get; set; }
+        #nullable enable
+        public string? ErrorDesc { get; set; }
 
         /// <summary>
         /// 是否异常
@@ -55,16 +56,8 @@ namespace Zero.Core.Result
         /// <summary>
         /// 返回结果
         /// </summary>
-        public T Result { get; set; }
-
-        /// <summary>
-        /// 获取数据
-        /// </summary>
-        /// <returns></returns>
-        public object GetResult()
-        {
-            return this.Result;
-        }
+        #nullable enable
+        public T? Result { get; set; }
 
     }
 
