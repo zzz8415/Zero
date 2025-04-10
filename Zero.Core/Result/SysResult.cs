@@ -27,7 +27,6 @@ namespace Zero.Core.Result
         /// 是否异常
         /// </summary>
         [JsonIgnore]
-        [Newtonsoft.Json.JsonIgnore]
         public bool OccurError
         {
             get { return Code != ErrorCode.SYS_SUCCESS; }
@@ -37,7 +36,6 @@ namespace Zero.Core.Result
         /// 是否成功
         /// </summary>
         [JsonIgnore]
-        [Newtonsoft.Json.JsonIgnore]
         public bool Success
         {
             get { return Code == ErrorCode.SYS_SUCCESS; }

@@ -1,58 +1,39 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Zero.Core.Converter
 {
     /// <summary>
     /// int64转字符串
     /// </summary>
-    public class LongToStringConverter : Newtonsoft.Json.JsonConverter
+    public class LongToStringConverter : JsonConverter<long>
     {
         /// <summary>
-        /// 读取json
+        /// 
         /// </summary>
         /// <param name="reader"></param>
-        /// <param name="objectType"></param>
-        /// <param name="existingValue"></param>
-        /// <param name="serializer"></param>
+        /// <param name="typeToConvert"></param>
+        /// <param name="options"></param>
         /// <returns></returns>
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue,
-            JsonSerializer serializer)
+        /// <exception cref="JsonException"></exception>
+        public override long Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            var jt = JToken.ReadFrom(reader);
+            if (reader.TokenType == JsonTokenType.String && long.TryParse(reader.GetString(), out var result))
+                return result;
 
-            var val = jt.Value<string>();
-
-            if (string.IsNullOrEmpty(val))
-            {
-                return null;
-            }
-
-            return jt.Value<long>();
+            throw new JsonException($"无法将值 '{reader.GetString()}' 转换为 long 类型");
         }
 
         /// <summary>
-        /// 可以转换
-        /// </summary>
-        /// <param name="objectType"></param>
-        /// <returns></returns>
-        public override bool CanConvert(Type objectType)
-        {
-            return typeof(long) == objectType || typeof(long?) == objectType;
-        }
-
-        /// <summary>
-        /// 转json
+        /// 
         /// </summary>
         /// <param name="writer"></param>
         /// <param name="value"></param>
-        /// <param name="serializer"></param>
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        /// <param name="options"></param>
+        public override void Write(Utf8JsonWriter writer, long value, JsonSerializerOptions options)
         {
-            serializer.Serialize(writer, value?.ToString());
+            writer.WriteStringValue(value.ToString());
         }
     }
 }
