@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,27 +27,22 @@ namespace Zero.Core.Attribute
         /// <summary>
         /// 
         /// </summary>
-        private readonly long _timeOutMilliseconds = timeOutMilliseconds;
-
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="context"></param>
         /// <param name="next"></param>
         /// <returns></returns>
         public override async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            var ticks = Environment.TickCount;
+            var stopwatch = Stopwatch.StartNew();
 
-            await next();
+            await next().ConfigureAwait(false);
 
-            var time = Environment.TickCount - ticks;
+            stopwatch.Stop();
 
-            if (time > _timeOutMilliseconds)
+            if (stopwatch.ElapsedMilliseconds > timeOutMilliseconds)
             {
-                var logger = context.HttpContext.RequestServices.GetService<ILogger<TimerAttribute>>();
+                var logger = context.HttpContext.RequestServices.GetRequiredService<ILogger<TimerAttribute>>();
 
-                logger.LogCustom($"本次请求耗时 {(double)time / 1000} 秒.", "Timeout");
+                logger.LogCustom($"本次请求耗时 {stopwatch.ElapsedMilliseconds / 1000M} 秒.", "Timeout");
             }
         }
     }

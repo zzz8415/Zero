@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
@@ -23,8 +24,8 @@ namespace Zero.Core.Attribute
         {
             if (!context.ModelState.IsValid)
             {
-                context.HttpContext.Response.StatusCode = 422;
-                context.Result = new JsonResult(new
+                context.HttpContext.Response.StatusCode = StatusCodes.Status422UnprocessableEntity;
+                context.Result = new JsonResult(new SysResult
                 {
                     Code = ErrorCode.SYS_PARAM_FORMAT_ERROR,
                     ErrorDesc = context.ModelState?.Values.FirstOrDefault()?.Errors?.FirstOrDefault()?.ErrorMessage

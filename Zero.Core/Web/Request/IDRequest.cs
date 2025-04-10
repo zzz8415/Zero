@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace Zero.Core.Web.Request
@@ -7,11 +8,12 @@ namespace Zero.Core.Web.Request
     /// <summary>
     /// id请求模型
     /// </summary>
-    public class IDRequest
+    public class IdRequest
     {
         /// <summary>
         /// ID
         /// </summary>
-        public long? ID { get; set; }
+        [Required]
+        public long? Id { get; set; }
     }
 }

@@ -4,7 +4,7 @@
 		<TargetFramework>net8.0</TargetFramework>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<NeutralLanguage>zh</NeutralLanguage>
-		<Version>5.3.3</Version>
+		<Version>5.3.4</Version>
 		<Authors>Zero</Authors>
 		<Description>.NET Core</Description>
 		<PackageReleaseNotes>.NET Core</PackageReleaseNotes>
