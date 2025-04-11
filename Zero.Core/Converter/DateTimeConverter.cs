@@ -29,6 +29,11 @@ namespace Zero.Core.Converter
                 return typeToConvert == typeof(DateTime?) ? null : default(DateTime);
             }
 
+            if (reader.TokenType == JsonTokenType.String && string.IsNullOrEmpty(reader.GetString()))
+            {
+                return typeToConvert == typeof(DateTime?) ? null : default(DateTime);
+            }
+
             return DateTime.Parse(reader.GetString()!);
         }
 

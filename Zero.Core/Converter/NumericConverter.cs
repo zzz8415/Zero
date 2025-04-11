@@ -12,45 +12,53 @@ namespace Zero.Core.Converter
     /// </summary>
     public class NumericConverter : JsonConverter<object>
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="typeToConvert"></param>
-        /// <returns></returns>
         public override bool CanConvert(Type typeToConvert)
         {
-            // 支持以下类型：
             return typeToConvert == typeof(long) || typeToConvert == typeof(long?) ||
                    typeToConvert == typeof(decimal) || typeToConvert == typeof(decimal?);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="reader"></param>
-        /// <param name="typeToConvert"></param>
-        /// <param name="options"></param>
-        /// <returns></returns>
         public override object Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
+            // 处理 null
             if (reader.TokenType == JsonTokenType.Null)
             {
-                // 返回可空类型的默认值（null）或值类型的默认值（0）
-                return typeToConvert == typeof(long?) || typeToConvert == typeof(decimal?)
-                    ? null
-                    : (typeToConvert == typeof(long) ? 0L : 0M);
+                return Nullable.GetUnderlyingType(typeToConvert) == null ? null : GetDefaultValue(typeToConvert);
             }
 
-            // 根据目标类型解析字符串
-            string strValue = reader.GetString()!;
-            if (typeToConvert == typeof(long) || typeToConvert == typeof(long?))
+            // 处理数字（直接读取）
+            if (reader.TokenType == JsonTokenType.Number)
             {
-                return long.Parse(strValue);
+                return typeToConvert == typeof(long) || typeToConvert == typeof(long?)
+                    ? reader.GetInt64()
+                    : reader.GetDecimal();
             }
-            else
+
+            // 处理字符串（尝试解析为数字）
+            if (reader.TokenType == JsonTokenType.String)
             {
-                return decimal.Parse(strValue, CultureInfo.InvariantCulture); // 避免区域性差异
+                string strValue = reader.GetString()!;
+                if (!string.IsNullOrEmpty(strValue))
+                {
+                    if (typeToConvert == typeof(long) || typeToConvert == typeof(long?))
+                    {
+                        if (long.TryParse(strValue, NumberStyles.Any, CultureInfo.InvariantCulture, out long longResult))
+                        {
+                            return longResult;
+                        }
+                    }
+                    else
+                    {
+                        if (decimal.TryParse(strValue, NumberStyles.Any, CultureInfo.InvariantCulture, out decimal decimalResult))
+                        {
+                            return decimalResult;
+                        }
+                    }
+                }
             }
+
+            // 其他所有情况（true/false/{}等）强制返回 0 或 null
+            return Nullable.GetUnderlyingType(typeToConvert) == null ? null : GetDefaultValue(typeToConvert);
         }
 
         public override void Write(Utf8JsonWriter writer, object value, JsonSerializerOptions options)
@@ -61,9 +69,13 @@ namespace Zero.Core.Converter
             }
             else
             {
-                // 统一序列化为字符串
                 writer.WriteStringValue(value.ToString()!);
             }
+        }
+
+        private static object GetDefaultValue(Type type)
+        {
+            return type == typeof(long) ? 0L : 0M;
         }
     }
 }
