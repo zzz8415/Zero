@@ -15,9 +15,9 @@ namespace Zero.Core.Converter
     {
         public override bool CanConvert(Type typeToConvert)
         {
-            return typeToConvert.IsValueType ||
-                   Nullable.GetUnderlyingType(typeToConvert) != null ||
-                   typeToConvert == typeof(string);
+            return typeToConvert.IsValueType || // 值类型
+                   typeToConvert.IsArray || // 数组
+                   typeToConvert.IsGenericType; // 泛型
         }
 
         public override JsonConverter CreateConverter(Type typeToConvert, JsonSerializerOptions options)
@@ -49,34 +49,14 @@ namespace Zero.Core.Converter
 
         public override T Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            try
+            if (reader.TokenType == JsonTokenType.String && string.IsNullOrEmpty(reader.GetString()))
             {
-                if (reader.TokenType == JsonTokenType.Null ||
-                    (reader.TokenType == JsonTokenType.String && reader.GetString() == string.Empty))
-                {
-                    return GetDefaultValue(typeToConvert);
-                }
+                return default;
+            }
 
-                return JsonSerializer.Deserialize<T>(ref reader, _safeOptions);
-            }
-            catch (JsonException ex)
-            {
-                Console.WriteLine($"反序列化失败: {ex.Message}");
-                return GetDefaultValue(typeToConvert);
-            }
+            return JsonSerializer.Deserialize<T>(ref reader, _safeOptions);
         }
 
-        private static T GetDefaultValue(Type typeToConvert)
-        {
-            if (typeToConvert == typeof(string))
-                return default;
-
-            var underlyingType = Nullable.GetUnderlyingType(typeToConvert);
-            if (underlyingType != null)
-                return default;
-
-            return Activator.CreateInstance<T>();
-        }
 
         public override void Write(Utf8JsonWriter writer, T value, JsonSerializerOptions options)
         {
