@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Zero.Core.Converter
 {
-    public sealed class EmptyConverter(string dateFormat) : JsonConverterFactory
+    public sealed class EmptyConverter(string dateFormat = null) : JsonConverterFactory
     {
         public override bool CanConvert(Type typeToConvert)
         {
