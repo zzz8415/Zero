@@ -111,9 +111,49 @@ namespace Zero.Core.Converter
                         return enumValue;
                     break;
 
-                case JsonTokenType.Number when reader.TryGetUInt64(out var longValue):
-                    if (Enum.IsDefined(typeof(TEnum), longValue))
-                        return (TEnum)(object)longValue;
+                case JsonTokenType.Number:
+                    var underlyingType = Enum.GetUnderlyingType(typeof(TEnum));
+
+                    if (underlyingType == typeof(long))
+                    {
+                        if (reader.TryGetInt64(out var longValue))
+                            return (TEnum)Enum.ToObject(typeof(TEnum), longValue);
+                    }
+                    else if (underlyingType == typeof(ulong))
+                    {
+                        if (reader.TryGetUInt64(out var ulongValue))
+                            return (TEnum)Enum.ToObject(typeof(TEnum), ulongValue);
+                    }
+                    else if (underlyingType == typeof(int))
+                    {
+                        if (reader.TryGetInt32(out var intValue))
+                            return (TEnum)Enum.ToObject(typeof(TEnum), intValue);
+                    }
+                    else if (underlyingType == typeof(uint))
+                    {
+                        if (reader.TryGetUInt32(out var uintValue))
+                            return (TEnum)Enum.ToObject(typeof(TEnum), uintValue);
+                    }
+                    else if (underlyingType == typeof(short))
+                    {
+                        if (reader.TryGetInt16(out var shortValue))
+                            return (TEnum)Enum.ToObject(typeof(TEnum), shortValue);
+                    }
+                    else if (underlyingType == typeof(ushort))
+                    {
+                        if (reader.TryGetUInt16(out var ushortValue))
+                            return (TEnum)Enum.ToObject(typeof(TEnum), ushortValue);
+                    }
+                    else if (underlyingType == typeof(byte))
+                    {
+                        if (reader.TryGetByte(out var byteValue))
+                            return (TEnum)Enum.ToObject(typeof(TEnum), byteValue);
+                    }
+                    else if (underlyingType == typeof(sbyte))
+                    {
+                        if (reader.TryGetSByte(out var sbyteValue))
+                            return (TEnum)Enum.ToObject(typeof(TEnum), sbyteValue);
+                    }
                     break;
             }
             return default;
@@ -121,7 +161,38 @@ namespace Zero.Core.Converter
 
         public override void Write(Utf8JsonWriter writer, TEnum value, JsonSerializerOptions options)
         {
-            writer.WriteNumberValue(Convert.ToUInt64(value));
+            var underlyingType = Enum.GetUnderlyingType(typeof(TEnum));
+
+            switch (underlyingType)
+            {
+                case Type t when t == typeof(long):
+                    writer.WriteNumberValue(Convert.ToInt64(value));
+                    break;
+                case Type t when t == typeof(ulong):
+                    writer.WriteNumberValue(Convert.ToUInt64(value));
+                    break;
+                case Type t when t == typeof(int):
+                    writer.WriteNumberValue(Convert.ToInt32(value));
+                    break;
+                case Type t when t == typeof(uint):
+                    writer.WriteNumberValue(Convert.ToUInt32(value));
+                    break;
+                case Type t when t == typeof(short):
+                    writer.WriteNumberValue(Convert.ToInt16(value));
+                    break;
+                case Type t when t == typeof(ushort):
+                    writer.WriteNumberValue(Convert.ToUInt16(value));
+                    break;
+                case Type t when t == typeof(byte):
+                    writer.WriteNumberValue(Convert.ToByte(value));
+                    break;
+                case Type t when t == typeof(sbyte):
+                    writer.WriteNumberValue(Convert.ToSByte(value));
+                    break;
+                default:
+                    writer.WriteStringValue(value.ToString());
+                    break;
+            }
         }
     }
 
