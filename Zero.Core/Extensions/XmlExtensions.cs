@@ -1,4 +1,3 @@
-using Newtonsoft.Json;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Text;

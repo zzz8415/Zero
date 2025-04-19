@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Http;
+
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -11,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Zero.Core.Converter
 {
-    public sealed class EmptyConverter : JsonConverterFactory
+    public sealed class EmptyConverter(string dateFormat) : JsonConverterFactory
     {
         public override bool CanConvert(Type typeToConvert)
         {
@@ -23,7 +25,7 @@ namespace Zero.Core.Converter
         public override JsonConverter CreateConverter(Type typeToConvert, JsonSerializerOptions options)
         {
             var converterType = typeof(EmptyStringToDefaultConverter<>).MakeGenericType(typeToConvert);
-            return (JsonConverter)Activator.CreateInstance(converterType, [options]);
+            return (JsonConverter)Activator.CreateInstance(converterType, [options, dateFormat]);
         }
     }
 
@@ -31,10 +33,14 @@ namespace Zero.Core.Converter
     {
         private readonly JsonSerializerOptions _safeOptions;
 
-        public EmptyStringToDefaultConverter(JsonSerializerOptions parentOptions)
+        private readonly string _dateFormat;
+
+        public EmptyStringToDefaultConverter(JsonSerializerOptions parentOptions, string dateFormat = null)
         {
             // 克隆父级配置
             _safeOptions = new JsonSerializerOptions(parentOptions);
+
+            _dateFormat = dateFormat;
 
             // 移除所有 EmptyConverter 实例
             var convertersToRemove = _safeOptions.Converters
@@ -49,17 +55,41 @@ namespace Zero.Core.Converter
 
         public override T Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            if (reader.TokenType == JsonTokenType.String && string.IsNullOrEmpty(reader.GetString()))
+            if (reader.TokenType == JsonTokenType.String)
             {
-                return default;
+                var dateString = reader.GetString();
+                if (string.IsNullOrEmpty(dateString))
+                {
+                    return default;
+                }
+
+                if (!string.IsNullOrEmpty(_dateFormat) && (typeof(T) == typeof(DateTime) || typeof(T) == typeof(DateTime?)))
+                {
+                    if (DateTime.TryParseExact(dateString, _dateFormat, null, DateTimeStyles.None, out var date))
+                    {
+                        return (T)(object)date;
+                    }
+                    else
+                    {
+                        return default;
+                    }
+                }
             }
 
             return JsonSerializer.Deserialize<T>(ref reader, _safeOptions);
         }
 
-
         public override void Write(Utf8JsonWriter writer, T value, JsonSerializerOptions options)
         {
+            if (!string.IsNullOrEmpty(_dateFormat) && (typeof(T) == typeof(DateTime) || typeof(T) == typeof(DateTime?)))
+            {
+                if (value != null)
+                {
+                    writer.WriteStringValue(((DateTime)(object)value).ToString(_dateFormat));
+                    return;
+                }
+            }
+
             JsonSerializer.Serialize(writer, value, _safeOptions);
         }
     }
