@@ -42,8 +42,7 @@ namespace Zero.Core.Extensions
                 return null;
             }
 
-            options ??= DefaultOptions;
-            return JsonSerializer.Serialize(obj, options);
+            return JsonSerializer.Serialize(obj, options ?? DefaultOptions);
         }
 
         /// <summary>
@@ -59,8 +58,7 @@ namespace Zero.Core.Extensions
                 return default;
             }
 
-            options ??= DefaultOptions;
-            return JsonSerializer.Deserialize<T>(json, options);
+            return JsonSerializer.Deserialize<T>(json, options ?? DefaultOptions);
         }
 
         /// <summary>
