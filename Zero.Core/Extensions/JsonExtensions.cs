@@ -26,7 +26,28 @@ namespace Zero.Core.Extensions
             AllowTrailingCommas = true,
             PropertyNameCaseInsensitive = true, // 不区分大小写
             NumberHandling = JsonNumberHandling.AllowReadingFromString,
-            Converters = { new EmptyConverter("yyyy-MM-dd HH:mm:ss") }
+            Converters = { new EmptyConverter(
+                [
+                    // ISO 8601 格式
+                    "yyyy-MM-ddTHH:mm:ssZ",
+                    "yyyy-MM-ddTHH:mm:ss.fffZ",
+                    "yyyyMMddTHHmmssZ",
+                    "o", // Round-trip 格式
+        
+                    // 常规日期时间
+                    "yyyy-MM-dd HH:mm:ss",
+                    "yyyy/MM/dd HH:mm:ss",
+                    "dd-MMM-yyyy HH:mm:ss",
+        
+                    // 纯日期
+                    "yyyy-MM-dd",
+                    "yyyy/MM/dd",
+                    "MM/dd/yyyy",
+                    "dd.MM.yyyy",
+        
+                    // 其他
+                    "ddd, dd MMM yyyy HH:mm:ss GMT" // HTTP 格式
+               ])}
         };
 
         /// <summary>

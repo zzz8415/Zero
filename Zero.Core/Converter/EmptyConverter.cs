@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Zero.Core.Converter
 {
-    public sealed class EmptyConverter(string dateFormat = null) : JsonConverterFactory
+    public sealed class EmptyConverter(string[] dateFormatArray = null) : JsonConverterFactory
     {
         public override bool CanConvert(Type typeToConvert) => typeToConvert.IsValueType;
 
@@ -26,7 +26,7 @@ namespace Zero.Core.Converter
             }
 
             var converterType = typeof(EmptyStringConverter<>).MakeGenericType(typeToConvert);
-            return (JsonConverter)Activator.CreateInstance(converterType, [options, dateFormat]);
+            return (JsonConverter)Activator.CreateInstance(converterType, [options, dateFormatArray]);
         }
     }
 
@@ -34,14 +34,14 @@ namespace Zero.Core.Converter
     {
         private readonly JsonSerializerOptions _safeOptions;
 
-        private readonly string _dateFormat;
+        private readonly string[] _dateFormatArray;
 
-        public EmptyStringConverter(JsonSerializerOptions parentOptions, string dateFormat = null)
+        public EmptyStringConverter(JsonSerializerOptions parentOptions, string[] dateFormatArray = null)
         {
             // 克隆父级配置
             _safeOptions = new JsonSerializerOptions(parentOptions);
 
-            _dateFormat = dateFormat;
+            _dateFormatArray = dateFormatArray;
 
             // 移除所有 EmptyConverter 实例
             var convertersToRemove = _safeOptions.Converters
@@ -64,16 +64,16 @@ namespace Zero.Core.Converter
                     return default;
                 }
 
-                if (!string.IsNullOrEmpty(_dateFormat) && (typeof(T) == typeof(DateTime) || typeof(T) == typeof(DateTime?)))
+                if (_dateFormatArray?.Length > 0 && (typeof(T) == typeof(DateTime) || typeof(T) == typeof(DateTime?)))
                 {
-                    if (DateTime.TryParseExact(dateString, _dateFormat, null, DateTimeStyles.None, out var date))
+                    foreach (var format in _dateFormatArray) 
                     {
-                        return (T)(object)date;
+                        if (DateTime.TryParseExact(dateString, format, null, DateTimeStyles.None, out var date))
+                        {
+                            return (T)(object)date;
+                        }
                     }
-                    else
-                    {
-                        return default;
-                    }
+                    return default;
                 }
             }
 
@@ -82,20 +82,6 @@ namespace Zero.Core.Converter
 
         public override void Write(Utf8JsonWriter writer, T value, JsonSerializerOptions options)
         {
-            if (!string.IsNullOrEmpty(_dateFormat) && (typeof(T) == typeof(DateTime) || typeof(T) == typeof(DateTime?)))
-            {
-                if (value != null)
-                {
-                    writer.WriteStringValue(((DateTime)(object)value).ToString(_dateFormat));
-                    return;
-                }
-                else
-                {
-                    writer.WriteNullValue();
-                    return;
-                }
-            }
-
             JsonSerializer.Serialize(writer, value, _safeOptions);
         }
     }
