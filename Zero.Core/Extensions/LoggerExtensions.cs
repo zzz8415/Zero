@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 
 using System;
 using System.Collections.Generic;
@@ -22,6 +22,17 @@ namespace Zero.Core.Extensions
         public static void LogCustom(this ILogger logger, string message, string dir)
         {
             logger.LogInformation(new EventId(-65535, dir), message);
+        }
+
+        /// <summary>
+        /// 自定义异常日志
+        /// </summary>
+        /// <param name="logger"></param>
+        /// <param name="message"></param>
+        /// <param name="dir"></param>
+        public static void LogFail(this ILogger logger, Exception exception, string dir)
+        {
+            logger.LogInformation(new EventId(-65535, dir), exception, "Fail");
         }
 
         /// <summary>
