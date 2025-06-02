@@ -4,7 +4,7 @@
 		<TargetFramework>net8.0</TargetFramework>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<NeutralLanguage>zh</NeutralLanguage>
-		<Version>5.6.2</Version>
+		<Version>5.6.3</Version>
 		<Authors>Zero</Authors>
 		<Description>.NET Core</Description>
 		<PackageReleaseNotes>.NET Core</PackageReleaseNotes>
@@ -44,11 +44,11 @@
 	<ItemGroup>
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.3.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.Formatters.Json" Version="2.3.0" />
-		<PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="9.0.4" />
-		<PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="9.0.4" />
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.4" />
+		<PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="9.0.5" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="9.0.5" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.5" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-		<PackageReference Include="StackExchange.Redis" Version="2.8.31" />
+		<PackageReference Include="StackExchange.Redis" Version="2.8.37" />
 		<PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
 	</ItemGroup>
 

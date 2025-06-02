@@ -104,6 +104,10 @@ namespace Zero.Core.Util
             {
                 return value.ToDateTime(DateTime.MinValue);
             }
+            if (type.Name.Equals("DateTimeOffset", StringComparison.OrdinalIgnoreCase))
+            {
+                return value.ToDateTimeOffset(DateTimeOffset.MinValue);
+            }
             if (type.Name.Equals("Guid", StringComparison.OrdinalIgnoreCase))
             {
                 return Guid.Parse(value);

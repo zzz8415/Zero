@@ -45,7 +45,7 @@ namespace Zero.Core.Inject
                 Config = new SnowflakeConfig
                 {
                     WorkId = 0,
-                    OffsetDate = new DateTime(2000, 1, 1)
+                    OffsetDate = new DateTimeOffset(2000, 1, 1, 0, 0, 0, TimeSpan.Zero)
                 };
                 return;
             }
@@ -110,7 +110,7 @@ namespace Zero.Core.Inject
         /// <returns></returns>
         private long GetTicks()
         {
-            return ((DateTime.UtcNow.Ticks - _offsetTicks) << 8) & long.MaxValue;
+            return ((DateTimeOffset.UtcNow.Ticks - _offsetTicks) << 8) & long.MaxValue;
         }
 
         /// <summary>

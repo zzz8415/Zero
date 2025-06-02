@@ -66,9 +66,21 @@ namespace Zero.Core.Converter
 
                 if (_dateFormatArray?.Length > 0 && (typeof(T) == typeof(DateTime) || typeof(T) == typeof(DateTime?)))
                 {
-                    foreach (var format in _dateFormatArray) 
+                    foreach (var format in _dateFormatArray)
                     {
                         if (DateTime.TryParseExact(dateString, format, null, DateTimeStyles.None, out var date))
+                        {
+                            return (T)(object)date;
+                        }
+                    }
+                    return default;
+                }
+
+                if (_dateFormatArray?.Length > 0 && (typeof(T) == typeof(DateTimeOffset) || typeof(T) == typeof(DateTimeOffset?)))
+                {
+                    foreach (var format in _dateFormatArray) 
+                    {
+                        if (DateTimeOffset.TryParseExact(dateString, format, null, DateTimeStyles.None, out var date))
                         {
                             return (T)(object)date;
                         }

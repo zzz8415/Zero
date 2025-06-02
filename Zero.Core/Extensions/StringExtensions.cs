@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -605,6 +605,32 @@ namespace Zero.Core.Extensions
             if (!string.IsNullOrEmpty(source))
             {
                 if (DateTime.TryParse(source, out DateTime result))
+                {
+                    return result;
+                }
+            }
+            return defaultValue;
+        }
+        /// <summary>
+        /// 将字符串转成DateTimeOffset类型，如果转换失败，则返回当前时间
+        /// </summary>
+        /// <param name="source">源字符串</param>
+        /// <returns></returns>
+        public static DateTimeOffset ToDateTimeOffset(this string source)
+        {
+            return source.ToDateTimeOffset(DateTimeOffset.Now);
+        }
+        /// <summary>
+        /// 将字符串转成DateTimeOffset类型
+        /// </summary>
+        /// <param name="source">源字符串</param>
+        /// <param name="defaultValue">如果转换失败，返回的默认时间</param>
+        /// <returns></returns>
+        public static DateTimeOffset ToDateTimeOffset(this string source, DateTimeOffset defaultValue)
+        {
+            if (!string.IsNullOrEmpty(source))
+            {
+                if (DateTimeOffset.TryParse(source, out DateTimeOffset result))
                 {
                     return result;
                 }

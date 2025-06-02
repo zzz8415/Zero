@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,7 +15,7 @@ namespace Zero.Core.Extensions
         /// </summary>
         /// <param name="source">该周中任意一天</param>
         /// <returns></returns>
-        public static DateTime GetMondayDate(this DateTime source)
+        public static DateTimeOffset GetMondayDate(this DateTimeOffset source)
         {
             int i = source.DayOfWeek - DayOfWeek.Monday;
             // i值 > = 0 ，因为枚举原因，Sunday排在最前，此时Sunday-Monday=-1，必须+7=6。
@@ -29,7 +29,7 @@ namespace Zero.Core.Extensions
         /// </summary>
         /// <param name="source"></param>
         /// <returns></returns>
-        public static DateTime GetSundayDate(this DateTime source)
+        public static DateTimeOffset GetSundayDate(this DateTimeOffset source)
         {
             int i = source.DayOfWeek - DayOfWeek.Sunday;
             if (i != 0) i = 7 - i;// 因为枚举原因，Sunday排在最前，相减间隔要被7减。   
@@ -42,7 +42,7 @@ namespace Zero.Core.Extensions
         /// </summary>
         /// <param name="source"></param>
         /// <returns></returns>
-        public static string ToStandardString(this DateTime source)
+        public static string ToStandardString(this DateTimeOffset source)
         {
             return source.ToString("yyyy-MM-dd HH:mm:ss");
         }
@@ -52,7 +52,7 @@ namespace Zero.Core.Extensions
         /// </summary>
         /// <param name="source"></param>
         /// <returns></returns>
-        public static string ToStandardString(this DateTime? source)
+        public static string ToStandardString(this DateTimeOffset? source)
         {
             if (source == null)
             {
@@ -79,6 +79,26 @@ namespace Zero.Core.Extensions
         public static DateTime ToUnixDateTimeFromMilliSeconds(this long milliseconds)
         {
             return DateTimeOffset.FromUnixTimeMilliseconds(milliseconds).LocalDateTime;
+        }
+
+        /// <summary>
+        /// 将unix timestamp时间戳(秒) 转换为.NET的DateTimeOffset 
+        /// </summary>
+        /// <param name="seconds"></param>
+        /// <returns></returns>
+        public static DateTimeOffset ToDateTimeFromUnixSeconds(this long seconds)
+        {
+            return DateTimeOffset.FromUnixTimeSeconds(seconds);
+        }
+
+        /// <summary>
+        /// 将unix timestamp时间戳(毫秒) 转换为.NET的DateTimeOffset  
+        /// </summary>
+        /// <param name="milliseconds"></param>
+        /// <returns></returns>
+        public static DateTimeOffset ToDateTimeFromUnixMilliSeconds(this long milliseconds)
+        {
+            return DateTimeOffset.FromUnixTimeMilliseconds(milliseconds);
         }
 
         /// <summary>
@@ -110,8 +130,9 @@ namespace Zero.Core.Extensions
         /// <returns></returns>
         public static string ToTimeString(this int seconds)
         {
-            var time = DateTime.MinValue.AddSeconds(seconds);
+            var time = DateTimeOffset.MinValue.AddSeconds(seconds);
             return time.Hour > 0 ? time.ToString("HH时mm分ss秒") : time.ToString("mm分ss秒");
         }
+
     }
 }

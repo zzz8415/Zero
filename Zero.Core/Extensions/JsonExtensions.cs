@@ -8,6 +8,7 @@ using System.Text.Json;
 
 using Zero.Core.Inject;
 using Zero.Core.Converter;
+using System.Text.Encodings.Web;
 
 namespace Zero.Core.Extensions
 {
@@ -26,6 +27,7 @@ namespace Zero.Core.Extensions
             AllowTrailingCommas = true,
             PropertyNameCaseInsensitive = true, // 不区分大小写
             NumberHandling = JsonNumberHandling.AllowReadingFromString,
+            Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
             Converters = { new EmptyConverter(
                 [
                     // ISO 8601 格式

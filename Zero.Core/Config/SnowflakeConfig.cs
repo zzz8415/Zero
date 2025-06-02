@@ -16,7 +16,7 @@ namespace Zero.Core.Config
         /// <summary>
         /// 日期偏移量
         /// </summary>
-        public DateTime OffsetDate { get; set; }
+        public DateTimeOffset OffsetDate { get; set; }
 
         /// <summary>
         /// 主机名
