@@ -29,7 +29,7 @@ namespace Zero.Core.Util
             for (var i = 0; i < properties.Length;)
             {
                 var p = properties[i];
-                sb.Append(model.GetType().GetProperty(p.Name).GetValue(model, null).ToString());
+                sb.Append(model.GetType().GetProperty(p.Name).GetValue(model, null)?.ToString());
                 if (++i < properties.Length)
                 {
                     sb.Append('&');
