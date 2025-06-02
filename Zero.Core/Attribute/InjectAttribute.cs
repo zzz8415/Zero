@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -12,7 +12,7 @@ namespace Zero.Core.Attribute
     public class InjectAttribute : System.Attribute
     {
         /// <summary>
-        /// 什么周期类型,默认Scoped,线程内有效
+        /// 生命周期类型,默认Scoped,线程内有效
         /// </summary>
         public ServiceLifetime OptionsLifetime { get; set; } = ServiceLifetime.Scoped;
     }
