@@ -59,4 +59,19 @@ namespace Zero.Core.Result
 
     }
 
+    public class SysResult<T1, T2> : SysResult
+    {
+
+        /// <summary>
+        /// 返回结果
+        /// </summary>
+        public T1? Result { get; set; }
+
+        /// <summary>
+        /// 扩展数据
+        /// </summary>
+        public T2? Extend { get; set; }
+
+    }
+
 }
