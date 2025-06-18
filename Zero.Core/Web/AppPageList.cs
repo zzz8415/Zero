@@ -14,6 +14,27 @@ namespace Zero.Core.Web
     public class AppPageList<T>
     {
         public AppPageList() { }
+
+        /// <summary>
+        ///  初始化,获取数量建议pageRequest.AppPageGetCount(pageSize+1),这样可以准确判断是否还有下一页
+        /// </summary>
+        /// <param name="list"></param>
+        /// <param name="pageRequest"></param>
+        /// <param name="extend"></param>
+        public AppPageList(List<T> list, PageRequest pageRequest, object extend = null)
+        {
+            this.List = list;
+
+            this.IsLastPage = this.List == null || this.List.Count <= pageRequest.PageSize;
+
+            if (!this.IsLastPage)
+            {
+                this.List = this.List.Take(pageRequest.PageSize).ToList();
+            }
+
+            this.Extend = extend;
+        }
+
         /// <summary>
         /// 初始化,获取数量建议pageSize+1,这样可以准确判断是否还有下一页
         /// </summary>

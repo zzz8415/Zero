@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 using System;
 using System.Net;
+using System.Threading;
 
 using Zero.Core.Attribute;
 using Zero.Core.Config;
@@ -20,35 +21,26 @@ namespace Zero.Core.Inject
     [Inject(OptionsLifetime = ServiceLifetime.Singleton)]
     public class Snowflake
     {
-        private long _lastTicks = 0L;
-        private long _lastFlowID = 0L;
-        private static readonly object _lock = new();
-        //public long _workID = 0;
-        private readonly long _maxFlowID = 1L << 4;
-        private readonly long _maxWorkID = 1L << 6;
-        private readonly long _offsetTicks = 0;
+        private const int WorkerIdBits = 5;
+        private const int SequenceBits = 12;
+        private const long MaxWorkerId = -1L ^ (-1L << WorkerIdBits);
+        private const long MaxSequence = -1L ^ (-1L << SequenceBits);
 
-        /// <summary>
-        /// 配置
-        /// </summary>
-        public SnowflakeConfig Config { get; set; }
+        private long _lastTimestamp = -1L;
+        private long _sequence = 0L;
+        private long _workerId;
+        private long _offsetTicks = 0;
 
-        /// <summary>
-        /// DI容器注册
-        /// </summary>
-        /// <param name="configuration"></param>
+        public SnowflakeConfig Config { get; }
+
         public Snowflake(WebConfig webConfig)
         {
-            Config = webConfig.Get<SnowflakeConfig>("Snowflake");
-            if (Config == null)
+            Config = webConfig.Get<SnowflakeConfig>("Snowflake") ?? new SnowflakeConfig
             {
-                Config = new SnowflakeConfig
-                {
-                    WorkId = 0,
-                    OffsetDate = new DateTimeOffset(2000, 1, 1, 0, 0, 0, TimeSpan.Zero)
-                };
-                return;
-            }
+                WorkId = 0,
+                OffsetDate = new DateTimeOffset(2000, 1, 1, 0, 0, 0, TimeSpan.Zero)
+            };
+
             if (Config.HostNameList?.Count > 0)
             {
                 var hostName = Dns.GetHostName();
@@ -61,89 +53,80 @@ namespace Zero.Core.Inject
                     }
                 }
             }
-            if(Config.WorkId < 0 || Config.WorkId > _maxWorkID)
+
+            if (Config.WorkId < 0 || Config.WorkId > MaxWorkerId)
             {
+                // logger.Warn($"Invalid WorkId {Config.WorkId}, using 0 instead");
                 Config.WorkId = 0;
             }
 
-            _offsetTicks = Config.OffsetDate.Ticks;
+            _workerId = Config.WorkId;
+            _offsetTicks = Config.OffsetDate.ToUnixTimeMilliseconds();
         }
 
-        /// <summary>
-        /// 生成新的ID
-        /// </summary>
-        /// <returns></returns>
         public long NewID()
         {
-            lock (_lock)
+            while (true)
             {
-                long ticks = GetTicks();
-                ResetFlowID(ticks);
-                long flowID = GetFlowID();
-                // 如果流水号溢出,重新获取时间戳
-                if (flowID >= _maxFlowID)
+                var timestamp = GetCurrentTimestamp();
+                var lastTimestamp = Interlocked.Read(ref _lastTimestamp);
+
+                // 处理时钟回拨：等待时钟恢复
+                if (timestamp < lastTimestamp)
                 {
-                    ticks = GetNextTicks();
-                    ResetFlowID(ticks);
-                    flowID = GetFlowID();
+                    var spinWait = new SpinWait();
+                    while (timestamp < lastTimestamp)
+                    {
+                        spinWait.SpinOnce();
+                        timestamp = GetCurrentTimestamp();
+                    }
                 }
-                return ticks | GetWorkID() | flowID;
+
+                long sequence;
+                if (timestamp == lastTimestamp)
+                {
+                    sequence = (Interlocked.Increment(ref _sequence)) & MaxSequence;
+                    if (sequence == 0)
+                    {
+                        timestamp = WaitNextMillis(lastTimestamp);
+                        if (Interlocked.CompareExchange(ref _lastTimestamp, timestamp, lastTimestamp) == lastTimestamp)
+                        {
+                            Interlocked.Exchange(ref _sequence, 0);
+                        }
+                        continue;
+                    }
+                }
+                else
+                {
+                    sequence = 0;
+                    if (Interlocked.CompareExchange(ref _lastTimestamp, timestamp, lastTimestamp) != lastTimestamp)
+                    {
+                        continue;
+                    }
+                    Interlocked.Exchange(ref _sequence, sequence);
+                }
+
+                return ((timestamp - _offsetTicks) << (WorkerIdBits + SequenceBits))
+                     | (_workerId << SequenceBits)
+                     | sequence;
             }
         }
 
-        /// <summary>
-        /// 重置流水号
-        /// </summary>
-        /// <param name="ticks"></param>
-        private void ResetFlowID(long ticks)
+        private long GetCurrentTimestamp()
         {
-            if (ticks > _lastTicks)
+            return DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+        }
+
+        private long WaitNextMillis(long lastTimestamp)
+        {
+            var spinWait = new SpinWait();
+            var timestamp = GetCurrentTimestamp();
+            while (timestamp <= lastTimestamp)
             {
-                _lastTicks = ticks;
-                _lastFlowID = 0;
+                spinWait.SpinOnce();
+                timestamp = GetCurrentTimestamp();
             }
-        }
-
-        /// <summary>
-        /// 获取时间戳(55位)
-        /// </summary>
-        /// <returns></returns>
-        private long GetTicks()
-        {
-            return ((DateTimeOffset.UtcNow.Ticks - _offsetTicks) << 8) & long.MaxValue;
-        }
-
-        /// <summary>
-        /// 流水号溢出获取下一个时间戳
-        /// </summary>
-        /// <returns></returns>
-        private long GetNextTicks()
-        {
-            long ticks;
-            do
-            {
-                ticks = GetTicks();
-            }
-            while (ticks == _lastTicks);
-            return ticks;
-        }
-
-        /// <summary>
-        /// 获取机器ID(5位)
-        /// </summary>
-        /// <returns></returns>
-        private long GetWorkID()
-        {
-            return Config.WorkId << 3;
-        }
-
-        /// <summary>
-        /// 获取流水号(3位)
-        /// </summary>
-        /// <returns></returns>
-        private long GetFlowID()
-        {
-            return _lastFlowID++;
+            return timestamp;
         }
     }
 }
