@@ -32,7 +32,7 @@ namespace Zero.Core.Extensions
         /// <param name="dir"></param>
         public static void LogFail(this ILogger logger, Exception exception, string dir)
         {
-            logger.LogInformation(new EventId(-65535, dir), exception, "Fail");
+            logger.LogInformation(new EventId(-65535, dir), exception, dir);
         }
 
         /// <summary>
