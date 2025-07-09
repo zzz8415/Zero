@@ -691,9 +691,11 @@ namespace Zero.Core.Extensions
             {
                 try
                 {
-                    return (T)Enum.Parse(typeof(T), source, true);
+                    return (T)Enum.ToObject(typeof(T), source);
                 }
-                catch { }
+                catch {
+                    return defaultValue;
+                }
             }
             return defaultValue;
         }

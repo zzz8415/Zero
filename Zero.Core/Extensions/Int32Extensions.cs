@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -43,7 +43,7 @@ namespace Zero.Core.Extensions
         {
             try
             {
-                return (T)Enum.Parse(typeof(T), source.ToString(), true);
+                return (T)Enum.ToObject(typeof(T), source);
             }
             catch { }
             return defaultValue;
