@@ -62,7 +62,7 @@ namespace Zero.Core.Filter
                     line = true;
                 }
                 // 格式化枚举值和描述，并追加到 StringBuilder。
-                descriptionBuilder.Append($"{Convert.ToInt32(enumValue)} = {name}({description})");
+                descriptionBuilder.Append($"{Convert.ToInt64(enumValue)} = {name}({description})");
             }
 
             schema.Description = descriptionBuilder.ToString();
