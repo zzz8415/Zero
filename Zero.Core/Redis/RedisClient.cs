@@ -27,6 +27,11 @@ namespace Zero.Core.Redis
         public IDatabase Database => _multiplexer.GetDatabase();
 
         /// <summary>
+        /// Redis Server
+        /// </summary>
+        public IServer Server => _multiplexer.GetServer(_multiplexer.GetEndPoints().First());
+
+        /// <summary>
         /// Multiplexer
         /// </summary>
         private readonly ConnectionMultiplexer _multiplexer = ConnectionMultiplexer.Connect(webConfig.Configuration.GetConnectionString("redis"));
