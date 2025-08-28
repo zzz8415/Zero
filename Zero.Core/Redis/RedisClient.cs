@@ -29,7 +29,7 @@ namespace Zero.Core.Redis
         /// <summary>
         /// Redis Server
         /// </summary>
-        public IServer Server => _multiplexer.GetServer(_multiplexer.GetEndPoints().First());
+        public IServer[] Servers => _multiplexer.GetServers();
 
         /// <summary>
         /// Multiplexer
