@@ -129,7 +129,8 @@ namespace Zero.Core.Util
                     options.SwaggerDoc(api.Key, new OpenApiInfo
                     {
                         Title = api.Value,
-                        Description = api.Value
+                        Description = api.Value,
+                        Version = "v1"
                     });
                 }
 
@@ -160,13 +161,35 @@ namespace Zero.Core.Util
                          Array.Empty<string>()
                      }
                 });
-                options.CustomSchemaIds(type => type.FullName);
+                options.CustomSchemaIds(GetSchemaId);
                 options.SchemaFilter<EnumDescriptionSchemaFilter>();
+                options.OperationFilter<RequestBodyToParametersFilter>();
             });
             builder.Services.Configure<Swashbuckle.AspNetCore.Swagger.SwaggerOptions>(c =>
             {
                 c.RouteTemplate = "{documentName}/api.json";
             });
+        }
+
+        private static string GetSchemaId(Type type)
+        {
+            if (type.IsGenericType)
+            {
+                // 获取泛型基类名，去掉 `1 ` 等符号
+                var baseName = type.Name.Split('`')[0];
+
+                // 遍历每一个泛型参数，递归生成完整类型
+                var genericArgs = type.GetGenericArguments()
+                                      .Select(t => GetSchemaId(t));
+
+                // 组合成完整名称
+                return $"{type.Namespace}.{baseName}Of{string.Join("_", genericArgs)}";
+            }
+
+            // 内部类: 把 + 换成 .
+            var name = type.Name.Replace("+", ".");
+
+            return $"{type.Namespace}.{name}";
         }
 
         /// <summary>
