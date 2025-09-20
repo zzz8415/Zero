@@ -116,7 +116,7 @@ namespace Zero.Core.Util
         }
 
         /// <summary>
-        /// swagger配置
+        /// swagger配置,Controller支持Description特性修改ControllerName,支持SwaggerTag特性,Action支持SwaggerOperation特性修改名字和描述
         /// </summary>
         /// <param name="builder"></param>
         public static void AddSwaggerGen(WebApplicationBuilder builder, Dictionary<string, string> apiArray)
@@ -161,9 +161,10 @@ namespace Zero.Core.Util
                          Array.Empty<string>()
                      }
                 });
+                options.EnableAnnotations();
                 options.CustomSchemaIds(GetSchemaId);
                 options.SchemaFilter<EnumDescriptionSchemaFilter>();
-                options.OperationFilter<DescriptionTagOperationFilter>();
+                options.DocumentFilter<DescriptionTagOperationFilter>();
             });
             builder.Services.Configure<Swashbuckle.AspNetCore.Swagger.SwaggerOptions>(c =>
             {

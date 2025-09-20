@@ -4,7 +4,7 @@
 		<TargetFramework>net8.0</TargetFramework>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<NeutralLanguage>zh</NeutralLanguage>
-		<Version>5.8.6</Version>
+		<Version>5.8.7</Version>
 		<Authors>Zero</Authors>
 		<Description>.NET Core</Description>
 		<PackageReleaseNotes>.NET Core</PackageReleaseNotes>
@@ -50,6 +50,7 @@
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.9" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
 		<PackageReference Include="StackExchange.Redis" Version="2.9.17" />
+		<PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="9.0.4" />
 		<PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="9.0.4" />
 		<PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
 	</ItemGroup>

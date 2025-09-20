@@ -8,28 +8,52 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Zero.Core.Filter
 {
-    public class DescriptionTagOperationFilter : IOperationFilter
+    public class DescriptionTagOperationFilter : IDocumentFilter
     {
-        public void Apply(OpenApiOperation operation, OperationFilterContext context)
+        public void Apply(OpenApiDocument swaggerDoc, DocumentFilterContext context)
         {
-            if (context.ApiDescription.ActionDescriptor is not ControllerActionDescriptor cad) return;
+            // 1. 先构建 tagName 映射表，避免多次反射
+            var tagNameMap = new Dictionary<string, string>(); // oldName -> newName
+            var allTypes = AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(a => a.GetTypes())
+                .Where(t => t.IsClass && t.Name.EndsWith("Controller"));
+            foreach (var type in allTypes)
+            {
+                var descAttr = type.GetCustomAttribute<DescriptionAttribute>();
+                if (descAttr != null && !string.IsNullOrWhiteSpace(descAttr.Description))
+                {
+                    var oldName = type.Name.Replace("Controller", string.Empty);
+                    tagNameMap[oldName] = descAttr.Description;
+                }
+            }
 
-            var controllerType = cad.ControllerTypeInfo;
-            var controllerName = cad.ControllerName;
+            // 2. 批量同步 swaggerDoc.Tags
+            foreach (var tag in swaggerDoc.Tags)
+            {
+                if (tagNameMap.TryGetValue(tag.Name, out var newName))
+                {
+                    tag.Name = newName;
+                }
+            }
 
-            var descriptionAttr = controllerType
-                .GetCustomAttributes(typeof(DescriptionAttribute), false)
-                .Cast<DescriptionAttribute>()
-                .FirstOrDefault();
-
-            var tagName = descriptionAttr?.Description ?? controllerName;
-            operation.Tags.Clear();
-            operation.Tags.Add(new OpenApiTag { Name = tagName, Description = tagName });
+            // 3. 批量同步 operation.Tags
+            foreach (var path in swaggerDoc.Paths.Values)
+                foreach (var op in path.Operations.Values)
+                {
+                    for (int i = 0; i < op.Tags.Count; i++)
+                    {
+                        if (tagNameMap.TryGetValue(op.Tags[i].Name, out var newName))
+                        {
+                            op.Tags[i].Name = newName;
+                        }
+                    }
+                }
         }
     }
 }
