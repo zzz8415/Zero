@@ -28,6 +28,7 @@ namespace Zero.Core.Filter
                 .FirstOrDefault();
 
             var tagName = descriptionAttr?.Description ?? controllerName;
+            operation.Tags.Clear();
             operation.Tags.Add(new OpenApiTag { Name = tagName, Description = tagName });
         }
     }
