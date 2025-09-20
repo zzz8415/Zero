@@ -163,6 +163,7 @@ namespace Zero.Core.Util
                 });
                 options.CustomSchemaIds(GetSchemaId);
                 options.SchemaFilter<EnumDescriptionSchemaFilter>();
+                options.OperationFilter<DescriptionTagOperationFilter>();
             });
             builder.Services.Configure<Swashbuckle.AspNetCore.Swagger.SwaggerOptions>(c =>
             {
