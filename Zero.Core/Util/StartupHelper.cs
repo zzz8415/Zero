@@ -6,6 +6,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 
+using Swashbuckle.AspNetCore.Filters;
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
@@ -162,6 +164,7 @@ namespace Zero.Core.Util
                      }
                 });
                 options.EnableAnnotations();
+                options.ExampleFilters();
                 options.CustomSchemaIds(GetSchemaId);
                 options.SchemaFilter<EnumDescriptionSchemaFilter>();
                 options.DocumentFilter<DescriptionTagOperationFilter>();
