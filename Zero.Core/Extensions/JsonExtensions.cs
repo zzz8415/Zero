@@ -17,7 +17,7 @@ namespace Zero.Core.Extensions
     /// </summary>
     public static class JsonExtensions
     {
-        private static readonly JsonSerializerOptions DefaultOptions = new()
+        public static readonly JsonSerializerOptions DefaultOptions = new()
         {
             ReferenceHandler = ReferenceHandler.IgnoreCycles, // 忽略循环引用
             DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull, // 忽略null值
