@@ -96,7 +96,7 @@ namespace Zero.Core.Extensions
         //  ETH (Hex) 和 TRON 互转工具
         // -------------------------
 
-        public static string HexToTronAddress(string hexAddress)
+        public static string HexToTronAddress(this string hexAddress)
         {
             if (string.IsNullOrWhiteSpace(hexAddress))
                 throw new ArgumentNullException(nameof(hexAddress));
@@ -108,7 +108,7 @@ namespace Zero.Core.Extensions
             return raw.ToTronAddress();
         }
 
-        public static string TronToHexAddress(string tronAddress)
+        public static string TronToHexAddress(this string tronAddress)
         {
             var raw = tronAddress.TronAddressToRaw();
 
