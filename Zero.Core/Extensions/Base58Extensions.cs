@@ -3,20 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Zero.Core.Extensions
 {
     /// <summary>
-    /// Base58 + Base58Check 扩展 (支持 Bitcoin / Tron 地址格式)
+    /// 标准 Base58 + Base58Check 扩展 (支持 Bitcoin / Tron 地址格式)
     /// </summary>
     public static class Base58Extensions
     {
-        // Bitcoin / Tron 字符集 (无 0, O, I, l)
+        // Bitcoin / Tron Base58 字符集
         private const string Base58Chars = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
 
         // -------------------------
-        //         Base58 编码
+        //      Base58 编码
         // -------------------------
 
         public static string ToBase58(this byte[] data)
@@ -28,51 +27,24 @@ namespace Zero.Core.Extensions
 
             var sb = new StringBuilder();
             foreach (var index in base58)
-            {
                 sb.Append(Base58Chars[index]);
-            }
+
             return sb.ToString();
         }
 
-        public static string ToBase58(this string text) => Encoding.UTF8.GetBytes(text).ToBase58();
-
-        public static string ToBase58(this short val) => BitConverter.GetBytes(val).ToBase58Formatted();
-        public static string ToBase58(this int val) => BitConverter.GetBytes(val).ToBase58Formatted();
-        public static string ToBase58(this long val) => BitConverter.GetBytes(val).ToBase58Formatted();
-
-        // 格式化处理（去除尾 0、转换为大端序）
-        private static string ToBase58Formatted(this byte[] data)
-        {
-            var cleaned = data.TrimTrailingZeros().EnsureBigEndian();
-            return cleaned.ToBase58();
-        }
-
         // -------------------------
-        //         Base58 解码
+        //      Base58 解码
         // -------------------------
 
         public static byte[] FromBase58(this string base58)
         {
             if (string.IsNullOrWhiteSpace(base58)) throw new ArgumentNullException(nameof(base58));
 
-            var data = Array.ConvertAll(base58.ToCharArray(), Base58Chars.IndexOf);
+            var data = Array.ConvertAll(base58.ToCharArray(), c => Base58Chars.IndexOf(c));
+            if (data.Any(x => x < 0)) throw new FormatException("Invalid Base58 character detected.");
 
             var base256 = BaseConvert(data, 58, 256);
             return Array.ConvertAll(base256, Convert.ToByte);
-        }
-
-        public static T FromBase58<T>(this string base58)
-        {
-            var bytes = base58.FromBase58();
-
-            return typeof(T) switch
-            {
-                var t when t == typeof(string) => (T)Convert.ChangeType(Encoding.UTF8.GetString(bytes), typeof(T)),
-                var t when t == typeof(short) => (T)(object)bytes.ToNumber(BitConverter.ToInt16),
-                var t when t == typeof(int) => (T)(object)bytes.ToNumber(BitConverter.ToInt32),
-                var t when t == typeof(long) => (T)(object)bytes.ToNumber(BitConverter.ToInt64),
-                _ => throw new NotSupportedException($"Type {typeof(T)} is not supported.")
-            };
         }
 
         // -------------------------
@@ -91,7 +63,7 @@ namespace Zero.Core.Extensions
             var data = base58Check.FromBase58();
             if (data.Length < 4) throw new FormatException("Invalid Base58Check payload.");
 
-            var payload = data[..^4];
+            var payload = data[..^4]; // 除去末尾校验和
             var checksum = data[^4..];
 
             if (!payload.Checksum().SequenceEqual(checksum))
@@ -101,50 +73,74 @@ namespace Zero.Core.Extensions
         }
 
         // -------------------------
-        //    TRON 示例 (T 地址)
+        //      TRON 转换工具
         // -------------------------
 
-        public static string ToTronAddress(this byte[] rawAddress)
+        public static string ToTronAddress(this byte[] raw20bytes)
         {
-            // TRON 地址前缀为 0x41（十进制 65）
-            var addressWithPrefix = new byte[] { 0x41 }.Concat(rawAddress).ToArray();
+            if (raw20bytes is null || raw20bytes.Length != 20) throw new ArgumentException("Raw address must be 20 bytes");
 
-            return addressWithPrefix.ToBase58Check();
+            // TRON 前缀：0x41
+            var withPrefix = new byte[] { 0x41 }.Concat(raw20bytes).ToArray();
+            return withPrefix.ToBase58Check();
         }
 
         public static byte[] TronAddressToRaw(this string tronAddress)
         {
             var raw = tronAddress.FromBase58Check();
             if (raw[0] != 0x41) throw new FormatException("Invalid Tron address prefix.");
-            return raw[1..];
+            return raw[1..]; // 去掉前 1 字节（0x41）
         }
 
         // -------------------------
-        //     Helper 工具函数
+        //  ETH (Hex) 和 TRON 互转工具
         // -------------------------
 
-        private static int[] BaseConvert(int[] source, int fromBase, int toBase)
+        public static string HexToTronAddress(string hexAddress)
+        {
+            if (string.IsNullOrWhiteSpace(hexAddress))
+                throw new ArgumentNullException(nameof(hexAddress));
+
+            if (!hexAddress.StartsWith("0x") || hexAddress.Length != 42)
+                throw new FormatException("Invalid ETH Hex address format.");
+
+            var raw = HexToBytes(hexAddress[2..]); // 去掉 0x 前缀
+            return raw.ToTronAddress();
+        }
+
+        public static string TronToHexAddress(string tronAddress)
+        {
+            var raw = tronAddress.TronAddressToRaw();
+
+            return "0x" + BitConverter.ToString(raw).Replace("-", "").ToLowerInvariant();
+        }
+
+        // -------------------------
+        //  Helper 工具函数
+        // -------------------------
+
+        private static int[] BaseConvert(int[] digits, int fromBase, int toBase)
         {
             var result = new List<int>();
-            var leadingZeros = source.TakeWhile(x => x == 0).Count();
+            var leadingZeros = digits.TakeWhile(x => x == 0).Count();
 
-            while (source.Length > 0)
+            while (digits.Length > 0)
             {
                 var quotient = new List<int>();
                 int remainder = 0;
 
-                foreach (var digit in source)
+                foreach (var digit in digits)
                 {
                     var value = digit + remainder * fromBase;
                     var q = value / toBase;
                     remainder = value % toBase;
 
-                    if (quotient.Count > 0 || q > 0)
+                    if (quotient.Count > 0 || q != 0)
                         quotient.Add(q);
                 }
 
                 result.Insert(0, remainder);
-                source = quotient.ToArray();
+                digits = quotient.ToArray();
             }
 
             result.InsertRange(0, Enumerable.Repeat(0, leadingZeros));
@@ -158,29 +154,11 @@ namespace Zero.Core.Extensions
             return hash[..4];
         }
 
-        private static byte[] TrimTrailingZeros(this byte[] data)
+        private static byte[] HexToBytes(string hex)
         {
-            int i = data.Length - 1;
-            while (i >= 0 && data[i] == 0) i--;
-            return data.Take(i + 1).ToArray();
-        }
-
-        private static T ToNumber<T>(this byte[] bytes, Func<byte[], int, T> converter)
-        {
-            int size = typeof(T) == typeof(short) ? sizeof(short)
-                     : typeof(T) == typeof(int) ? sizeof(int)
-                     : typeof(T) == typeof(long) ? sizeof(long)
-                     : throw new NotSupportedException($"Type {typeof(T)} is not supported.");
-
-            Array.Resize(ref bytes, size);
-            if (BitConverter.IsLittleEndian) Array.Reverse(bytes);
-            return converter(bytes, 0);
-        }
-
-        private static byte[] EnsureBigEndian(this byte[] data)
-        {
-            if (BitConverter.IsLittleEndian) Array.Reverse(data);
-            return data;
+            return Enumerable.Range(0, hex.Length / 2)
+                .Select(i => Convert.ToByte(hex.Substring(i * 2, 2), 16))
+                .ToArray();
         }
     }
 }
