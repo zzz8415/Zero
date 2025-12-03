@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.Extensions.Logging;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -43,17 +43,27 @@ namespace Zero.Core.Filter
             }
 
             // 3. 批量同步 operation.Tags
+            // 收集所有实际使用的标签名称
+            var usedTagNames = new HashSet<string>();
             foreach (var path in swaggerDoc.Paths.Values)
+            {
                 foreach (var op in path.Operations.Values)
                 {
-                    for (int i = 0; i < op.Tags.Count; i++)
+                    foreach (var tag in op.Tags)
                     {
-                        if (tagNameMap.TryGetValue(op.Tags[i].Name, out var newName))
-                        {
-                            op.Tags[i].Name = newName;
-                        }
+                        usedTagNames.Add(tag.Name);
                     }
                 }
+            }
+
+            // 更新swaggerDoc.Tags以包含所有使用的标签
+            var docTags = new HashSet<OpenApiTag>();
+            foreach (var tagName in usedTagNames)
+            {
+                docTags.Add(new OpenApiTag { Name = tagName });
+            }
+            swaggerDoc.Tags = docTags;
+        
         }
     }
 }

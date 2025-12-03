@@ -1,4 +1,4 @@
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -23,7 +23,7 @@ namespace Zero.Core.Filter
         /// </summary>
         /// <param name="schema"></param>
         /// <param name="context"></param>
-        public void Apply(OpenApiSchema schema, SchemaFilterContext context)
+        public void Apply(IOpenApiSchema schema, SchemaFilterContext context)
         {
             var type = context.Type;
 

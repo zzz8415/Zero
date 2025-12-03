@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 
 using System;
 using System.Collections.Generic;
@@ -147,20 +147,13 @@ namespace Zero.Core.Util
                         Type = SecuritySchemeType.ApiKey
                     });
 
-                options.AddSecurityRequirement(new OpenApiSecurityRequirement
+                // 新 API：在 AddSecurityRequirement 里使用 OpenApiSecuritySchemeReference，并且传入当前 document 上下文
+                options.AddSecurityRequirement(document => new OpenApiSecurityRequirement
                 {
-                     {
-                         new OpenApiSecurityScheme
-                         {
-                             Reference = new OpenApiReference
-                             {
-                                 Id = "Bearer", //The name of the previously defined security scheme.
-                                 Type = ReferenceType.SecurityScheme
-                             }
-                         },
-                         Array.Empty<string>()
-                     }
+                    // 引用定义时使用和上面 AddSecurityDefinition 一致的 id ("bearer")
+                    [new OpenApiSecuritySchemeReference("bearer", document)] = []
                 });
+
                 options.EnableAnnotations();
                 options.CustomSchemaIds(GetSchemaId);
                 options.SchemaFilter<EnumDescriptionSchemaFilter>();
