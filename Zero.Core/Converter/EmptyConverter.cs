@@ -58,34 +58,136 @@ namespace Zero.Core.Converter
         {
             if (reader.TokenType == JsonTokenType.String)
             {
-                var dateString = reader.GetString();
-                if (string.IsNullOrEmpty(dateString))
+                var stringValue = reader.GetString();
+                if (string.IsNullOrEmpty(stringValue))
                 {
                     return default;
                 }
 
-                if (_dateFormatArray?.Length > 0 && (typeof(T) == typeof(DateTime) || typeof(T) == typeof(DateTime?)))
+                // 特殊处理数值类型
+                if (typeof(T) == typeof(int) || typeof(T) == typeof(int?))
                 {
-                    foreach (var format in _dateFormatArray)
+                    if (int.TryParse(stringValue, out int intValue))
                     {
-                        if (DateTime.TryParseExact(dateString, format, null, DateTimeStyles.None, out var date))
-                        {
-                            return (T)(object)date;
-                        }
+                        return (T)(object)intValue;
                     }
                     return default;
                 }
 
-                if (_dateFormatArray?.Length > 0 && (typeof(T) == typeof(DateTimeOffset) || typeof(T) == typeof(DateTimeOffset?)))
+                if (typeof(T) == typeof(long) || typeof(T) == typeof(long?))
                 {
-                    foreach (var format in _dateFormatArray) 
+                    if (long.TryParse(stringValue, out long longValue))
                     {
-                        if (DateTimeOffset.TryParseExact(dateString, format, null, DateTimeStyles.None, out var date))
-                        {
-                            return (T)(object)date;
-                        }
+                        return (T)(object)longValue;
                     }
                     return default;
+                }
+
+                if (typeof(T) == typeof(double) || typeof(T) == typeof(double?))
+                {
+                    if (double.TryParse(stringValue, out double doubleValue))
+                    {
+                        return (T)(object)doubleValue;
+                    }
+                    return default;
+                }
+
+                if (typeof(T) == typeof(decimal) || typeof(T) == typeof(decimal?))
+                {
+                    if (decimal.TryParse(stringValue, out decimal decimalValue))
+                    {
+                        return (T)(object)decimalValue;
+                    }
+                    return default;
+                }
+
+                if (typeof(T) == typeof(float) || typeof(T) == typeof(float?))
+                {
+                    if (float.TryParse(stringValue, out float floatValue))
+                    {
+                        return (T)(object)floatValue;
+                    }
+                    return default;
+                }
+
+                if (typeof(T) == typeof(short) || typeof(T) == typeof(short?))
+                {
+                    if (short.TryParse(stringValue, out short shortValue))
+                    {
+                        return (T)(object)shortValue;
+                    }
+                    return default;
+                }
+
+                if (typeof(T) == typeof(uint) || typeof(T) == typeof(uint?))
+                {
+                    if (uint.TryParse(stringValue, out uint uintValue))
+                    {
+                        return (T)(object)uintValue;
+                    }
+                    return default;
+                }
+
+                if (typeof(T) == typeof(ulong) || typeof(T) == typeof(ulong?))
+                {
+                    if (ulong.TryParse(stringValue, out ulong ulongValue))
+                    {
+                        return (T)(object)ulongValue;
+                    }
+                    return default;
+                }
+
+                if (typeof(T) == typeof(DateTime) || typeof(T) == typeof(DateTime?))
+                {
+                    if (_dateFormatArray?.Length > 0)
+                    {
+                        foreach (var format in _dateFormatArray)
+                        {
+                            if (DateTime.TryParseExact(stringValue, format, null, DateTimeStyles.None, out var date))
+                            {
+                                return (T)(object)date;
+                            }
+                        }
+                        return default;
+                    }
+                    else
+                    {
+                        if (DateTime.TryParse(stringValue, out var dateTime))
+                        {
+                            return (T)(object)dateTime;
+                        }
+                        return default;
+                    }
+                }
+
+                if (typeof(T) == typeof(DateTimeOffset) || typeof(T) == typeof(DateTimeOffset?))
+                {
+                    if (_dateFormatArray?.Length > 0)
+                    {
+                        foreach (var format in _dateFormatArray)
+                        {
+                            if (DateTimeOffset.TryParseExact(stringValue, format, null, DateTimeStyles.None, out var date))
+                            {
+                                return (T)(object)date;
+                            }
+                        }
+                        return default;
+                    }
+                    else
+                    {
+                        if (DateTimeOffset.TryParse(stringValue, out var dateTimeOffset))
+                        {
+                            return (T)(object)dateTimeOffset;
+                        }
+                        return default;
+                    }
+                }
+
+                // 如果不是特殊处理的类型，则使用默认行为
+                using (var document = JsonDocument.ParseValue(ref reader))
+                {
+                    var element = document.RootElement;
+                    return JsonSerializer.Deserialize<T>(element.GetRawText(), _safeOptions);
                 }
             }
 
