@@ -198,7 +198,12 @@ namespace Zero.Core.Util
                 var logger = context.RequestServices.GetRequiredService<ILogger<StartupHelper>>();
                 if (exception is DbUpdateConcurrencyException)
                 {
-                    logger?.LogFail(exception, "DBError");
+                    var innerMsg = exception.InnerException != null ? GetPostgresExceptionDetails(exception.InnerException) : null;
+                    var msg = string.IsNullOrEmpty(innerMsg)
+                        ? exception.Message
+                        : $"{exception.Message} | InnerException: {innerMsg}";
+                    var ex = new Exception(msg, exception);
+                    logger?.LogFail(ex, "DBError");
                 }
                 else
                 {
@@ -215,6 +220,31 @@ namespace Zero.Core.Util
 
                 await context.Response.WriteAsJsonAsync(r);
             });
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="ex"></param>
+        /// <returns></returns>
+        internal static string GetPostgresExceptionDetails(Exception ex)
+        {
+            var sb = new StringBuilder();
+            while (ex != null)
+            {
+                if (ex.GetType().Name == "PostgresException") // 兼容 Npgsql.PostgresException
+                {
+                    var sqlState = ex.GetType().GetProperty("SqlState")?.GetValue(ex)?.ToString();
+                    var errorCode = ex.GetType().GetProperty("SqlState")?.GetValue(ex)?.ToString();
+                    sb.AppendLine($"PostgresException: {ex.Message} | SqlState: {sqlState} | ErrorCode: {errorCode}");
+                }
+                else
+                {
+                    sb.AppendLine(ex.Message);
+                }
+                ex = ex.InnerException;
+            }
+            return sb.ToString();
         }
 
         /// <summary>

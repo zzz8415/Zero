@@ -22,6 +22,7 @@ namespace Zero.Core.Filter
             // 1. 构建控制器 tag 名称和描述映射
             var oldToNewTagName = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
             var tagDescriptionByName = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            var controllerNameToFullName = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
             var allTypes = AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(GetLoadableTypes)
@@ -32,17 +33,19 @@ namespace Zero.Core.Filter
                 var descAttr = type.GetCustomAttribute<DescriptionAttribute>();
                 var swaggerTagAttr = type.GetCustomAttribute<SwaggerTagAttribute>();
                 var oldName = type.Name.Replace("Controller", string.Empty, StringComparison.Ordinal);
+                var fullKey = type.FullName ?? oldName;
 
                 var newName = string.IsNullOrWhiteSpace(descAttr?.Description)
                     ? oldName
                     : descAttr.Description.Trim();
 
-                oldToNewTagName[oldName] = newName;
+                oldToNewTagName[fullKey] = newName;
+                controllerNameToFullName[oldName] = fullKey;
 
                 if (!string.IsNullOrWhiteSpace(swaggerTagAttr?.Description))
                 {
                     var desc = swaggerTagAttr.Description.Trim();
-                    tagDescriptionByName[oldName] = desc;
+                    tagDescriptionByName[fullKey] = desc;
                     tagDescriptionByName[newName] = desc;
                 }
             }
@@ -75,9 +78,14 @@ namespace Zero.Core.Filter
                             ? rawName.Substring("#/components/tags/".Length)
                             : rawName;
 
-                        if (oldToNewTagName.TryGetValue(normalizedName, out var renamed))
+                        // 优先用 controllerNameToFullName 匹配
+                        if (controllerNameToFullName.TryGetValue(normalizedName, out var fullKey) && oldToNewTagName.TryGetValue(fullKey, out var renamed))
                         {
                             normalizedName = renamed;
+                        }
+                        else if (oldToNewTagName.TryGetValue(normalizedName, out var renamed2))
+                        {
+                            normalizedName = renamed2;
                         }
 
                         // 使用 null externalResource，序列化为普通 tag 字符串，而不是 ref 路径。
@@ -120,9 +128,14 @@ namespace Zero.Core.Filter
                             ? tag.Name.Substring("#/components/tags/".Length)
                             : tag.Name;
 
-                        if (oldToNewTagName.TryGetValue(tagName, out var renamed))
+                        // 优先用 controllerNameToFullName 匹配
+                        if (controllerNameToFullName.TryGetValue(tagName, out var fullKey) && oldToNewTagName.TryGetValue(fullKey, out var renamed))
                         {
                             tagName = renamed;
+                        }
+                        else if (oldToNewTagName.TryGetValue(tagName, out var renamed2))
+                        {
+                            tagName = renamed2;
                         }
 
                         usedTagNames.Add(tagName);

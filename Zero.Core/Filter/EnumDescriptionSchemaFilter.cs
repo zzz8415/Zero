@@ -38,11 +38,9 @@ namespace Zero.Core.Filter
 
             var enumValues = Enum.GetValues(type);
 
-            var line = false;
             if (!schema.Description.IsNullOrEmpty())
             {
-                descriptionBuilder.Append(schema.Description);
-                line = true;
+                descriptionBuilder.AppendLine(schema.Description);
             }
 
             foreach (Enum enumValue in enumValues)
@@ -53,16 +51,8 @@ namespace Zero.Core.Filter
                 // 如果存在 DescriptionAttribute，则使用其描述文本；否则，使用枚举成员的名称。
                 var description = enumValue.GetDescription();
 
-                if (line)
-                {
-                    descriptionBuilder.AppendLine("<br/>");
-                }
-                else
-                {
-                    line = true;
-                }
                 // 格式化枚举值和描述，并追加到 StringBuilder。
-                descriptionBuilder.Append($"{Convert.ToInt64(enumValue)} = {name}({description})");
+                descriptionBuilder.AppendLine($"- {Convert.ToInt64(enumValue)} = {name}({description})");
             }
 
             schema.Description = descriptionBuilder.ToString();
