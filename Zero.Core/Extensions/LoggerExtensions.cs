@@ -32,7 +32,20 @@ namespace Zero.Core.Extensions
         /// <param name="dir"></param>
         public static void LogFail(this ILogger logger, Exception exception, string dir)
         {
-            logger.LogInformation(new EventId(-65535, dir), exception, dir);
+            var detail = GetAllExceptionMessages(exception);
+            logger.LogInformation(new EventId(-65535, dir), exception, detail);
+        }
+
+        // 递归拼接所有异常信息
+        private static string GetAllExceptionMessages(Exception ex)
+        {
+            var sb = new StringBuilder();
+            while (ex != null)
+            {
+                sb.AppendLine($"{ex.GetType().Name}: {ex.Message}");
+                ex = ex.InnerException;
+            }
+            return sb.ToString();
         }
 
         /// <summary>

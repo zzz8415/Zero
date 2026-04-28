@@ -33,19 +33,20 @@ namespace Zero.Core.Filter
                 var descAttr = type.GetCustomAttribute<DescriptionAttribute>();
                 var swaggerTagAttr = type.GetCustomAttribute<SwaggerTagAttribute>();
                 var oldName = type.Name.Replace("Controller", string.Empty, StringComparison.Ordinal);
-                var fullKey = type.FullName ?? oldName;
+                var nsKey = string.IsNullOrEmpty(type.Namespace) ? oldName : ($"{type.Namespace}.{oldName}");
+                var fullKey = type.FullName ?? nsKey;
 
                 var newName = string.IsNullOrWhiteSpace(descAttr?.Description)
                     ? oldName
                     : descAttr.Description.Trim();
 
-                oldToNewTagName[fullKey] = newName;
-                controllerNameToFullName[oldName] = fullKey;
+                oldToNewTagName[nsKey] = newName;
+                controllerNameToFullName[nsKey] = fullKey;
 
                 if (!string.IsNullOrWhiteSpace(swaggerTagAttr?.Description))
                 {
                     var desc = swaggerTagAttr.Description.Trim();
-                    tagDescriptionByName[fullKey] = desc;
+                    tagDescriptionByName[nsKey] = desc;
                     tagDescriptionByName[newName] = desc;
                 }
             }
@@ -78,12 +79,16 @@ namespace Zero.Core.Filter
                             ? rawName.Substring("#/components/tags/".Length)
                             : rawName;
 
-                        // 优先用 controllerNameToFullName 匹配
-                        if (controllerNameToFullName.TryGetValue(normalizedName, out var fullKey) && oldToNewTagName.TryGetValue(fullKey, out var renamed))
+                        // 优先用 命名空间+ControllerName 匹配
+                        var nsKey = context.ApiDescriptions
+                            .Select(d => d.ActionDescriptor is ControllerActionDescriptor cad ? $"{cad.ControllerTypeInfo.Namespace}.{cad.ControllerName}" : null)
+                            .FirstOrDefault(k => k != null && (k.EndsWith($".{normalizedName}") || k == normalizedName)) ?? normalizedName;
+
+                        if (controllerNameToFullName.TryGetValue(nsKey, out var fullKey) && oldToNewTagName.TryGetValue(nsKey, out var renamed))
                         {
                             normalizedName = renamed;
                         }
-                        else if (oldToNewTagName.TryGetValue(normalizedName, out var renamed2))
+                        else if (oldToNewTagName.TryGetValue(nsKey, out var renamed2))
                         {
                             normalizedName = renamed2;
                         }
@@ -128,12 +133,16 @@ namespace Zero.Core.Filter
                             ? tag.Name.Substring("#/components/tags/".Length)
                             : tag.Name;
 
-                        // 优先用 controllerNameToFullName 匹配
-                        if (controllerNameToFullName.TryGetValue(tagName, out var fullKey) && oldToNewTagName.TryGetValue(fullKey, out var renamed))
+                        // 优先用 命名空间+ControllerName 匹配
+                        var nsKey = context.ApiDescriptions
+                            .Select(d => d.ActionDescriptor is ControllerActionDescriptor cad ? $"{cad.ControllerTypeInfo.Namespace}.{cad.ControllerName}" : null)
+                            .FirstOrDefault(k => k != null && (k.EndsWith($".{tagName}") || k == tagName)) ?? tagName;
+
+                        if (controllerNameToFullName.TryGetValue(nsKey, out var fullKey) && oldToNewTagName.TryGetValue(nsKey, out var renamed))
                         {
                             tagName = renamed;
                         }
-                        else if (oldToNewTagName.TryGetValue(tagName, out var renamed2))
+                        else if (oldToNewTagName.TryGetValue(nsKey, out var renamed2))
                         {
                             tagName = renamed2;
                         }
